@@ -1,0 +1,2646 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full w-full">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+  <title>Chronicle: Temporal Navigation Engine</title>
+  <!-- SEO Tags -->
+  <meta name="description" content="Explore the void of time. Seamlessly transition between the Past (1890), Present (2024), and Future (2200) via our temporal navigation system with audio-reactive visualizers."/>
+  
+  <!-- Font Imports -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#111317',
+            background: '#090b0e',
+            primary: '#00f0ff',
+            'on-surface': '#e2e2e8',
+            'on-surface-variant': '#b9cacb',
+            past: '#d4af37',
+            present: '#ffffff',
+            future: '#00f0ff'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Custom Styling Link -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body class="era-2024 relative h-full w-full overflow-hidden select-none">
+
+  <!-- Background Three.js Canvas -->
+  <div id="threejs-container-ANIMATION_50" class="fixed inset-0 w-full h-full bg-transparent -z-10"></div>
+
+  <!-- Warp Warning Banner (Hidden by default) -->
+  <div id="warp-banner" class="fixed top-24 left-1/2 -translate-x-1/2 -translate-y-1/2 glassmorphic border border-red-500/30 px-6 py-3 z-50 pointer-events-none opacity-0 transition-opacity duration-300 flex items-center gap-3">
+    <div class="w-2 h-2 rounded-full bg-red-500 animate-ping"></div>
+    <span class="font-label-tech text-red-500 tracking-widest" id="warp-banner-text">TEMPORAL WARP DETECTED</span>
+  </div>
+
+  <!-- Cinematic Homepage Container -->
+  <div id="homepage-container" class="absolute inset-0 w-full h-full overflow-y-auto scroll-smooth z-40 bg-[#090b0e]/95 text-white flex flex-col">
+    
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glassmorphic border-b border-white/5 py-4 px-8 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="font-display-past text-2xl font-bold tracking-wider text-white select-none">CHRONOVOYAGE</span>
+        <span class="font-label-tech text-[10px] text-primary border border-primary/20 px-2 py-0.5 rounded">PORTAL_ONLINE</span>
+      </div>
+      <div class="hidden md:flex items-center gap-8 font-label-tech text-xs tracking-wider">
+        <a href="#homepage-hero" class="text-white/60 hover:text-white transition">Home</a>
+        <a href="#era-preview" class="text-white/60 hover:text-white transition">Timeline Previews</a>
+        <a href="#destinations-gallery" class="text-white/60 hover:text-white transition">Featured Destinations</a>
+        <a href="#how-it-works" class="text-white/60 hover:text-white transition">How It Works</a>
+      </div>
+      <div>
+        <button onclick="triggerDefaultWarp()" class="font-label-tech text-xs px-4 py-2 border border-primary/45 text-primary hover:bg-primary/10 hover:border-primary rounded shadow-[0_0_15px_rgba(0,240,255,0.15)] transition duration-300">
+          INITIATE WARP
+        </button>
+      </div>
+    </nav>
+
+    <!-- 1. HERO EXPERIENCE -->
+    <section id="homepage-hero" class="min-h-screen flex flex-col justify-center items-center text-center relative px-6 pt-20">
+      <!-- Glow background -->
+      <div class="absolute w-[500px] h-[500px] rounded-full bg-primary/5 blur-[150px] -z-10 pointer-events-none"></div>
+      <div class="absolute w-[400px] h-[400px] rounded-full bg-purple-500/5 blur-[150px] -z-10 pointer-events-none translate-y-32"></div>
+
+      <!-- Sci-fi Time portal outline -->
+      <div class="relative w-72 h-72 rounded-full border border-primary/15 flex items-center justify-center mb-8 animate-[spin_60s_linear_infinite]">
+        <div class="absolute w-64 h-64 rounded-full border border-dashed border-primary/20"></div>
+        <div class="absolute w-56 h-56 rounded-full border border-purple-500/30"></div>
+        <div class="absolute w-48 h-48 rounded-full border border-primary/40 animate-[spin_20s_linear_infinite_reverse]"></div>
+        <!-- Portal Core Pulsing Light -->
+        <div class="w-12 h-12 rounded-full bg-primary/20 shadow-[0_0_40px_rgba(0,240,255,0.6)] animate-pulse"></div>
+      </div>
+
+      <!-- Hero Header -->
+      <h1 class="text-6xl md:text-8xl font-display-present font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white via-primary to-purple-400 drop-shadow-[0_0_20px_rgba(0,240,255,0.15)]">
+        BEYOND TIME
+      </h1>
+      <p class="font-label-tech text-white/60 max-w-xl text-sm md:text-base mb-10 tracking-widest leading-relaxed">
+        Explore the past. Experience the present. Discover the future.
+      </p>
+
+      <button onclick="triggerDefaultWarp()" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_45px_rgba(0,240,255,0.55)] transform hover:-translate-y-0.5 transition duration-300 uppercase">
+        Initiate Portal Jump
+      </button>
+    </section>
+
+    <!-- 2. TIME ERA PREVIEW -->
+    <section id="era-preview" class="py-24 px-6 max-w-7xl mx-auto w-full flex flex-col gap-12">
+      <div class="text-center">
+        <h2 class="font-display-present text-4xl font-bold mb-3 tracking-wider text-white">TIME ERA REGISTRY</h2>
+        <div class="w-24 h-1 bg-gradient-to-r from-primary to-purple-500 mx-auto"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- PAST CARD -->
+        <div class="glassmorphic p-8 flex flex-col justify-between min-h-[350px] border border-white/5 hover:border-past/30 hover:shadow-[0_0_30px_rgba(212,175,85,0.1)] transition-all duration-500 group transform hover:-translate-y-2">
+          <div>
+            <span class="font-label-tech text-past text-[10px] tracking-widest mb-4 block">EPOCH_01 // ARCHIVAL</span>
+            <h3 class="font-display-past text-past text-3xl font-medium mb-4">PAST</h3>
+            <p class="text-white/60 text-sm leading-relaxed">
+              Journey into ancient civilizations, witness lost worlds, and stand at the epicenter of historic, world-changing moments that shaped human history.
+            </p>
+          </div>
+          <span class="font-label-tech text-past text-xs tracking-widest mt-6 group-hover:translate-x-2 transition-transform duration-300 block">VIEW LEDGER &rarr;</span>
+        </div>
+
+        <!-- PRESENT CARD -->
+        <div class="glassmorphic p-8 flex flex-col justify-between min-h-[350px] border border-white/5 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.08)] transition-all duration-500 group transform hover:-translate-y-2">
+          <div>
+            <span class="font-label-tech text-white/50 text-[10px] tracking-widest mb-4 block">EPOCH_02 // SYNCED</span>
+            <h3 class="font-display-present text-white text-2xl font-bold mb-4">PRESENT</h3>
+            <p class="text-white/60 text-sm leading-relaxed">
+              Observe modern cities, analyze current technology grid nodes, and monitor real-time atmospheric feeds across today's global civilization.
+            </p>
+          </div>
+          <span class="font-label-tech text-white text-xs tracking-widest mt-6 group-hover:translate-x-2 transition-transform duration-300 block">ACCESS FEEDS &rarr;</span>
+        </div>
+
+        <!-- FUTURE CARD -->
+        <div class="glassmorphic p-8 flex flex-col justify-between min-h-[350px] border border-white/5 hover:border-primary/30 hover:shadow-[0_0_30px_rgba(0,240,255,0.1)] transition-all duration-500 group transform hover:-translate-y-2">
+          <div>
+            <span class="font-label-tech text-primary text-[10px] tracking-widest mb-4 block">EPOCH_03 // SPECULATIVE</span>
+            <h3 class="font-display-future text-primary text-2xl mb-4">FUTURE</h3>
+            <p class="text-white/60 text-sm leading-relaxed">
+              Gaze into highly advanced bio-synthetic civilizations, explore possible futures, and query speculation databases of unknown worlds.
+            </p>
+          </div>
+          <span class="font-label-tech text-primary text-xs tracking-widest mt-6 group-hover:translate-x-2 transition-transform duration-300 block">QUERY DATA &rarr;</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FEATURED DESTINATIONS -->
+    <section id="destinations-gallery" class="py-24 px-6 max-w-7xl mx-auto w-full flex flex-col gap-12">
+      <div class="text-center">
+        <h2 class="font-display-present text-4xl font-bold mb-3 tracking-wider text-white">CHRONOLOGICAL EXHIBITS</h2>
+        <p class="font-label-tech text-white/40 text-xs tracking-widest">TEMPORAL LOG ENTRIES PRE-REGISTERED</p>
+        <div class="w-24 h-1 bg-gradient-to-r from-primary to-purple-500 mx-auto mt-4"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- BIG BEN -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/big_ben_present.jpg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Big Ben</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">LONDON // 51.50° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">The majestic gothic Westminster clocktower standing above the Thames.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('big-ben')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- EIFFEL TOWER -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/eiffel_tower_present.jpg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Eiffel Tower</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">PARIS // 48.85° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">Pinnacle of 19th-century mechanical rivet engineering rising above the Seine.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('eiffel-tower')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- COLOSSEUM -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/colosseum_present.jpg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Colosseum</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">ROME // 41.89° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">The ancient travertine amphitheatre built under the Flavian emperors.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('colosseum')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- STATUE OF LIBERTY -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/statue_of_liberty_present.png')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Statue of Liberty</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">NEW YORK // 40.68° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">Liberty enlightening the world stands in the New York harbor sentinel.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('statue-of-liberty')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- TBILISI -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/tbilisi_present.png')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Tbilisi</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">TBILISI // 41.69° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">Famous sulfur baths and Narikala fortress over winding historic streets.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('tbilisi')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- PYRAMIDS OF GIZA -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/pyramids_present.png')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Pyramids of Giza</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">GIZA // 29.97° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">The oldest of the Seven Wonders of the Ancient World standing in the dunes.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('pyramids-of-giza')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- SYDNEY OPERA HOUSE -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/sydney_opera_house_present.jpg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Sydney Opera House</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">SYDNEY // 33.85° S</p>
+              <p class="text-white/50 text-xs line-clamp-2">The world-famous multi-venue performing arts centre in Sydney Harbour.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('sydney-opera-house')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- TAJ MAHAL -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/taj_mahal_present.jpg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Taj Mahal</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">AGRA // 27.17° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">The pristine white marble mausoleum built under Emperor Shah Jahan.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('taj-mahal')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- GREAT WALL OF CHINA -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/great_wall_present.jpg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Great Wall of China</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">BEIJING // 40.43° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">Ancient stone defense walls winding across northern mountain ridges.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('great-wall')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- BURJ KHALIFA -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/burj_khalifa_present.png')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Burj Khalifa</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">DUBAI // 25.19° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">The tallest building in the world rising soaring over downtown lakes.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('burj-khalifa')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+
+        <!-- TOKYO TOWER -->
+        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+          <div class="relative h-48 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/tokyo_tower_present.jpg')"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display-present text-lg text-white mb-1">Tokyo Tower</h4>
+              <p class="font-label-tech text-[10px] text-primary/80 mb-3">TOKYO // 35.65° N</p>
+              <p class="text-white/50 text-xs line-clamp-2">The crimson and white lattice communications tower in Minato district.</p>
+            </div>
+            <button onclick="jumpToDestinationHomepage('tokyo-tower')" class="w-full mt-4 py-2 bg-white/5 hover:bg-primary/20 text-white font-label-tech text-[10px] tracking-wider rounded border border-white/10 hover:border-primary/30 transition">
+              INITIATE VOYAGE
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. HOW IT WORKS -->
+    <section id="how-it-works" class="py-24 px-6 max-w-5xl mx-auto w-full flex flex-col gap-12">
+      <div class="text-center">
+        <h2 class="font-display-present text-4xl font-bold mb-3 tracking-wider text-white">QUANTUM LINK SEQUENCE</h2>
+        <div class="w-24 h-1 bg-gradient-to-r from-primary to-purple-500 mx-auto mt-4"></div>
+      </div>
+
+      <div class="flex flex-col md:flex-row items-center justify-between gap-12 relative">
+        <!-- Connecting Line in BG -->
+        <div class="absolute top-1/2 left-0 right-0 h-[1px] bg-gradient-to-r from-primary/10 via-purple-500/20 to-primary/10 hidden md:block -z-10"></div>
+
+        <!-- STEP 1 -->
+        <div class="flex-1 flex flex-col items-center text-center">
+          <div class="w-16 h-16 rounded-full border border-primary bg-[#090b0e] shadow-[0_0_20px_rgba(0,240,255,0.2)] flex items-center justify-center font-label-tech text-xl text-primary font-bold mb-4">
+            01
+          </div>
+          <h4 class="font-label-tech text-sm text-white mb-2 tracking-widest">CHOOSE AN ERA</h4>
+          <p class="text-white/50 text-xs max-w-[240px] leading-relaxed">Select a landmark and calendar coordinate tag via the geographic navigation terminal.</p>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="flex-1 flex flex-col items-center text-center">
+          <div class="w-16 h-16 rounded-full border border-purple-500 bg-[#090b0e] shadow-[0_0_20px_rgba(168,85,247,0.2)] flex items-center justify-center font-label-tech text-xl text-purple-400 font-bold mb-4">
+            02
+          </div>
+          <h4 class="font-label-tech text-sm text-white mb-2 tracking-widest">ENTER PORTAL</h4>
+          <p class="text-white/50 text-xs max-w-[240px] leading-relaxed">Initiate the portal jump animation sequence to synchronize tachyon alignment fields.</p>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="flex-1 flex flex-col items-center text-center">
+          <div class="w-16 h-16 rounded-full border border-primary bg-[#090b0e] shadow-[0_0_20px_rgba(0,240,255,0.2)] flex items-center justify-center font-label-tech text-xl text-primary font-bold mb-4">
+            03
+          </div>
+          <h4 class="font-label-tech text-sm text-white mb-2 tracking-widest">EXPLORE HISTORY</h4>
+          <p class="text-white/50 text-xs max-w-[240px] leading-relaxed">Analyze history side-by-side in real-time, matching viewpoints across three temporal eras.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. FINAL CALL TO ACTION -->
+    <section class="py-24 px-6 text-center bg-gradient-to-t from-[#090b0e] to-transparent relative">
+      <div class="absolute w-[400px] h-[400px] rounded-full bg-primary/3 blur-[120px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 pointer-events-none"></div>
+      <h2 class="text-4xl md:text-5xl font-display-present font-bold tracking-wider mb-6 text-white uppercase">
+        Your journey through time begins now.
+      </h2>
+      <p class="text-white/50 text-sm max-w-md mx-auto mb-10 leading-relaxed font-label-tech">
+        Initiate portal synchronization to dock at chronological coordinates.
+      </p>
+      <button onclick="triggerDefaultWarp()" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] transition duration-300 uppercase">
+        Initiate Portal Jump
+      </button>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto border-t border-white/5 py-8 px-6 text-center text-white/30 text-xs font-label-tech flex flex-col md:flex-row items-center justify-between gap-4 max-w-7xl mx-auto w-full">
+      <div>
+        <span>CHRONOVOYAGE SYSTEM // ALL DATA LINKED</span>
+      </div>
+      <div>
+        <span>&copy; 2026 CHRONOVOYAGE INC. ALL COORDINATES SECURED.</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Primary Layout Container -->
+  <div id="main-container" class="relative flex flex-col h-full w-full justify-between z-10 hidden">
+    
+    <!-- HEADER -->
+    <header class="w-full flex items-center justify-between px-6 py-4 glassmorphic border-b border-white/5 mx-auto max-w-[1440px] mt-4 rounded-lg">
+      <div class="flex items-center gap-3">
+        <!-- Logo -->
+        <span class="font-display-past text-2xl font-bold tracking-wider text-white select-none">CHRONICLE</span>
+        <span class="font-label-tech text-[10px] text-white/40 border border-white/10 px-2 py-0.5 rounded">v2.0.4-sys</span>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="hidden md:flex items-center gap-8 font-label-tech text-xs tracking-wider">
+        <a href="#home" class="nav-link text-white/60 hover:text-white" onclick="showHomepage(event)">Home</a>
+        <a href="#1890" class="nav-link text-white/60 hover:text-white" data-era="1890">The Past</a>
+        <a href="#2024" class="nav-link text-white/60 hover:text-white active" data-era="2024">The Present</a>
+        <a href="#2200" class="nav-link text-white/60 hover:text-white" data-era="2200">The Future</a>
+        <a href="#archive" class="text-white/60 hover:text-white transition" onclick="openModal('archive-modal')">Archive</a>
+      </nav>
+
+      <!-- Utility Actions (Audio, Location Portal & Time Jump) -->
+      <div class="flex items-center gap-4">
+        <!-- Location Portal Trigger -->
+        <button id="geographic-portal-btn" class="font-label-tech text-[10px] px-3.5 py-2 border border-white/10 hover:border-white/30 text-white rounded transition duration-300 flex items-center gap-1.5" onclick="toggleGeographicPortal(true)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-[#00f0ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          LOCATION PORTAL
+        </button>
+
+        <!-- Audio Synth Control -->
+        <button id="audio-toggle-btn" class="flex items-center gap-2 px-3 py-1.5 rounded border border-white/10 text-white/60 hover:text-white hover:border-white/20 transition audio-paused" onclick="toggleAudio()" title="Toggle Soundscape">
+          <div class="flex items-end gap-[2px] h-[16px] w-[14px]">
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+          </div>
+          <span class="font-label-tech text-[10px] hidden sm:inline" id="audio-btn-label">ENABLE SOUND</span>
+        </button>
+
+        <!-- Jump Time CTA -->
+        <button id="jump-time-btn" class="font-label-tech text-xs px-4 py-2 border border-[#00f0ff]/45 text-[#00f0ff] hover:bg-[#00f0ff]/10 hover:border-[#00f0ff] rounded shadow-[0_0_15px_rgba(0,240,255,0.05)] transition duration-300" onclick="openModal('jumptime-modal')">
+          JUMP TIME
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN ERA ACCORDION CONTAINER -->
+    <main class="flex flex-1 w-full max-w-[1440px] mx-auto px-4 md:px-6 my-6 overflow-hidden gap-4 h-[calc(100vh-210px)]">
+      
+      <!-- COLUMN 1890: THE PAST -->
+      <section id="era-1890" class="era-col inactive flex-1 rounded-lg">
+        <!-- Era BG Image -->
+        <div id="past-img-layer" class="era-bg-img filter-past" style="background-image: url('assets/era_1890.jpg');"></div>
+        <div class="era-overlay-gradient"></div>
+
+        <div class="era-content">
+          <!-- Coordinates & Era Header -->
+          <div class="mb-auto opacity-0 transition-opacity duration-700 delay-300 era-show-active">
+            <p id="past-readout-coords" class="font-label-tech text-[10px] text-past/60">SYSTEM READOUT: 51.5007° N, 0.1246° W</p>
+            <p id="past-readout-tag" class="font-label-tech text-[10px] text-past/60">EPOCH_01_STEAM_IRON</p>
+          </div>
+
+          <!-- Big Number -->
+          <h2 class="font-display-past text-past leading-none pointer-events-none select-none">1890</h2>
+
+          <!-- Narrative Card -->
+          <div class="glassmorphic-card p-6 mt-4 max-w-md opacity-0 translate-y-4 transition-all duration-700 delay-200 era-show-active active-glow">
+            <h3 id="past-card-title" class="font-display-past text-past text-2xl mb-2">The Gilded Threshold</h3>
+            <p id="past-card-desc" class="font-display-past text-sm text-[#f4ecd8]/90 leading-relaxed mb-4 drop-cap">
+              Coal smoke mingles with the rhythm of horse hooves on cobblestone. The city breathes through steam and iron, a masterpiece of manual industry and formal elegance.
+            </p>
+            <a id="past-card-btn" href="#explore-ledger" class="font-display-past text-sm text-past italic underline hover:text-white transition duration-300" onclick="openModal('archive-modal')">
+              Explore Ledger &rarr;
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMN 2024: THE PRESENT -->
+      <section id="era-2024" class="era-col active flex-1 rounded-lg">
+        <!-- Era BG Image -->
+        <div id="present-img-layer" class="era-bg-img filter-present" style="background-image: url('assets/era_2024.jpg');"></div>
+        <div class="era-overlay-gradient"></div>
+
+        <div class="era-content">
+          <!-- Coordinates & Era Header -->
+          <div class="mb-auto opacity-0 transition-opacity duration-700 delay-300 era-show-active">
+            <p id="present-readout-coords" class="font-label-tech text-[10px] text-white/50">SYSTEM READOUT: 51.5007° N, 0.1246° W</p>
+            <p id="present-readout-tag" class="font-label-tech text-[10px] text-white/50">EPOCH_02_INFO_NEXUS</p>
+          </div>
+
+          <!-- Big Number -->
+          <h2 class="font-display-present text-white leading-none pointer-events-none select-none">2024</h2>
+
+          <!-- Narrative Card -->
+          <div class="glassmorphic-card p-6 mt-4 max-w-md opacity-0 translate-y-4 transition-all duration-700 delay-200 era-show-active active-glow">
+            <h3 id="present-card-title" class="font-display-present text-white text-xl font-bold mb-2">The Information Nexus</h3>
+            <p id="present-card-desc" class="font-display-present text-sm text-white/80 leading-relaxed mb-4">
+              Glass facades reflect a digital world. Connectivity is atmospheric, woven into the very fabric of the urban sprawl through fiber and wireless frequency.
+            </p>
+            <button id="present-card-btn" class="px-4 py-2 bg-white/10 hover:bg-white text-white hover:text-black font-label-tech text-[11px] rounded transition duration-300" onclick="openModal('archive-modal')">
+              READ JOURNAL
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMN 2200: THE FUTURE -->
+      <section id="era-2200" class="era-col inactive flex-1 rounded-lg">
+        <!-- Era BG Image -->
+        <div id="future-img-layer" class="era-bg-img filter-future" style="background-image: url('assets/era_2200.jpg');"></div>
+        <div class="era-overlay-gradient"></div>
+
+        <div class="era-content">
+          <!-- Coordinates & Era Header -->
+          <div class="mb-auto opacity-0 transition-opacity duration-700 delay-300 era-show-active">
+            <p id="future-readout-coords" class="font-label-tech text-[10px] text-[#00f0ff]/60">SYSTEM READOUT: 51.5007° N, 0.1246° W</p>
+            <p id="future-readout-tag" class="font-label-tech text-[10px] text-[#00f0ff]/60">EPOCH_03_BIO_INTEGRATION</p>
+          </div>
+
+          <!-- Big Number -->
+          <h2 class="font-display-future text-[#00f0ff] leading-none pointer-events-none select-none">2200</h2>
+
+          <!-- Narrative Card -->
+          <div class="glassmorphic-card p-6 mt-4 max-w-md opacity-0 translate-y-4 transition-all duration-700 delay-200 era-show-active active-glow">
+            <h3 id="future-card-title" class="font-display-future text-[#00f0ff] text-lg mb-2">The Bio-Synthetic Era</h3>
+            <p id="future-card-desc" class="font-display-future text-xs text-[#dbfcff]/80 leading-relaxed mb-4">
+              <span class="bg-cyan-950/40 text-cyan-400 border border-cyan-500/20 px-1 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider mr-1">BIO-NET</span> Bio-integrated structures achieve 100% thermal neutrality. Vertical gardens purify atmospheric carbon at 300% historical efficiency.
+            </p>
+            <button id="future-card-btn" class="px-4 py-2 border border-[#00f0ff]/30 text-[#00f0ff] hover:bg-[#00f0ff]/10 hover:border-[#00f0ff] font-label-tech text-[11px] rounded transition duration-300" onclick="openModal('contact-modal')">
+              QUERY DATABASE
+            </button>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+    <!-- TIMELINE SLIDER & FOOTER SECTION -->
+    <div class="w-full max-w-[1440px] mx-auto px-6 mb-4 flex flex-col gap-4">
+      
+      <!-- Horizontal Timeline Slider -->
+      <div class="w-full flex items-center justify-between glassmorphic px-8 py-3.5 border border-white/5 relative">
+        <span class="font-label-tech text-[10px] text-white/30">1800</span>
+        
+        <!-- Timeline Track Container -->
+        <div class="flex-1 mx-6 relative h-4 flex items-center">
+          <!-- Background Track -->
+          <div class="w-full h-1 timeline-slider-track rounded-full"></div>
+          <!-- Colored Progress Line -->
+          <div id="timeline-progress" class="timeline-progress-bar rounded-full w-1/2 bg-white"></div>
+          
+          <!-- Epoch Nodes -->
+          <div class="absolute inset-0 w-full flex justify-between items-center pointer-events-none">
+            <!-- 1890 Node -->
+            <div class="timeline-node absolute left-[15%] w-3 h-3 rounded-full bg-white/20 border border-white/40 pointer-events-auto -translate-x-1/2 -translate-y-0" onclick="window.chronicle.shiftEra('1890')" title="Past Era (1890)">
+              <span class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-tech text-[9px] text-white/40 hover:text-white transition">1890</span>
+            </div>
+            <!-- 2024 Node -->
+            <div class="timeline-node absolute left-[50%] w-3 h-3 rounded-full bg-white/20 border border-white/40 pointer-events-auto -translate-x-1/2 -translate-y-0" onclick="window.chronicle.shiftEra('2024')" title="Present Era (2024)">
+              <span class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-tech text-[9px] text-white/40 hover:text-white transition">2024</span>
+            </div>
+            <!-- 2200 Node -->
+            <div class="timeline-node absolute left-[85%] w-3 h-3 rounded-full bg-white/20 border border-white/40 pointer-events-auto -translate-x-1/2 -translate-y-0" onclick="window.chronicle.shiftEra('2200')" title="Future Era (2200)">
+              <span class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-tech text-[9px] text-white/40 hover:text-white transition">2200</span>
+            </div>
+          </div>
+          
+          <!-- Glowing Handle -->
+          <div id="timeline-handle" class="timeline-handle absolute left-[50%] w-4 h-4 rounded-full bg-white shadow-[0_0_10px_#fff] -translate-x-1/2 pointer-events-none z-10"></div>
+        </div>
+
+        <span class="font-label-tech text-[10px] text-white/30">2300</span>
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="w-full flex flex-col md:flex-row items-center justify-between py-2 text-white/40 font-label-tech text-[10px] tracking-wider border-t border-white/5">
+        <div class="mb-2 md:mb-0">
+          <span>&copy; 2026 CHRONICLE TEMPORAL RESEARCH. ALL ERAS RESERVED.</span>
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="#ethics" class="hover:text-white transition" onclick="openModal('ethics-modal')">Ethics Protocol</a>
+          <a href="#law" class="hover:text-white transition" onclick="openModal('law-modal')">Temporal Law</a>
+          <a href="#contact" class="hover:text-white transition" onclick="openModal('contact-modal')">Contact Archivist</a>
+        </div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <!-- ==================== MODALS / DIALOGS ==================== -->
+
+  <!-- 1. ARCHIVE DIALOG -->
+  <dialog id="archive-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glassmorphic border border-white/10 p-8 w-11/12 max-w-2xl text-white outline-none">
+    <div class="flex flex-col h-full max-h-[80vh]">
+      <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+        <h3 class="font-display-past text-2xl text-white">Chronological Index Ledger</h3>
+        <button class="font-label-tech text-white/40 hover:text-white transition" onclick="closeModal('archive-modal')">[CLOSE]</button>
+      </div>
+      
+      <!-- Scrollable Ledger list -->
+      <div class="flex-1 overflow-y-auto space-y-6 pr-2">
+        <p class="font-label-tech text-xs text-white/50">ARCHIVE SECURE DATABASE // LOG_TEMPORAL_INDEX</p>
+        
+        <div class="border-l border-white/10 pl-6 relative space-y-8">
+          <div class="relative">
+            <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-white/40"></span>
+            <h4 class="font-display-past text-lg text-white">1500 &mdash; The Renaissance Blueprint</h4>
+            <p class="font-display-past text-sm text-white/60 mt-1">Leonardo's mechanical schematics emerge. Early clockwork automation outlines the beginning of systemic time logging.</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-past shadow-[0_0_8px_#d4af37]"></span>
+            <h4 class="font-display-past text-lg text-past">1890 &mdash; The Gilded Threshold (Current Active Zone 01)</h4>
+            <p class="font-display-past text-sm text-white/60 mt-1">Industrialization peaks. London's steam networks create heavy atmospheric carbon densities, marking the baseline epoch for mechanical archives.</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-white/40"></span>
+            <h4 class="font-display-present text-md font-bold text-white">1969 &mdash; The Moonbound Horizon</h4>
+            <p class="font-display-present text-sm text-white/60 mt-1">Analog computing guides human exploration beyond orbit. Early digital transceivers log space-time coordinate variance.</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#fff]"></span>
+            <h4 class="font-display-present text-md font-bold text-white">2024 &mdash; The Information Nexus (Current Active Zone 02)</h4>
+            <p class="font-display-present text-sm text-white/60 mt-1">Fiber-optic sprawls and satellite constellations form a planetary communications web, connecting all historical records under digital frameworks.</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-white/40"></span>
+            <h4 class="font-display-future text-sm text-[#00f0ff]/50">2100 &mdash; The Quantum Transition</h4>
+            <p class="font-display-future text-xs text-white/60 mt-1">Quantum processors compute reality overlays. Direct timeline navigation theories are validated through microscopic tachyon collisions.</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-[#00f0ff] shadow-[0_0_8px_#00f0ff]"></span>
+            <h4 class="font-display-future text-sm text-[#00f0ff]">2200 &mdash; The Bio-Synthetic Era (Current Active Zone 03)</h4>
+            <p class="font-display-future text-xs text-white/60 mt-1">Dynamic biological circuits integrate into city structures. The environment achieves negative net carbon through engineered chloroplast architecture.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 2. ETHICS DIALOG -->
+  <dialog id="ethics-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glassmorphic border border-white/10 p-8 w-11/12 max-w-xl text-white outline-none">
+    <div class="flex flex-col">
+      <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+        <h3 class="font-display-past text-2xl text-white">Temporal Ethics Protocol</h3>
+        <button class="font-label-tech text-white/40 hover:text-white transition" onclick="closeModal('ethics-modal')">[CLOSE]</button>
+      </div>
+      <div class="space-y-4 font-display-past text-base text-white/70">
+        <p class="font-label-tech text-xs text-[#00f0ff] mb-2">SECURE DOCUMENT // CLEARANCE LEVEL 04</p>
+        <p><strong class="text-white">I. Non-Interference Directive:</strong> Investigators shall remain purely observational. No physical structures, ideas, or machinery may be introduced into target eras.</p>
+        <p><strong class="text-white">II. Causal Loop Prevention:</strong> Under no circumstances should timeline operations be initiated that self-reference or impact the genesis of time navigation itself.</p>
+        <p><strong class="text-white">III. Data-Corrosion Safeguard:</strong> All telemetry logs harvested must be encrypted under 2048-bit quantum certificates to prevent timeline leakage.</p>
+        <p><strong class="text-white">IV. Respect for Historical Sovereignty:</strong> Every era must be treated as a unique, independent reality, not a sub-branch to optimize.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 3. LAW DIALOG -->
+  <dialog id="law-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glassmorphic border border-white/10 p-8 w-11/12 max-w-xl text-white outline-none">
+    <div class="flex flex-col">
+      <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+        <h3 class="font-label-tech text-sm tracking-widest text-[#00f0ff]">TEMPORAL LAW CODEX // TREATY-44</h3>
+        <button class="font-label-tech text-white/40 hover:text-white transition" onclick="closeModal('law-modal')">[CLOSE]</button>
+      </div>
+      <div class="space-y-4 font-mono text-[11px] text-emerald-400/80 leading-relaxed">
+        <p>[SECTION 0x4B] UNLAWFUL CHRONOLOGICAL CONTAMINATION:</p>
+        <p class="text-white/80 pl-4">Any agency found introducing modern digital readouts or futuristic tech components to dates preceding 2012 shall face timeline isolation sentences under Temporal Council regulations.</p>
+        
+        <p>[SECTION 0x92] CAUSALITY STABILITY ASSURANCE:</p>
+        <p class="text-white/80 pl-4">In the event of a minor paradox, timeline stabilizers must immediately isolate the spatial coordinates affected and perform a localized state rollback.</p>
+        
+        <p>[SECTION 0xCC] THE ARCHIVIST INDEMNITY ACT:</p>
+        <p class="text-white/80 pl-4">The Chief Archivist holds unilateral power to terminate timeline observations if local stability drops below 84% parameters.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 4. CONTACT DIALOG -->
+  <dialog id="contact-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glassmorphic border border-white/10 p-8 w-11/12 max-w-md text-white outline-none">
+    <div class="flex flex-col" id="contact-form-container">
+      <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+        <h3 class="font-label-tech text-xs tracking-widest text-white">TRANSMIT TO CHIEF ARCHIVIST</h3>
+        <button class="font-label-tech text-white/40 hover:text-white transition" onclick="closeModal('contact-modal')">[CLOSE]</button>
+      </div>
+      
+      <form class="space-y-5" onsubmit="submitMessage(event)">
+        <p class="font-label-tech text-[10px] text-white/40">SECURE QUANTUM CHANNEL PORT 8909</p>
+        
+        <div class="relative">
+          <input type="text" id="contact-sender" required placeholder=" " class="block w-full px-0 py-2 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-sm font-mono text-white placeholder-transparent transition duration-300 outline-none"/>
+          <label for="contact-sender" class="absolute left-0 top-2 origin-[0%] -translate-y-6 scale-75 text-xs text-white/40 transition-all duration-300 font-mono pointer-events-none">SENDER_SIGNATURE</label>
+        </div>
+
+        <div class="relative">
+          <input type="text" id="contact-epoch" required placeholder=" " class="block w-full px-0 py-2 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-sm font-mono text-white placeholder-transparent transition duration-300 outline-none"/>
+          <label for="contact-epoch" class="absolute left-0 top-2 origin-[0%] -translate-y-6 scale-75 text-xs text-white/40 transition-all duration-300 font-mono pointer-events-none">TARGET_EPOCH (e.g. 1890, 2200)</label>
+        </div>
+
+        <div class="relative">
+          <textarea id="contact-msg" required placeholder=" " rows="3" class="block w-full px-0 py-2 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-sm font-mono text-white placeholder-transparent transition duration-300 outline-none resize-none"></textarea>
+          <label for="contact-msg" class="absolute left-0 top-2 origin-[0%] -translate-y-6 scale-75 text-xs text-white/40 transition-all duration-300 font-mono pointer-events-none">TRANSMISSION_PAYLOAD</label>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 bg-[#00f0ff]/10 hover:bg-[#00f0ff]/20 text-[#00f0ff] border border-[#00f0ff]/30 hover:border-[#00f0ff] rounded font-label-tech text-xs tracking-wider transition duration-300">
+          INITIATE BEAM TRANSMISSION
+        </button>
+      </form>
+    </div>
+    <!-- Success Message Container -->
+    <div class="hidden flex-col items-center justify-center py-8 space-y-4" id="contact-success-container">
+      <div class="w-12 h-12 rounded-full border border-emerald-400 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <p class="font-label-tech text-xs text-emerald-400">TRANSMISSION BEAMED SUCCESSFULLY</p>
+      <p class="font-mono text-[10px] text-white/50 text-center">Payload converted to sub-space packets. Quantum confirmation received from Node-9.</p>
+      <button class="px-4 py-2 border border-white/10 hover:border-white/20 text-white/60 hover:text-white rounded font-label-tech text-[10px] transition" onclick="resetContactForm()">
+        BEAM NEW MESSAGE
+      </button>
+    </div>
+  </dialog>
+
+  <!-- 5. JUMP TIME DIALOG -->
+  <dialog id="jumptime-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glassmorphic border border-[#00f0ff]/30 p-8 w-11/12 max-w-sm text-white outline-none shadow-[0_0_40px_rgba(0,240,255,0.15)]">
+    <div class="flex flex-col">
+      <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+        <h3 class="font-label-tech text-xs tracking-widest text-[#00f0ff]">TEMPORAL SHIFT PORTAL</h3>
+        <button class="font-label-tech text-white/40 hover:text-white transition" onclick="closeModal('jumptime-modal')">[CLOSE]</button>
+      </div>
+      
+      <div class="space-y-4">
+        <p class="font-mono text-[10px] text-white/60">Input any target calendar year. The navigation engine will lock onto the nearest temporal anchor.</p>
+        
+        <div class="relative border-b border-white/20 py-2 flex items-center">
+          <span class="font-mono text-[#00f0ff] text-2xl mr-2">Y_</span>
+          <input type="number" id="jump-year-input" min="1000" max="3000" required placeholder="2024" class="block w-full bg-transparent border-none text-white text-3xl font-mono focus:ring-0 outline-none p-0"/>
+        </div>
+
+        <div class="flex justify-between font-mono text-[9px] text-white/30 pt-1">
+          <span>MIN YEAR: 1000</span>
+          <span>MAX YEAR: 3000</span>
+        </div>
+
+        <button onclick="triggerJumpTime()" class="w-full py-3 bg-[#00f0ff] hover:bg-[#00dbe9] text-black font-label-tech text-xs font-bold tracking-widest rounded shadow-[0_0_15px_rgba(0,240,255,0.3)] transition duration-300">
+          EXECUTE TEMPORAL SHIFT
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 6. GEOGRAPHIC DRAWER OVERLAY -->
+  <div id="geographic-drawer" class="portal-drawer">
+    <div class="h-full w-full max-w-[1440px] mx-auto p-4 md:p-8 flex flex-col justify-between overflow-hidden">
+      <!-- Header inside drawer -->
+      <div class="flex justify-between items-center border-b border-white/10 pb-4">
+        <div>
+          <h2 class="font-display-past text-2xl md:text-3xl text-white">Geographic Coordinate Alignment</h2>
+          <p class="font-label-tech text-[10px] md:text-xs text-[#00f0ff] mt-1">Select location or calibrate custom coordinates</p>
+        </div>
+        <button class="font-label-tech text-white/50 hover:text-white transition border border-white/10 hover:border-white/30 px-3.5 py-1.5 rounded text-[10px] md:text-xs" onclick="toggleGeographicPortal(false)">
+          [EXIT NAV CONSOLE]
+        </button>
+      </div>
+
+      <!-- Main Body of Drawer -->
+      <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 my-4 md:my-6 overflow-hidden">
+        <!-- Left Side: Searchable list & Add Custom Location -->
+        <div class="lg:col-span-4 flex flex-col h-full overflow-hidden bg-[#090b0e]/50 p-4 border border-white/5 rounded-lg">
+          <!-- Search bar -->
+          <div class="mb-3">
+            <input type="text" id="location-search" oninput="filterLocations()" placeholder="SEARCH FAMOUS PLACES..." class="w-full bg-white/5 border border-white/10 focus:border-[#00f0ff] focus:ring-0 text-xs font-mono text-white rounded p-2.5 placeholder-white/30 outline-none transition"/>
+          </div>
+
+          <!-- Scrollable List -->
+          <div id="location-list" class="flex-1 overflow-y-auto space-y-1.5 pr-1 border-b border-white/5 pb-3">
+            <!-- Javascript will populate this list -->
+          </div>
+
+          <!-- Add Custom Coordinate Button & Form (Collapsible) -->
+          <div class="mt-3">
+            <button id="toggle-add-btn" class="w-full py-2 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white rounded border border-white/10 text-[10px] font-mono tracking-wider transition uppercase" onclick="toggleCustomForm()">
+              + REGISTER CUSTOM COORDINATES
+            </button>
+            
+            <form id="custom-coords-form" class="hidden mt-3 space-y-3 bg-white/5 p-3.5 border border-white/10 rounded overflow-y-auto max-h-[220px]" onsubmit="registerCustomLocation(event)">
+              <div class="relative">
+                <input type="text" id="custom-name" required placeholder=" " class="block w-full px-0 py-1 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-xs font-mono text-white placeholder-transparent transition duration-300 outline-none"/>
+                <label for="custom-name" class="absolute left-0 top-1 origin-[0%] -translate-y-5 scale-75 text-[9px] text-white/40 transition-all duration-300 font-mono pointer-events-none">PLACE_NAME</label>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div class="relative">
+                  <input type="number" step="0.0001" min="-90" max="90" id="custom-lat" required placeholder=" " class="block w-full px-0 py-1 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-xs font-mono text-white placeholder-transparent transition duration-300 outline-none"/>
+                  <label for="custom-lat" class="absolute left-0 top-1 origin-[0%] -translate-y-5 scale-75 text-[9px] text-white/40 transition-all duration-300 font-mono pointer-events-none">LATITUDE</label>
+                </div>
+                <div class="relative">
+                  <input type="number" step="0.0001" min="-180" max="180" id="custom-lng" required placeholder=" " class="block w-full px-0 py-1 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-xs font-mono text-white placeholder-transparent transition duration-300 outline-none"/>
+                  <label for="custom-lng" class="absolute left-0 top-1 origin-[0%] -translate-y-5 scale-75 text-[9px] text-white/40 transition-all duration-300 font-mono pointer-events-none">LONGITUDE</label>
+                </div>
+              </div>
+              <div class="relative">
+                <input type="text" id="custom-past" required placeholder=" " class="block w-full px-0 py-1 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-xs font-mono text-white placeholder-transparent transition duration-300 outline-none"/>
+                <label for="custom-past" class="absolute left-0 top-1 origin-[0%] -translate-y-5 scale-75 text-[9px] text-white/40 transition-all duration-300 font-mono pointer-events-none">PAST_NARRATIVE (1890)</label>
+              </div>
+              <div class="relative">
+                <input type="text" id="custom-present" required placeholder=" " class="block w-full px-0 py-1 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-xs font-mono text-white placeholder-transparent transition duration-300 outline-none"/>
+                <label for="custom-present" class="absolute left-0 top-1 origin-[0%] -translate-y-5 scale-75 text-[9px] text-white/40 transition-all duration-300 font-mono pointer-events-none">PRESENT_NARRATIVE (2024)</label>
+              </div>
+              <div class="relative">
+                <input type="text" id="custom-future" required placeholder=" " class="block w-full px-0 py-1 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-xs font-mono text-white placeholder-transparent transition duration-300 outline-none"/>
+                <label for="custom-future" class="absolute left-0 top-1 origin-[0%] -translate-y-5 scale-75 text-[9px] text-white/40 transition-all duration-300 font-mono pointer-events-none">FUTURE_NARRATIVE (2200)</label>
+              </div>
+              <div class="relative">
+                <input type="url" id="custom-image" placeholder=" " class="block w-full px-0 py-1 bg-transparent border-0 border-b border-white/20 focus:border-[#00f0ff] focus:ring-0 text-xs font-mono text-white placeholder-transparent transition duration-300 outline-none"/>
+                <label for="custom-image" class="absolute left-0 top-1 origin-[0%] -translate-y-5 scale-75 text-[9px] text-white/40 transition-all duration-300 font-mono pointer-events-none">LANDMARK_IMAGE_URL (OPTIONAL)</label>
+              </div>
+              <button type="submit" class="w-full py-2 bg-[#00f0ff]/10 hover:bg-[#00f0ff]/20 text-[#00f0ff] border border-[#00f0ff]/30 hover:border-[#00f0ff] rounded font-label-tech text-[9px] tracking-wider transition uppercase">
+                REGISTER COORDINATES
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right Side: SVG map and preview details -->
+        <div class="lg:col-span-8 flex flex-col h-full overflow-hidden justify-between">
+          <!-- SVG World Map Container -->
+          <div class="flex-1 glassmorphic border border-white/5 relative rounded p-2 overflow-hidden flex items-center justify-center bg-[#050608]/40">
+            <!-- SVG World Map -->
+            <svg id="world-map-svg" viewBox="0 0 1008 640" class="w-full h-full max-h-[460px] opacity-75">
+              <!-- Grid lines -->
+              <g stroke="rgba(255,255,255,0.03)" stroke-width="0.5" fill="none">
+                <line x1="0" y1="80" x2="1008" y2="80" />
+                <line x1="0" y1="160" x2="1008" y2="160" />
+                <line x1="0" y1="240" x2="1008" y2="240" />
+                <line x1="0" y1="320" x2="1008" y2="320" />
+                <line x1="0" y1="400" x2="1008" y2="400" />
+                <line x1="0" y1="480" x2="1008" y2="480" />
+                <line x1="0" y1="560" x2="1008" y2="560" />
+                
+                <line x1="126" y1="0" x2="126" y2="640" />
+                <line x1="252" y1="0" x2="252" y2="640" />
+                <line x1="378" y1="0" x2="378" y2="640" />
+                <line x1="504" y1="0" x2="504" y2="640" />
+                <line x1="630" y1="0" x2="630" y2="640" />
+                <line x1="756" y1="0" x2="756" y2="640" />
+                <line x1="882" y1="0" x2="882" y2="640" />
+              </g>
+
+              <!-- Continents (Vector sci-fi lines representation) -->
+              <g fill="#14171d" stroke="rgba(255,255,255,0.08)" stroke-width="1.2">
+                <!-- North America -->
+                <polygon points="120,80 180,60 260,80 340,60 380,80 360,140 320,180 280,240 250,280 230,300 230,280 250,220 220,200 200,160 140,160 120,120 100,100" />
+                <!-- Greenland -->
+                <polygon points="340,40 380,20 440,30 420,70 380,80" />
+                <!-- South America -->
+                <polygon points="250,300 280,320 320,380 360,420 340,480 320,540 290,580 280,580 280,500 260,420 230,360 230,320" />
+                <!-- Europe -->
+                <polygon points="460,120 520,100 580,100 640,120 620,180 560,200 500,200 480,160" />
+                <!-- Africa -->
+                <polygon points="480,200 540,200 580,220 620,260 630,320 610,380 580,440 550,500 540,500 530,440 500,360 460,300 440,240 450,210" />
+                <!-- Asia -->
+                <polygon points="640,120 720,80 840,80 920,120 940,180 920,240 880,320 840,360 800,340 760,300 700,280 660,240 620,180" />
+                <!-- Australia -->
+                <polygon points="780,420 840,400 900,420 927,440 900,490 840,510 780,490 760,460" />
+                <!-- Antarctica -->
+                <polygon points="100,600 908,600 850,620 150,620" />
+              </g>
+
+              <!-- Markers Group -->
+              <g id="map-markers-group"></g>
+            </svg>
+          </div>
+
+          <!-- Preview Panel -->
+          <div id="location-preview" class="glassmorphic p-4 border border-white/5 mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex-1">
+              <h4 id="preview-title" class="font-display-past text-xl text-white">Eiffel Tower</h4>
+              <p id="preview-coords" class="font-label-tech text-[10px] text-[#00f0ff] mt-0.5">LAT 48.8584 / LNG 2.2945</p>
+              <p id="preview-fact" class="font-mono text-xs text-white/50 mt-2 line-clamp-2">Fact: The Eiffel Tower was built for the 1889 World's Fair...</p>
+            </div>
+            <button id="portal-jump-trigger" class="w-full sm:w-auto px-6 py-3.5 bg-[#00f0ff] hover:bg-[#00dbe9] text-black font-label-tech text-xs font-bold tracking-widest rounded shadow-[0_0_15px_rgba(0,240,255,0.25)] transition duration-300 uppercase shrink-0" onclick="initiatePortalJump()">
+              INITIATE PORTAL JUMP
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer inside drawer -->
+      <div class="flex justify-between items-center text-white/30 font-mono text-[9px] border-t border-white/5 pt-3">
+        <span>QUANTUM PORTAL SYS ONLINE</span>
+        <span>VER_1.92-GEONAV</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. PORTAL TIME WORMHOLE LOADER -->
+  <div id="portal-loader">
+    <canvas id="portal-canvas" class="absolute inset-0 w-full h-full"></canvas>
+    <div class="relative z-10 text-center space-y-5">
+      <!-- Rotating Time Portal Ring -->
+      <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full border-2 border-[#00f0ff]/20 animate-ping"></div>
+        <div class="absolute inset-2 rounded-full border border-[#00f0ff]/40 border-t-transparent animate-spin" style="animation-duration: 0.8s;"></div>
+        <div class="font-label-tech text-[10px] text-[#00f0ff] tracking-wider font-bold">WARPING</div>
+      </div>
+      
+      <div>
+        <div class="font-label-tech text-lg text-white tracking-[0.25em]" id="portal-status-text">ESTABLISHING QUANTUM LINK</div>
+        <div class="font-mono text-xs text-[#00f0ff]/70 mt-1" id="portal-telemetry font-bold">CALIBRATING TACHYON FLUX: 0%</div>
+      </div>
+      
+      <div class="w-64 h-1 bg-white/10 rounded-full overflow-hidden mx-auto">
+        <div id="portal-progress" class="h-full bg-[#00f0ff] w-0 transition-all duration-300"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  
+  <!-- Three.js Core Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+    // Database of famous landmarks around the world
+    const defaultPlaces = [
+      {
+        id: "big-ben",
+        name: "Big Ben & Palace of Westminster",
+        city: "London",
+        lat: 51.5007,
+        lng: -0.1246,
+        fact: "The landmark clock tower stands as a symbol of the UK, completing its current restoration and structural stabilization in 2022.",
+        images: {
+          past: "assets/big_ben_past.jpg",
+          present: "assets/big_ben_present.jpg",
+          future: "assets/big_ben_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "The Gilded Threshold",
+            readout: "SYSTEM READOUT: 51.5007° N, 0.1246° W // INDUSTRIAL CORE",
+            desc: "Coal smoke mingles with the rhythm of horse hooves on cobblestone. The city breathes through steam and iron, a masterpiece of manual industry and formal elegance.",
+            cta: "Explore Ledger &rarr;"
+          },
+          "2024": {
+            title: "The Information Nexus",
+            readout: "SYSTEM READOUT: 51.5007° N, 0.1246° W // URBAN AREA",
+            desc: "Glass facades reflect a digital world. Connectivity is atmospheric, woven into the very fabric of the urban sprawl through fiber and wireless frequency.",
+            cta: "READ JOURNAL"
+          },
+          "2200": {
+            title: "The Bio-Synthetic Era",
+            readout: "SYSTEM READOUT: 51.5007° N, 0.1246° W // GREEN DOME",
+            desc: "Bio-integrated structures achieve 100% thermal neutrality. Vertical gardens purify atmospheric carbon at 300% historical efficiency.",
+            cta: "QUERY DATABASE"
+          }
+        }
+      },
+      {
+        id: "eiffel-tower",
+        name: "Eiffel Tower",
+        city: "Paris",
+        lat: 48.8584,
+        lng: 2.2945,
+        fact: "Inaugurated for the 1889 World's Fair, the tower showcases the summit of 19th-century mechanical rivet engineering.",
+        images: {
+          past: "assets/eiffel_tower_past.jpg",
+          present: "assets/eiffel_tower_present.jpg",
+          future: "assets/eiffel_tower_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "The Exposition Universelle",
+            readout: "SYSTEM READOUT: 48.8584° N, 2.2945° E // PARIS FAIR 1889",
+            desc: "Iron beams rise in mathematical symmetry above the Seine. The newly built Eiffel Tower represents the pinnacle of French architectural pride and steam-boiler power.",
+            cta: "Inspect Blueprints"
+          },
+          "2024": {
+            title: "The City of Light",
+            readout: "SYSTEM READOUT: 48.8584° N, 2.2945° E // METROPOLIS",
+            desc: "The structural lattice glows under modern white LED floodlights. Visitors from across the planet converge at its base in the modern heart of Europe.",
+            cta: "Access Guide"
+          },
+          "2200": {
+            title: "The Bio-Carbon Spire",
+            readout: "SYSTEM READOUT: 48.8584° N, 2.2945° E // ECO-SECTOR",
+            desc: "Bioluminescent organic vines scale the carbon-nanotube frame. Solar-harvesting paint turns the structure into a power core, charging local magnetic aero-taxis.",
+            cta: "Connect Power Grid"
+          }
+        }
+      },
+      {
+        id: "colosseum",
+        name: "Colosseum",
+        city: "Rome",
+        lat: 41.8902,
+        lng: 12.4922,
+        fact: "Completed in 80 AD, the Flavian Amphitheatre hosted gladiatorial spectacles for over four centuries.",
+        images: {
+          past: "assets/colosseum_past.jpg",
+          present: "assets/colosseum_present.jpg",
+          future: "assets/colosseum_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "Imperium Romanum",
+            readout: "SYSTEM READOUT: 41.8902° N, 12.4922° E // ROMAN FLAVIAN",
+            desc: "The Colosseum stands completely intact in the golden sun. Red banners fly from travertine arches as crowds cheer for historic naval simulations filling the sand arena.",
+            cta: "Examine Census"
+          },
+          "2024": {
+            title: "The Travertine Ruins",
+            readout: "SYSTEM READOUT: 41.8902° N, 12.4922° E // HISTORIC ZONE",
+            desc: "Weathered stones tell stories of ancient empires. Modern tourists crowd the exposed brick tunnels and subterranean chambers in a preserved cultural park.",
+            cta: "View Archive Ledger"
+          },
+          "2200": {
+            title: "The Holographic Arena",
+            readout: "SYSTEM READOUT: 41.8902° N, 12.4922° E // HOLO-SIM",
+            desc: "Floating holographic light structures reconstruct the Colosseum's missing walls. Anti-gravity stabilization fields secure the ancient ruins as virtual simulated battles play.",
+            cta: "Boot Simulation"
+          }
+        }
+      },
+      {
+        id: "statue-of-liberty",
+        name: "Statue of Liberty",
+        city: "New York",
+        lat: 40.6892,
+        lng: -74.0445,
+        fact: "A gift from France to the United States, Liberty Enlightening the World was dedicated in October 1886.",
+        images: {
+          past: "assets/statue_of_liberty_past.jpg",
+          present: "assets/statue_of_liberty_present.png",
+          future: "assets/statue_of_liberty_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "The Copper Sentinel",
+            readout: "SYSTEM READOUT: 40.6892° N, 74.0445° W // NEW YORK PORT",
+            desc: "Glowing in its original reddish-brown copper sheen, the statue stands proudly. Steamships pass through NY Harbor as coal dust settles on the shore.",
+            cta: "Read Logbook"
+          },
+          "2024": {
+            title: "The Verdigris Beacon",
+            readout: "SYSTEM READOUT: 40.6892° N, 74.0445° W // HARBOR ZONE",
+            desc: "The statue features its iconic green verdigris patina. Ferries circle the island, silhouetted against the colossal steel skyscrapers of Manhattan.",
+            cta: "Access Logs"
+          },
+          "2200": {
+            title: "The Quantum Torch",
+            readout: "SYSTEM READOUT: 40.6892° N, 74.0445° W // NYC OCEAN WALL",
+            desc: "A massive cybernetic sea wall protects Liberty Island from rising sea levels. A concentrated quantum beacon shoots upward from the torch into low-earth orbits.",
+            cta: "Scan Satellite Beam"
+          }
+        }
+      },
+      {
+        id: "pyramids-of-giza",
+        name: "Pyramids of Giza",
+        city: "Cairo",
+        lat: 29.9792,
+        lng: 31.1342,
+        fact: "The Great Pyramid is the oldest of the Seven Wonders of the Ancient World, standing since roughly 2560 BC.",
+        images: {
+          past: "assets/pyramids_past.jpg",
+          present: "assets/pyramids_present.png",
+          future: "assets/pyramids_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "The White Limestone Splendor",
+            readout: "SYSTEM READOUT: 29.9792° N, 31.1342° E // ANCIENT EGYPT",
+            desc: "Gleaming white limestone casing blocks fit tightly together. The Great Pyramid’s peak is capped in solid gold, catching the brilliant Mediterranean sun.",
+            cta: "Decipher Papyrus"
+          },
+          "2024": {
+            title: "The Weathered Giants",
+            readout: "SYSTEM READOUT: 29.9792° N, 31.1342° E // DESERT RESERVE",
+            desc: "Eroded sandstone steps stand strong in the desert. Camels and tourists traverse the dunes as modern Cairo's outskirts approach the reserve boundaries.",
+            cta: "Inspect Ruins Map"
+          },
+          "2200": {
+            title: "The Solar Harmonizer",
+            readout: "SYSTEM READOUT: 29.9792° N, 31.1342° E // ENERGY FIELD",
+            desc: "Orbital solar power stations direct high-frequency light beams onto the pyramids' apexes, storing energy in subterranean batteries for regional distribution.",
+            cta: "Read Energy Telemetry"
+          }
+        }
+      },
+      {
+        id: "sydney-opera-house",
+        name: "Sydney Opera House",
+        city: "Sydney",
+        lat: -33.8568,
+        lng: 151.2153,
+        fact: "Designed by Jørn Utzon, this architectural masterpiece was opened in October 1973.",
+        images: {
+          past: "assets/sydney_opera_house_past.jpg",
+          present: "assets/sydney_opera_house_present.jpg",
+          future: "assets/sydney_opera_house_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "Bennelong Point Wharf",
+            readout: "SYSTEM READOUT: 33.8568° S, 151.2153° E // COLONIAL HARBOR",
+            desc: "A rustic colonial harbor sits long before the sails rose. Wooden sailing ships and brick warehouses occupy the shores of a quiet Australian cove.",
+            cta: "Examine Port Records"
+          },
+          "2024": {
+            title: "The Architectural Shells",
+            readout: "SYSTEM READOUT: 33.8568° S, 151.2153° E // SYDNEY PORT",
+            desc: "The white concrete sails dominate Sydney Harbour. Ferries cruise past, their wakes sparkling under the southern hemisphere sun.",
+            cta: "Access Program Guide"
+          },
+          "2200": {
+            title: "The Subaquatic Amphitheatre",
+            readout: "SYSTEM READOUT: 33.8568° S, 151.2153° E // CORAL REEF NET",
+            desc: "Tidal kinetic turbines hum beneath the sails. The structures are reinforced with marine-friendly bio-concrete housing engineered coral visualizers.",
+            cta: "Query Hydro-Sensors"
+          }
+        }
+      },
+      {
+        id: "taj-mahal",
+        name: "Taj Mahal",
+        city: "Agra",
+        lat: 27.1751,
+        lng: 78.0421,
+        fact: "Commissioned in 1632 by Shah Jahan to house the tomb of his favorite wife, Mumtaz Mahal.",
+        images: {
+          past: "assets/taj_mahal_past.jpg",
+          present: "assets/taj_mahal_present.jpg",
+          future: "assets/taj_mahal_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "The Royal Gardens",
+            readout: "SYSTEM READOUT: 27.1751° N, 78.0421° E // MUGHAL COURT",
+            desc: "Pristine white marble surfaces remain untarnished. Royal guards patrol the gardens while lotus flowers drift in reflecting pools under warm light.",
+            cta: "View Court Chronicle"
+          },
+          "2024": {
+            title: "The Jewel of India",
+            readout: "SYSTEM READOUT: 27.1751° N, 78.0421° E // HISTORIC BIOME",
+            desc: "A globally recognized monument of love. Tourists stroll along the central waterway while clean-air policies protect the marble from local industrial smog.",
+            cta: "Read Historical Ledger"
+          },
+          "2200": {
+            title: "The Molecular Sanctuary",
+            readout: "SYSTEM READOUT: 27.1751° N, 78.0421° E // MOLECULAR SHIELD",
+            desc: "An invisible energy envelope protects the marble from atmospheric corrosion. Floating sound-frequency gardens clean the local ecosystem.",
+            cta: "Check Shield Status"
+          }
+        }
+      },
+      {
+        id: "great-wall",
+        name: "Great Wall of China",
+        city: "Beijing",
+        lat: 40.4319,
+        lng: 116.5704,
+        fact: "Constructed across historic northern borders to protect Chinese empires, extending over 21,000 kilometers.",
+        images: {
+          past: "assets/great_wall_past.jpg",
+          present: "assets/great_wall_present.jpg",
+          future: "assets/great_wall_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "The Ming Garrison",
+            readout: "SYSTEM READOUT: 40.4319° N, 116.5704° E // GARRISON WALL",
+            desc: "Stone towers stand fully manned. Imperial flags wave along the stone path, rising and falling with the massive ridge lines of pristine forests.",
+            cta: "Check Guard Roster"
+          },
+          "2024": {
+            title: "The Dragon's Back",
+            readout: "SYSTEM READOUT: 40.4319° N, 116.5704° E // WORLD HERITAGE",
+            desc: "Weathered watchtowers climb steep mountains. Millions of visitors walk the path where empires once guarded borders.",
+            cta: "Read Travel Chronicles"
+          },
+          "2200": {
+            title: "The Quantum Boundary",
+            readout: "SYSTEM READOUT: 40.4319° N, 116.5704° E // SHIELD GATE",
+            desc: "Quantum laser borders run along the stone path, serving as geological stability networks. Autonomous surveillance drones hover along the ridge lines.",
+            cta: "Access Drone Feed"
+          }
+        }
+      },
+      {
+        id: "burj-khalifa",
+        name: "Burj Khalifa",
+        city: "Dubai",
+        lat: 25.1972,
+        lng: 55.2744,
+        fact: "Reaching a peak of 828 meters, it has held the title of the tallest building in the world since its completion in 2009.",
+        images: {
+          past: "assets/burj_khalifa_past.jpg",
+          present: "assets/burj_khalifa_present.png",
+          future: "assets/burj_khalifa_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "The Desert Creek",
+            readout: "SYSTEM READOUT: 25.1972° N, 55.2744° E // DESERT SHORE",
+            desc: "Wind sweeps across open sand dunes. A simple pearl-diving settlement sits on the edge of the Persian Gulf under a hot sepia sun.",
+            cta: "Read Port Ledger"
+          },
+          "2024": {
+            title: "The Oasis of Steel",
+            readout: "SYSTEM READOUT: 25.1972° N, 55.2744° E // DUBAI CENTER",
+            desc: "The spire pierces the clouds. Fountains pulse at its base as Dubai's ultra-modern glass towers radiate brilliant colored light arrays.",
+            cta: "Check Elevators Status"
+          },
+          "2200": {
+            title: "The Atmospheric Condenser",
+            readout: "SYSTEM READOUT: 25.1972° N, 55.2744° E // HARVEST UNIT",
+            desc: "Massive thermal cooling rings wrap around the tower, harvesting moisture directly from the upper atmosphere. Carbon-absorbing outer panel skins clean the city air.",
+            cta: "Read Condensation Logs"
+          }
+        }
+      },
+      {
+        id: "tokyo-tower",
+        name: "Tokyo Tower",
+        city: "Tokyo",
+        lat: 35.6586,
+        lng: 139.7454,
+        fact: "Standing 332.9 meters tall, the steel structure is inspired by the Eiffel Tower and serves as a major broadcast node.",
+        images: {
+          past: "assets/tokyo_tower_past.jpg",
+          present: "assets/tokyo_tower_present.jpg",
+          future: "assets/tokyo_tower_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "Edo Plains",
+            readout: "SYSTEM READOUT: 35.6586° N, 139.7454° E // EDO SECTOR",
+            desc: "Traditional wooden temples dot the rolling plains. Mt. Fuji looms in the distance over a peaceful agricultural basin prior to modern urban expansion.",
+            cta: "Examine Shogun Scrolls"
+          },
+          "2024": {
+            title: "The Crimson Lattice",
+            readout: "SYSTEM READOUT: 35.6586° N, 139.7454° E // MINATO DISTRICT",
+            desc: "The white and orange steel tower glows against Tokyo's neon skyline. Bullets trains rush below as electronic advertisements paint Minato's streets.",
+            cta: "Read Minato Ledger"
+          },
+          "2200": {
+            title: "The Mega-City Broadcast",
+            readout: "SYSTEM READOUT: 35.6586° N, 139.7454° E // TOKYO MEGA GRID",
+            desc: "Floating holographic arrays envelope the tower's communications hub. The Minato sector is now connected by sky-bridges spanning mega-skyscrapers.",
+            cta: "Scan Radio Frequencies"
+          }
+        }
+      },
+      {
+        id: "tbilisi",
+        name: "Narikala Fortress & Old Tbilisi",
+        city: "Tbilisi",
+        lat: 41.6879,
+        lng: 44.8087,
+        fact: "Founded in the 4th century, Tbilisi is famous for its sulfur baths, dramatic Narikala fortress, and winding Old Town streets.",
+        images: {
+          past: "assets/tbilisi_past.png",
+          present: "assets/tbilisi_present.png",
+          future: "assets/tbilisi_future.jpg"
+        },
+        eras: {
+          "1890": {
+            title: "The Silk Road Outpost",
+            readout: "SYSTEM READOUT: 41.6879° N, 44.8087° E // SILK CROSSROAD",
+            desc: "Caravanserais hustle along the Kura river. Sulfur steam rises from ancient domed baths while the ruins of Narikala guard the old brick balconies.",
+            cta: "View Merchant Registry"
+          },
+          "2024": {
+            title: "The Caucasus Nexus",
+            readout: "SYSTEM READOUT: 41.6879° N, 44.8087° E // OLD & NEW",
+            desc: "The hyper-modern glass Peace Bridge arches over the river, contrasting with the historic wooden balconies clinging to the cliffs of Metekhi.",
+            cta: "CHECK TRAVEL LOGS"
+          },
+          "2200": {
+            title: "The Bio-Dome Ravine",
+            readout: "SYSTEM READOUT: 41.6879° N, 44.8087° E // CLIMATE SHIELD",
+            desc: "A giant geodesic bio-canopy spans the gorge, regulating the temperature while vertical hanging gardens cover the ancient brick fortresses.",
+            cta: "QUERY ECO-GRID"
+          }
+        }
+      }
+    ];
+
+    // Initialize list of places, loading custom from localStorage
+    let places = [...defaultPlaces];
+    const customPlacesKey = "chronicle_custom_places";
+    
+    function loadCustomPlaces() {
+      const stored = localStorage.getItem(customPlacesKey);
+      if (stored) {
+        try {
+          const customList = JSON.parse(stored);
+          places = [...defaultPlaces, ...customList];
+        } catch (e) {
+          console.error("Error loading custom coordinates:", e);
+        }
+      }
+    }
+
+    // Global State
+    let currentEra = '2024';
+    const eras = ['1890', '2024', '2200'];
+    let isTransitioning = false;
+    let selectedPlaceIndex = 0; // Starts with London (Big Ben)
+
+    // Three.js State
+    let scene, camera, renderer;
+    let particleGeometry, particleMaterial, particlePoints;
+    const numParticles = 1200;
+    const positions = [];
+    const velocities = [];
+    const colors = [];
+    let speedMultiplier = 1.0;
+    let targetSpeedMultiplier = 1.0;
+    
+    // Geographical Calibration Rotations
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+    let targetRotationZ = 0;
+
+    const targetColors = {
+      '1890': [0.83, 0.68, 0.21], // gold #d4af37
+      '2024': [0.88, 0.88, 0.91], // slate-white #e2e2e8
+      '2200': [0.0, 0.94, 1.0]    // cyan #00f0ff (we mix with magenta dynamically)
+    };
+
+    // Audio State
+    let audioCtx = null;
+    let masterGain = null;
+    const eraSynths = {
+      '1890': null,
+      '2024': null,
+      '2200': null
+    };
+    let isAudioEnabled = false;
+
+    // --- 1. Three.js Setup & Animation Loop ---
+    function initThreeJS() {
+      const container = document.getElementById('threejs-container-ANIMATION_50');
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(60, width / height, 1, 1000);
+      camera.position.z = 250;
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      particleGeometry = new THREE.BufferGeometry();
+
+      for (let i = 0; i < numParticles; i++) {
+        // Distribute randomly in space
+        positions.push((Math.random() - 0.5) * 500);
+        positions.push((Math.random() - 0.5) * 500);
+        positions.push((Math.random() - 0.5) * 500);
+
+        // Velocities
+        velocities.push((Math.random() - 0.5) * 0.4);
+        velocities.push((Math.random() - 0.5) * 0.4);
+        velocities.push((Math.random() - 0.5) * 0.4);
+
+        // Initial Colors (Present: White)
+        colors.push(1.0, 1.0, 1.0);
+      }
+
+      particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      particleGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      // Generate a glowing round dot texture in canvas
+      const pCanvas = document.createElement('canvas');
+      pCanvas.width = 16;
+      pCanvas.height = 16;
+      const ctx = pCanvas.getContext('2d');
+      const grad = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.3, 'rgba(255, 255, 255, 0.8)');
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 16, 16);
+      const pTexture = new THREE.CanvasTexture(pCanvas);
+
+      particleMaterial = new THREE.PointsMaterial({
+        size: 3.5,
+        map: pTexture,
+        vertexColors: true,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      particlePoints = new THREE.Points(particleGeometry, particleMaterial);
+      scene.add(particlePoints);
+
+      window.addEventListener('resize', onWindowResize);
+      animate();
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('threejs-container-ANIMATION_50');
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const posAttr = particleGeometry.attributes.position;
+      const colAttr = particleGeometry.attributes.color;
+      const count = posAttr.count;
+
+      // Interpolate speeds
+      speedMultiplier += (targetSpeedMultiplier - speedMultiplier) * 0.05;
+
+      // Rotate towards geographical targets + generic spin
+      particlePoints.rotation.y += 0.0008 * speedMultiplier;
+      particlePoints.rotation.x += (targetRotationX - particlePoints.rotation.x) * 0.05;
+      particlePoints.rotation.z += (targetRotationZ - particlePoints.rotation.z) * 0.05;
+
+      const time = Date.now() * 0.0006;
+
+      for (let i = 0; i < count; i++) {
+        let x = posAttr.getX(i);
+        let y = posAttr.getY(i);
+        let z = posAttr.getZ(i);
+
+        let vx = velocities[i * 3];
+        let vy = velocities[i * 3 + 1];
+        let vz = velocities[i * 3 + 2];
+
+        if (currentEra === '1890') {
+          // Warm drift / floating chimney embers waves
+          x += Math.sin(time * 0.5 + i) * 0.07 * speedMultiplier;
+          y += (0.12 + Math.cos(time + i) * 0.05) * speedMultiplier; // drift upward
+          z += Math.cos(time * 0.5 + i * 0.7) * 0.07 * speedMultiplier;
+
+          // Wrap top bounds
+          if (y > 250) y = -250;
+          if (Math.abs(x) > 250) x = -x;
+          if (Math.abs(z) > 250) z = -z;
+        } 
+        else if (currentEra === '2024') {
+          // Structured grid-like drift
+          x += vx * 0.8 * speedMultiplier;
+          y += vy * 0.8 * speedMultiplier;
+          z += vz * 0.8 * speedMultiplier;
+
+          // Wrap boundaries
+          if (Math.abs(x) > 250) x = -x;
+          if (Math.abs(y) > 250) y = -y;
+          if (Math.abs(z) > 250) z = -z;
+        } 
+        else if (currentEra === '2200') {
+          // Vortex spiral pulling
+          x += vx * 1.5 * speedMultiplier;
+          y += vy * 1.5 * speedMultiplier;
+          z += vz * 1.5 * speedMultiplier;
+
+          const dist = Math.sqrt(x*x + y*y);
+          // orbit pull
+          x -= (y / dist) * 0.4 * speedMultiplier;
+          y += (x / dist) * 0.4 * speedMultiplier;
+
+          // Wrap
+          if (Math.abs(x) > 250) x = -x;
+          if (Math.abs(y) > 250) y = -y;
+          if (Math.abs(z) > 250) z = -z;
+        }
+
+        posAttr.setXYZ(i, x, y, z);
+
+        // Color Interpolation
+        let cr = colAttr.getX(i);
+        let cg = colAttr.getY(i);
+        let cb = colAttr.getZ(i);
+
+        let tCol = targetColors[currentEra];
+        if (currentEra === '2200') {
+          // mix cyan and magenta particles in future
+          tCol = (i % 2 === 0) ? [0.0, 0.94, 1.0] : [1.0, 0.0, 0.5];
+        }
+
+        cr += (tCol[0] - cr) * 0.06;
+        cg += (tCol[1] - cg) * 0.06;
+        cb += (tCol[2] - cb) * 0.06;
+
+        colAttr.setXYZ(i, cr, cg, cb);
+      }
+
+      posAttr.needsUpdate = true;
+      colAttr.needsUpdate = true;
+
+      renderer.render(scene, camera);
+    }
+
+
+    // --- 2. Web Audio API Synthesizer ---
+    function initAudio() {
+      if (audioCtx) return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioCtx.createGain();
+        // Start Master muted, toggle Audio will fade it in
+        masterGain.gain.setValueAtTime(0.0, audioCtx.currentTime);
+        masterGain.connect(audioCtx.destination);
+
+        // Setup Era Synths
+        setup1890Synth();
+        setup2024Synth();
+        setup2200Synth();
+
+        // Trigger first volumes based on current era
+        const time = audioCtx.currentTime;
+        eras.forEach(e => {
+          const targetVol = (e === currentEra) ? 0.35 : 0.0;
+          eraSynths[e].gainNode.gain.setValueAtTime(targetVol, time);
+        });
+      } catch (err) {
+        console.warn("Web Audio API not supported/initialized in this environment: ", err);
+      }
+    }
+
+    function createNoiseBuffer() {
+      const bufferSize = audioCtx.sampleRate * 2; // 2 seconds
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      return buffer;
+    }
+
+    // 1890: Steam boiler hum + vinyl crackle
+    function setup1890Synth() {
+      const parentNode = audioCtx.createGain();
+      parentNode.connect(masterGain);
+
+      // Low frequency hum
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      osc1.type = 'triangle';
+      osc2.type = 'sawtooth';
+      
+      osc1.frequency.setValueAtTime(55, audioCtx.currentTime); // A1
+      osc2.frequency.setValueAtTime(110, audioCtx.currentTime); // A2
+
+      const oscGain = audioCtx.createGain();
+      oscGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+
+      // Lowpass filter
+      const lpFilter = audioCtx.createBiquadFilter();
+      lpFilter.type = 'lowpass';
+      lpFilter.frequency.setValueAtTime(120, audioCtx.currentTime);
+
+      // Modulate lowpass cutoff with LFO for boiler steam breathing effect
+      const lfo = audioCtx.createOscillator();
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(0.12, audioCtx.currentTime);
+      
+      const lfoGain = audioCtx.createGain();
+      lfoGain.gain.setValueAtTime(40, audioCtx.currentTime);
+
+      lfo.connect(lfoGain);
+      lfoGain.connect(lpFilter.frequency);
+
+      osc1.connect(oscGain);
+      osc2.connect(oscGain);
+      oscGain.connect(lpFilter);
+      lpFilter.connect(parentNode);
+
+      // Soft white noise for steam leakage
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = createNoiseBuffer();
+      noise.loop = true;
+
+      const noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = 'bandpass';
+      noiseFilter.frequency.setValueAtTime(600, audioCtx.currentTime);
+      noiseFilter.Q.setValueAtTime(1.5, audioCtx.currentTime);
+
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(parentNode);
+
+      // Start voices
+      osc1.start();
+      osc2.start();
+      lfo.start();
+      noise.start();
+
+      // Random crackle pops via custom intervals
+      setInterval(() => {
+        if (!isAudioEnabled || currentEra !== '1890' || !audioCtx) return;
+        
+        const now = audioCtx.currentTime;
+        const popGain = audioCtx.createGain();
+        popGain.gain.setValueAtTime(0, now);
+        popGain.gain.linearRampToValueAtTime(Math.random() * 0.05 + 0.02, now + 0.003);
+        popGain.gain.exponentialRampToValueAtTime(0.0001, now + Math.random() * 0.05 + 0.02);
+
+        const popFilter = audioCtx.createBiquadFilter();
+        popFilter.type = 'highpass';
+        popFilter.frequency.setValueAtTime(1200, now);
+
+        const popOsc = audioCtx.createOscillator();
+        popOsc.type = 'sine';
+        popOsc.frequency.setValueAtTime(Math.random() * 800 + 400, now);
+
+        popOsc.connect(popFilter);
+        popFilter.connect(popGain);
+        popGain.connect(parentNode);
+        
+        popOsc.start(now);
+        popOsc.stop(now + 0.15);
+      }, 350);
+
+      eraSynths['1890'] = { gainNode: parentNode };
+    }
+
+    // 2024: Electricity hum + urban wind
+    function setup2024Synth() {
+      const parentNode = audioCtx.createGain();
+      parentNode.connect(masterGain);
+
+      // Electric 60Hz / 120Hz transformer hum
+      const hum1 = audioCtx.createOscillator();
+      const hum2 = audioCtx.createOscillator();
+      hum1.type = 'sine';
+      hum2.type = 'sine';
+      hum1.frequency.setValueAtTime(60, audioCtx.currentTime);
+      hum2.frequency.setValueAtTime(120, audioCtx.currentTime);
+
+      const humGain = audioCtx.createGain();
+      humGain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+
+      hum1.connect(humGain);
+      hum2.connect(humGain);
+      humGain.connect(parentNode);
+
+      // Atmospheric urban noise (wind)
+      const windSource = audioCtx.createBufferSource();
+      windSource.buffer = createNoiseBuffer();
+      windSource.loop = true;
+
+      const windFilter = audioCtx.createBiquadFilter();
+      windFilter.type = 'lowpass';
+      windFilter.frequency.setValueAtTime(320, audioCtx.currentTime);
+      windFilter.Q.setValueAtTime(2.0, audioCtx.currentTime);
+
+      const windGain = audioCtx.createGain();
+      windGain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+
+      // Modulate wind density slowly
+      const windLfo = audioCtx.createOscillator();
+      windLfo.type = 'sine';
+      windLfo.frequency.setValueAtTime(0.08, audioCtx.currentTime);
+      
+      const windLfoGain = audioCtx.createGain();
+      windLfoGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      
+      windLfo.connect(windLfoGain);
+      windLfoGain.connect(windGain.gain);
+
+      windSource.connect(windFilter);
+      windFilter.connect(windGain);
+      windGain.connect(parentNode);
+
+      hum1.start();
+      hum2.start();
+      windLfo.start();
+      windSource.start();
+
+      eraSynths['2024'] = { gainNode: parentNode };
+    }
+
+    // 2200: Bioluminescent sine pulses + deep synthetic sweeps
+    function setup2200Synth() {
+      const parentNode = audioCtx.createGain();
+      parentNode.connect(masterGain);
+
+      // Future engine reactor hum
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(65, audioCtx.currentTime); // C2
+
+      const oscGain = audioCtx.createGain();
+      oscGain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+
+      // LFO pitch vibrato
+      const vibLfo = audioCtx.createOscillator();
+      vibLfo.type = 'sine';
+      vibLfo.frequency.setValueAtTime(2.5, audioCtx.currentTime); // 2.5Hz pulses
+
+      const vibGain = audioCtx.createGain();
+      vibGain.gain.setValueAtTime(1.5, audioCtx.currentTime);
+
+      vibLfo.connect(vibGain);
+      vibGain.connect(osc.frequency);
+
+      osc.connect(oscGain);
+      oscGain.connect(parentNode);
+
+      // Sweep Space dust
+      const sweepOsc = audioCtx.createOscillator();
+      sweepOsc.type = 'sine';
+      sweepOsc.frequency.setValueAtTime(400, audioCtx.currentTime);
+
+      const sweepFilter = audioCtx.createBiquadFilter();
+      sweepFilter.type = 'bandpass';
+      sweepFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+      sweepFilter.Q.setValueAtTime(6.0, audioCtx.currentTime);
+
+      const sweepGain = audioCtx.createGain();
+      sweepGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+
+      // Sweep LFO modulating cutoff
+      const sweepLfo = audioCtx.createOscillator();
+      sweepLfo.type = 'sine';
+      sweepLfo.frequency.setValueAtTime(0.04, audioCtx.currentTime); // slow sweeps
+
+      const sweepLfoGain = audioCtx.createGain();
+      sweepLfoGain.gain.setValueAtTime(600, audioCtx.currentTime);
+
+      sweepLfo.connect(sweepLfoGain);
+      sweepLfoGain.connect(sweepFilter.frequency);
+
+      sweepOsc.connect(sweepFilter);
+      sweepFilter.connect(sweepGain);
+      sweepGain.connect(parentNode);
+
+      osc.start();
+      vibLfo.start();
+      sweepOsc.start();
+      sweepLfo.start();
+
+      eraSynths['2200'] = { gainNode: parentNode };
+    }
+
+    function toggleAudio() {
+      const btn = document.getElementById('audio-toggle-btn');
+      const label = document.getElementById('audio-btn-label');
+      
+      initAudio();
+
+      if (!audioCtx) return;
+
+      if (isAudioEnabled) {
+        // Mute
+        masterGain.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime + 0.5);
+        btn.classList.add('audio-paused');
+        btn.classList.remove('audio-playing');
+        label.innerText = "ENABLE SOUND";
+        isAudioEnabled = false;
+      } else {
+        // Unmute
+        audioCtx.resume().then(() => {
+          masterGain.gain.linearRampToValueAtTime(1.0, audioCtx.currentTime + 0.5);
+          btn.classList.remove('audio-paused');
+          btn.classList.add('audio-playing');
+          label.innerText = "DISABLE SOUND";
+          isAudioEnabled = true;
+        });
+      }
+    }
+
+    function transitionAudio(targetEra) {
+      if (!audioCtx || !isAudioEnabled) return;
+      
+      const time = audioCtx.currentTime;
+      eras.forEach(e => {
+        const gainNode = eraSynths[e].gainNode;
+        gainNode.gain.cancelScheduledValues(time);
+        gainNode.gain.setValueAtTime(gainNode.gain.value, time);
+        
+        const targetVol = (e === targetEra) ? 0.35 : 0.0;
+        gainNode.gain.linearRampToValueAtTime(targetVol, time + 1.5);
+      });
+    }
+
+    // Play a clean, modern UI transition chime when shifting eras
+    function playWarpSound() {
+      if (!audioCtx || !isAudioEnabled) return;
+      const now = audioCtx.currentTime;
+      
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      
+      osc1.type = 'sine';
+      osc2.type = 'sine';
+      
+      // Clean harmonic interval (E5 and G#5) for a pleasant chime
+      osc1.frequency.setValueAtTime(659.25, now); // E5
+      osc2.frequency.setValueAtTime(830.61, now); // G#5
+      
+      const gainNode = audioCtx.createGain();
+      gainNode.gain.setValueAtTime(0.0, now);
+      gainNode.gain.linearRampToValueAtTime(0.08, now + 0.005);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+      
+      osc1.connect(gainNode);
+      osc2.connect(gainNode);
+      gainNode.connect(masterGain);
+      
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + 0.4);
+      osc2.stop(now + 0.4);
+      
+      // Subtle high frequency transient tick for definition
+      const tick = audioCtx.createOscillator();
+      const tickGain = audioCtx.createGain();
+      tick.type = 'sine';
+      tick.frequency.setValueAtTime(3000, now);
+      tickGain.gain.setValueAtTime(0.02, now);
+      tickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
+      
+      tick.connect(tickGain);
+      tickGain.connect(masterGain);
+      tick.start(now);
+      tick.stop(now + 0.02);
+    }
+
+    // Heavy synthesized sub-bass warp sweep for geographic portal jump
+    function playPortalWarpSound() {
+      if (!audioCtx || !isAudioEnabled) return;
+      const now = audioCtx.currentTime;
+
+      const subOsc = audioCtx.createOscillator();
+      subOsc.type = 'triangle';
+      subOsc.frequency.setValueAtTime(90, now);
+      subOsc.frequency.linearRampToValueAtTime(35, now + 1.5);
+
+      const subGain = audioCtx.createGain();
+      subGain.gain.setValueAtTime(0.3, now);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
+
+      subOsc.connect(subGain);
+      subGain.connect(masterGain);
+      subOsc.start(now);
+      subOsc.stop(now + 1.5);
+
+      // sweeping resonance sound
+      const sweepOsc = audioCtx.createOscillator();
+      sweepOsc.type = 'sawtooth';
+      sweepOsc.frequency.setValueAtTime(80, now);
+      sweepOsc.frequency.exponentialRampToValueAtTime(1400, now + 1.5);
+
+      const lpFilter = audioCtx.createBiquadFilter();
+      lpFilter.type = 'lowpass';
+      lpFilter.frequency.setValueAtTime(200, now);
+      lpFilter.frequency.exponentialRampToValueAtTime(1200, now + 1.5);
+      lpFilter.Q.setValueAtTime(5.0, now);
+
+      const sweepGain = audioCtx.createGain();
+      sweepGain.gain.setValueAtTime(0.07, now);
+      sweepGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
+
+      sweepOsc.connect(lpFilter);
+      lpFilter.connect(sweepGain);
+      sweepGain.connect(masterGain);
+      sweepOsc.start(now);
+      sweepOsc.stop(now + 1.5);
+    }
+
+
+    // --- 3. Navigation Engine & Page Interactivity ---
+    class TemporalEngine {
+      constructor() {
+        this.currentEra = '2024';
+        this.eras = eras;
+        this.isTransitioning = false;
+
+        this.columns = document.querySelectorAll('.era-col');
+        this.navLinks = document.querySelectorAll('.nav-link');
+
+        this.init();
+      }
+
+      init() {
+        // Column clicking
+        this.columns.forEach(col => {
+          col.addEventListener('click', () => {
+            const era = col.id.replace('era-', '');
+            this.shiftEra(era);
+          });
+        });
+
+        // Navigation Link clicking
+        this.navLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            const era = link.getAttribute('data-era');
+            if (era) {
+              e.preventDefault();
+              this.shiftEra(era);
+            }
+          });
+        });
+
+        // Keyboard arrow key navigation
+        window.addEventListener('keydown', (e) => {
+          if (this.isTransitioning) return;
+
+          const idx = this.eras.indexOf(this.currentEra);
+          if (e.key === 'ArrowRight' && idx < this.eras.length - 1) {
+            this.shiftEra(this.eras[idx + 1]);
+          } else if (e.key === 'ArrowLeft' && idx > 0) {
+            this.shiftEra(this.eras[idx - 1]);
+          }
+        });
+
+        // Initialize UI State
+        this.updateUIState(this.currentEra);
+      }
+
+      async shiftEra(targetEra) {
+        if (targetEra === this.currentEra || this.isTransitioning) return;
+
+        this.isTransitioning = true;
+        document.body.classList.add('time-shifting');
+
+        // Visual glitch transition
+        const container = document.getElementById('main-container');
+        container.classList.add('glitch-effect');
+        setTimeout(() => {
+          container.classList.remove('glitch-effect');
+        }, 500);
+
+        // Update global target era
+        currentEra = targetEra;
+
+        // Speed up Three.js particles during shift
+        targetSpeedMultiplier = 8.0;
+        setTimeout(() => {
+          targetSpeedMultiplier = 1.0;
+        }, 800);
+
+        // Audio crossfade
+        transitionAudio(targetEra);
+
+        // Update active UI classes
+        this.updateUIState(targetEra);
+
+        // Wait for CSS column width transitions
+        await new Promise(resolve => setTimeout(resolve, 1200));
+
+        this.currentEra = targetEra;
+        this.isTransitioning = false;
+        document.body.classList.remove('time-shifting');
+      }
+
+      updateUIState(era) {
+        // Toggle Body CSS classes for era themes
+        document.body.className = `era-${era} relative h-full w-full overflow-hidden select-none`;
+
+        // Update Era Columns
+        this.columns.forEach(col => {
+          const colEra = col.id.replace('era-', '');
+          if (colEra === era) {
+            col.classList.remove('inactive');
+            col.classList.add('active');
+            
+            // Show inner details
+            col.querySelectorAll('.era-show-active').forEach(el => {
+              el.classList.remove('opacity-0', 'translate-y-4');
+              el.classList.add('opacity-1', 'translate-y-0');
+            });
+          } else {
+            col.classList.add('inactive');
+            col.classList.remove('active');
+            
+            // Hide inner details
+            col.querySelectorAll('.era-show-active').forEach(el => {
+              el.classList.remove('opacity-1', 'translate-y-0');
+              el.classList.add('opacity-0', 'translate-y-4');
+            });
+          }
+        });
+
+        // Update Header Links
+        this.navLinks.forEach(link => {
+          const linkEra = link.getAttribute('data-era');
+          if (linkEra === era) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+
+        // Sync timeline slider UI
+        syncTimelineSlider(era);
+
+        console.log(`[CHRONICLE] Era Shifted to: ${era}`);
+      }
+    }
+
+
+    // --- 4. Timeline Slider Syncing ---
+    function syncTimelineSlider(era) {
+      const progress = document.getElementById('timeline-progress');
+      const handle = document.getElementById('timeline-handle');
+      
+      const percentages = {
+        '1890': 15,
+        '2024': 50,
+        '2200': 85
+      };
+
+      const pct = percentages[era];
+      
+      progress.style.width = `${pct}%`;
+      handle.style.left = `${pct}%`;
+      
+      // Update glow color of handle
+      const glowColors = {
+        '1890': '0 0 12px #d4af37',
+        '2024': '0 0 12px #fff',
+        '2200': '0 0 15px #00f0ff'
+      };
+      
+      const handleColors = {
+        '1890': '#d4af37',
+        '2024': '#ffffff',
+        '2200': '#00f0ff'
+      };
+      
+      handle.style.backgroundColor = handleColors[era];
+      handle.style.boxShadow = glowColors[era];
+      progress.style.backgroundColor = handleColors[era];
+    }
+
+
+    // --- 5. Dialog Overlay Actions ---
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.showModal();
+        
+        // Custom animation triggers
+        if (id === 'jumptime-modal') {
+          document.getElementById('jump-year-input').focus();
+        }
+      }
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.close();
+      }
+    }
+    
+    // Close dialog when clicking outside content (on backdrop)
+    document.querySelectorAll('dialog').forEach(diag => {
+      diag.addEventListener('click', (e) => {
+        const rect = diag.getBoundingClientRect();
+        const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+        if (!isInDialog) {
+          diag.close();
+        }
+      });
+    });
+
+
+    // --- 6. Form Submission Transmission ---
+    function submitMessage(e) {
+      e.preventDefault();
+      
+      // Simulated transmissions beaming delay
+      const form = document.getElementById('contact-form-container');
+      const success = document.getElementById('contact-success-container');
+      
+      // Synthesize high-pitch transmission chirp sound
+      if (audioCtx && isAudioEnabled) {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(2400, now + 0.3);
+        
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+        
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+      
+      form.classList.add('hidden');
+      success.classList.remove('hidden');
+    }
+
+    function resetContactForm() {
+      document.getElementById('contact-sender').value = '';
+      document.getElementById('contact-epoch').value = '';
+      document.getElementById('contact-msg').value = '';
+      
+      document.getElementById('contact-form-container').classList.remove('hidden');
+      document.getElementById('contact-success-container').classList.add('hidden');
+    }
+
+
+    // --- 7. Jump Time Operations ---
+    function triggerJumpTime() {
+      const input = document.getElementById('jump-year-input');
+      let year = parseInt(input.value);
+      
+      if (isNaN(year) || year < 1000 || year > 3000) {
+        year = 2024;
+      }
+      
+      closeModal('jumptime-modal');
+
+      // Banner prompt trigger
+      const banner = document.getElementById('warp-banner');
+      const bannerText = document.getElementById('warp-banner-text');
+      
+      // Calculate target era based on proximity
+      let targetEra = '2024';
+      if (year < 1957) {
+        targetEra = '1890';
+      } else if (year >= 1957 && year < 2112) {
+        targetEra = '2024';
+      } else {
+        targetEra = '2200';
+      }
+
+      bannerText.innerText = `TEMPORAL WARP DETECTED // VECTORING Y_${year} TO EPOCH_${targetEra}`;
+      banner.classList.remove('opacity-0');
+      banner.classList.add('opacity-100');
+
+      // Trigger navigation engine shift
+      window.chronicle.shiftEra(targetEra).then(() => {
+        // Shift handle glow/label temporarily to custom year if they match
+        setTimeout(() => {
+          banner.classList.remove('opacity-100');
+          banner.classList.add('opacity-0');
+        }, 1500);
+      });
+    }
+
+    // --- 8. GEOGRAPHIC LOCATION PORTAL LOGIC ---
+    function toggleGeographicPortal(open) {
+      const drawer = document.getElementById('geographic-drawer');
+      if (open) {
+        loadCustomPlaces();
+        populateLocationsList();
+        renderMapMarkers();
+        selectLocation(selectedPlaceIndex);
+        drawer.classList.add('open');
+      } else {
+        drawer.classList.remove('open');
+      }
+    }
+
+    function toggleCustomForm() {
+      const form = document.getElementById('custom-coords-form');
+      const btn = document.getElementById('toggle-add-btn');
+      if (form.classList.contains('hidden')) {
+        form.classList.remove('hidden');
+        btn.innerText = "- CLOSE REGISTRY";
+      } else {
+        form.classList.add('hidden');
+        btn.innerText = "+ REGISTER CUSTOM COORDINATES";
+      }
+    }
+
+    // Format latitude/longitude string
+    function formatCoords(lat, lng) {
+      const latDir = lat >= 0 ? 'N' : 'S';
+      const lngDir = lng >= 0 ? 'E' : 'W';
+      return `LAT ${Math.abs(lat).toFixed(4)}° ${latDir} / LNG ${Math.abs(lng).toFixed(4)}° ${lngDir}`;
+    }
+
+    // Populate searchable locations in sidebar list
+    function populateLocationsList(filteredIndex = null) {
+      const listEl = document.getElementById('location-list');
+      listEl.innerHTML = '';
+      
+      const searchVal = document.getElementById('location-search').value.toUpperCase();
+
+      places.forEach((p, idx) => {
+        // Filter out based on search value
+        if (searchVal && !p.name.toUpperCase().includes(searchVal) && !p.city.toUpperCase().includes(searchVal)) {
+          return;
+        }
+
+        const item = document.createElement('div');
+        item.className = `location-item flex items-center justify-between p-3 cursor-pointer rounded ${idx === selectedPlaceIndex ? 'active' : ''}`;
+        item.setAttribute('onclick', `selectLocation(${idx})`);
+        item.id = `loc-item-${idx}`;
+
+        item.innerHTML = `
+          <div>
+            <h5 class="font-mono text-xs text-white font-bold">${p.name}</h5>
+            <p class="font-mono text-[9px] text-white/40 mt-0.5">${p.city} &mdash; ${p.lat.toFixed(2)}, ${p.lng.toFixed(2)}</p>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        `;
+        listEl.appendChild(item);
+      });
+    }
+
+    function filterLocations() {
+      populateLocationsList();
+    }
+
+    // Convert geographic coordinates to SVG viewport coordinates (Equirectangular)
+    function getMapCoords(lat, lng) {
+      const mapWidth = 1008;
+      const mapHeight = 640;
+      
+      const x = ((lng + 180) / 360) * mapWidth;
+      const y = ((90 - lat) / 180) * mapHeight;
+      
+      return { x, y };
+    }
+
+    // Render interactive location nodes onto SVG World Map
+    function renderMapMarkers() {
+      const markersGroup = document.getElementById('map-markers-group');
+      markersGroup.innerHTML = '';
+
+      places.forEach((p, idx) => {
+        const { x, y } = getMapCoords(p.lat, p.lng);
+
+        const markerG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        markerG.setAttribute("class", `map-marker ${idx === selectedPlaceIndex ? 'active' : ''}`);
+        markerG.setAttribute("id", `map-marker-${idx}`);
+        markerG.setAttribute("onclick", `selectLocationAndJump(${idx})`);
+
+        // Invisible click target (large hitbox)
+        const hitbox = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        hitbox.setAttribute("cx", x);
+        hitbox.setAttribute("cy", y);
+        hitbox.setAttribute("r", 16);
+        hitbox.setAttribute("fill", "transparent");
+        hitbox.setAttribute("style", "cursor: pointer; pointer-events: all;");
+        markerG.appendChild(hitbox);
+        
+        // Pulsing background ring
+        const ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        ring.setAttribute("cx", x);
+        ring.setAttribute("cy", y);
+        ring.setAttribute("r", 8);
+        ring.setAttribute("fill", "none");
+        ring.setAttribute("stroke", idx === selectedPlaceIndex ? "#00f0ff" : "rgba(0, 240, 255, 0.4)");
+        ring.setAttribute("stroke-width", "1");
+        ring.setAttribute("class", "pulse-ring-anim");
+        markerG.appendChild(ring);
+
+        // Core solid dot
+        const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        dot.setAttribute("cx", x);
+        dot.setAttribute("cy", y);
+        dot.setAttribute("r", 4.5);
+        dot.setAttribute("fill", idx === selectedPlaceIndex ? "#00f0ff" : "rgba(255, 255, 255, 0.9)");
+        dot.setAttribute("class", "marker-dot transition duration-300");
+        markerG.appendChild(dot);
+
+        // Permanent label text (visible on the map)
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", x + 8);
+        text.setAttribute("y", y + 3);
+        text.setAttribute("fill", "#00f0ff");
+        text.setAttribute("font-size", "7px");
+        text.setAttribute("font-family", "Space Mono, monospace");
+        text.setAttribute("font-weight", "bold");
+        text.setAttribute("class", "pointer-events-none opacity-85 select-none");
+        text.setAttribute("filter", "drop-shadow(0 1px 2px rgba(0,0,0,0.95))");
+        text.textContent = p.city;
+        markerG.appendChild(text);
+
+        markersGroup.appendChild(markerG);
+      });
+    }
+
+    function selectLocationAndJump(index) {
+      selectLocation(index);
+      initiatePortalJump();
+    }
+
+    // Select location in coordination console
+    function selectLocation(index) {
+      selectedPlaceIndex = index;
+      const place = places[index];
+
+      // Update sidebar list items active styles
+      document.querySelectorAll('.location-item').forEach(el => el.classList.remove('active'));
+      const activeItem = document.getElementById(`loc-item-${index}`);
+      if (activeItem) activeItem.classList.add('active');
+
+      // Update SVG world map marker active styles
+      document.querySelectorAll('.map-marker').forEach(el => {
+        el.classList.remove('active');
+        const dot = el.querySelector('.marker-dot');
+        const ring = el.querySelector('.pulse-ring-anim');
+        if (dot) dot.setAttribute('fill', 'rgba(255, 255, 255, 0.7)');
+        if (ring) ring.setAttribute('stroke', 'rgba(255, 255, 255, 0.4)');
+      });
+      const activeMarker = document.getElementById(`map-marker-${index}`);
+      if (activeMarker) {
+        activeMarker.classList.add('active');
+        const dot = activeMarker.querySelector('.marker-dot');
+        const ring = activeMarker.querySelector('.pulse-ring-anim');
+        if (dot) dot.setAttribute('fill', '#00f0ff');
+        if (ring) ring.setAttribute('stroke', '#00f0ff');
+      }
+
+      // Update Preview Details
+      document.getElementById('preview-title').innerText = place.name;
+      document.getElementById('preview-coords').innerText = formatCoords(place.lat, place.lng);
+      document.getElementById('preview-fact').innerText = `Historical Fact: ${place.fact}`;
+    }
+
+    // Register a new custom coordinate point
+    function registerCustomLocation(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('custom-name').value;
+      const lat = parseFloat(document.getElementById('custom-lat').value);
+      const lng = parseFloat(document.getElementById('custom-lng').value);
+      const past = document.getElementById('custom-past').value;
+      const present = document.getElementById('custom-present').value;
+      const future = document.getElementById('custom-future').value;
+      let img = document.getElementById('custom-image').value;
+
+      if (!img) {
+        // Fallback abstract neon grid background URL if none provided
+        img = "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200";
+      }
+
+      const newPlace = {
+        id: `custom-${Date.now()}`,
+        name: name,
+        city: "Custom Coordinates",
+        lat: lat,
+        lng: lng,
+        fact: `Coordinate aligned at ${lat.toFixed(4)}, ${lng.toFixed(4)} register.`,
+        images: {
+          past: img,
+          present: img,
+          future: img
+        },
+        eras: {
+          "1890": {
+            title: "Archival Era (Past)",
+            readout: `SYSTEM READOUT: ${formatCoords(lat, lng)} // HISTORICAL LAYER`,
+            desc: past,
+            cta: "View Logs"
+          },
+          "2024": {
+            title: "Observational Era (Present)",
+            readout: `SYSTEM READOUT: ${formatCoords(lat, lng)} // REAL-TIME FEED`,
+            desc: present,
+            cta: "Access Feeds"
+          },
+          "2200": {
+            title: "Speculative Era (Future)",
+            readout: `SYSTEM READOUT: ${formatCoords(lat, lng)} // PROJECTION FEED`,
+            desc: future,
+            cta: "Scan Timeline"
+          }
+        }
+      };
+
+      // Retrieve existing custom places, append and save
+      const stored = localStorage.getItem(customPlacesKey);
+      let customList = [];
+      if (stored) {
+        try { customList = JSON.parse(stored); } catch (err) {}
+      }
+      customList.push(newPlace);
+      localStorage.setItem(customPlacesKey, JSON.stringify(customList));
+
+      // Reload databases
+      places = [...defaultPlaces, ...customList];
+
+      // Refresh console UI
+      populateLocationsList();
+      renderMapMarkers();
+      
+      // Auto select newly created coordinates
+      selectLocation(places.length - 1);
+      
+      // Collapse form
+      toggleCustomForm();
+
+      // Reset form fields
+      document.getElementById('custom-name').value = '';
+      document.getElementById('custom-lat').value = '';
+      document.getElementById('custom-lng').value = '';
+      document.getElementById('custom-past').value = '';
+      document.getElementById('custom-present').value = '';
+      document.getElementById('custom-future').value = '';
+      document.getElementById('custom-image').value = '';
+    }
+
+    // Portal Loader Canvas Warp Tunnel Animation
+    let portalCanvas, portalCtx, portalAnimFrame;
+    let portalActive = false;
+    let portalProgress = 0;
+    let portalParticles = [];
+
+    function initPortalCanvas() {
+      portalCanvas = document.getElementById('portal-canvas');
+      portalCtx = portalCanvas.getContext('2d');
+      resizePortalCanvas();
+      window.addEventListener('resize', resizePortalCanvas);
+    }
+
+    function resizePortalCanvas() {
+      if (portalCanvas) {
+        portalCanvas.width = window.innerWidth;
+        portalCanvas.height = window.innerHeight;
+      }
+    }
+
+    function startPortalWarpAnimation(onComplete) {
+      portalActive = true;
+      portalProgress = 0;
+      portalParticles = [];
+
+      // Create 150 circular warp trails pulling toward center
+      for (let i = 0; i < 150; i++) {
+        portalParticles.push({
+          angle: Math.random() * Math.PI * 2,
+          radius: Math.random() * window.innerWidth * 0.5 + 20,
+          speed: Math.random() * 8 + 4,
+          size: Math.random() * 2 + 1,
+          color: Math.random() > 0.5 ? '#00f0ff' : '#ff007f'
+        });
+      }
+
+      document.getElementById('portal-loader').classList.add('active');
+      playPortalWarpSound();
+      animatePortalWarp(onComplete);
+    }
+
+    function animatePortalWarp(onComplete) {
+      if (!portalActive) return;
+
+      portalCtx.fillStyle = 'rgba(0, 0, 0, 0.15)'; // trails
+      portalCtx.fillRect(0, 0, portalCanvas.width, portalCanvas.height);
+
+      const centerX = portalCanvas.width / 2;
+      const centerY = portalCanvas.height / 2;
+
+      portalParticles.forEach(p => {
+        p.radius -= p.speed * 1.5;
+        p.angle += 0.05; // orbit rotation
+
+        const x = centerX + Math.cos(p.angle) * p.radius;
+        const y = centerY + Math.sin(p.angle) * p.radius;
+
+        portalCtx.fillStyle = p.color;
+        portalCtx.beginPath();
+        portalCtx.arc(x, y, p.size, 0, Math.PI * 2);
+        portalCtx.fill();
+
+        // Respawn particles outwards
+        if (p.radius < 5) {
+          p.radius = Math.random() * Math.max(portalCanvas.width, portalCanvas.height) * 0.6 + 50;
+          p.angle = Math.random() * Math.PI * 2;
+        }
+      });
+
+      portalProgress += 1.8;
+
+      if (portalProgress > 100) {
+        portalProgress = 100;
+        portalActive = false;
+        document.getElementById('portal-loader').classList.remove('active');
+        if (onComplete) onComplete();
+        return;
+      }
+
+      // Update Loader telemetry texts
+      document.getElementById('portal-progress').style.width = `${portalProgress}%`;
+      const telemetryEl = document.querySelector('#portal-loader .font-mono');
+      if (telemetryEl) telemetryEl.innerText = `CALIBRATING TACHYON FLUX: ${Math.floor(portalProgress)}%`;
+
+      const states = [
+        "ESTABLISHING QUANTUM LINK",
+        "GEOGRAPHIC COORD SCAN",
+        "SWAPPING TEMPORAL ANCHORS",
+        "CAUSAL ALIGNMENT SECURED",
+        "WARPING SPACE CONTINUUM"
+      ];
+      const idx = Math.floor((portalProgress / 100) * states.length);
+      document.getElementById('portal-status-text').innerText = states[Math.min(idx, states.length - 1)];
+
+      portalAnimFrame = requestAnimationFrame(() => animatePortalWarp(onComplete));
+    }
+
+    // Swap website content to the selected geographic location
+    function swapLocationContent(place) {
+      // 1. Update Coordinates and narrative readouts
+      document.getElementById('past-readout-coords').innerText = place.eras["1890"].readout;
+      document.getElementById('present-readout-coords').innerText = place.eras["2024"].readout;
+      document.getElementById('future-readout-coords').innerText = place.eras["2200"].readout;
+
+      // 2. Update Card Titles
+      document.getElementById('past-card-title').innerText = place.eras["1890"].title;
+      document.getElementById('present-card-title').innerText = place.eras["2024"].title;
+      document.getElementById('future-card-title').innerText = place.eras["2200"].title;
+
+      // 3. Update Descriptions
+      const pastDesc = document.getElementById('past-card-desc');
+      pastDesc.innerText = place.eras["1890"].desc;
+      pastDesc.className = "font-display-past text-sm text-[#f4ecd8]/90 leading-relaxed mb-4 drop-cap";
+
+      document.getElementById('present-card-desc').innerText = place.eras["2024"].desc;
+      
+      const futDesc = document.getElementById('future-card-desc');
+      if (place.eras["2200"].desc.includes('<span')) {
+        futDesc.innerHTML = place.eras["2200"].desc;
+      } else {
+        futDesc.innerHTML = `<span class="bg-cyan-950/40 text-cyan-400 border border-cyan-500/20 px-1 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider mr-1">BIO-NET</span> ${place.eras["2200"].desc}`;
+      }
+
+      // 4. Update CTA Buttons text
+      document.getElementById('past-card-btn').innerHTML = place.eras["1890"].cta;
+      document.getElementById('present-card-btn').innerHTML = place.eras["2024"].cta;
+      document.getElementById('future-card-btn').innerHTML = place.eras["2200"].cta;
+
+      // 5. Swap Landmark Background Images
+      const pastImg = document.getElementById('past-img-layer');
+      const presentImg = document.getElementById('present-img-layer');
+      const futureImg = document.getElementById('future-img-layer');
+
+      pastImg.style.backgroundImage = `url('${place.images.past}')`;
+      presentImg.style.backgroundImage = `url('${place.images.present}')`;
+      futureImg.style.backgroundImage = `url('${place.images.future}')`;
+
+      // 6. Calibrate Three.js Spatial Alignments
+      const latRad = (place.lat * Math.PI) / 180;
+      const lngRad = (place.lng * Math.PI) / 180;
+      
+      targetRotationX = latRad * 0.4;
+      targetRotationZ = lngRad * 0.3;
+    }
+
+    // Triggers location portal loading jump sequence
+    function initiatePortalJump() {
+      const place = places[selectedPlaceIndex];
+      
+      // Exit Nav console
+      toggleGeographicPortal(false);
+
+      // Start full-screen loading portal animation
+      startPortalWarpAnimation(() => {
+        // Teleportation Complete callback: Update main DOM content
+        swapLocationContent(place);
+
+        // Ensure homepage container is hidden after warp jump completes
+        const homepage = document.getElementById('homepage-container');
+        if (homepage) {
+          homepage.classList.add('hidden');
+        }
+
+        // Ensure the main container is visible
+        const mainContainer = document.getElementById('main-container');
+        if (mainContainer) {
+          mainContainer.classList.remove('hidden');
+          // Trigger layout resize event for canvas components
+          window.dispatchEvent(new Event('resize'));
+        }
+      });
+    }
+
+    // Homepage Action Helpers
+    function triggerDefaultWarp() {
+      initiatePortalJump();
+    }
+
+    function showHomepage(event) {
+      if (event) event.preventDefault();
+      const homepage = document.getElementById('homepage-container');
+      const mainContainer = document.getElementById('main-container');
+      if (homepage && mainContainer) {
+        homepage.classList.remove('hidden');
+        mainContainer.classList.add('hidden');
+        homepage.scrollTop = 0;
+      }
+    }
+
+    function jumpToDestinationHomepage(placeId) {
+      const index = places.findIndex(p => p.id === placeId);
+      if (index !== -1) {
+        selectedPlaceIndex = index;
+        initiatePortalJump();
+      }
+    }
+
+
+    // --- 9. DOM Load initialization ---
+    document.addEventListener('DOMContentLoaded', () => {
+      initThreeJS();
+      initPortalCanvas();
+      loadCustomPlaces();
+      window.chronicle = new TemporalEngine();
+      swapLocationContent(places[0]);
+    });
+  </script>
+</body>
+</html>

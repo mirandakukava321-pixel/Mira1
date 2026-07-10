@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+<!-- STITCH_THREEJS_START:ANIMATION_50 class="fixed inset-0 w-full h-full bg-transparent" -->
+<div class="fixed inset-0 w-full h-full bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_50" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_50');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  /**
+ * Chronicle: Temporal Navigation Engine
+ * Handles Era Shifting, Content Swapping, and Audio State Management
+ */
+
+class TemporalEngine {
+    constructor() {
+        this.currentEra = '2024';
+        this.eras = ['1890', '2024', '2200'];
+        this.isTransitioning = false;
+        
+        // DOM Elements
+        this.columns = document.querySelectorAll('.era-col');
+        this.navLinks = document.querySelectorAll('.nav-link');
+        
+        this.init();
+    }
+
+    init() {
+        // Event Listeners for columns
+        this.columns.forEach(col => {
+            col.addEventListener('click', () => {
+                const era = col.id.replace('era-', '');
+                this.shiftEra(era);
+            });
+        });
+
+        // Event Listeners for nav links
+        this.navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const era = link.getAttribute('data-era');
+                if (era) this.shiftEra(era);
+            });
+        });
+
+        // Keyboard navigation (Left/Right arrows)
+        window.addEventListener('keydown', (e) => {
+            if (this.isTransitioning) return;
+            
+            const index = this.eras.indexOf(this.currentEra);
+            if (e.key === 'ArrowRight' && index < this.eras.length - 1) {
+                this.shiftEra(this.eras[index + 1]);
+            } else if (e.key === 'ArrowLeft' && index > 0) {
+                this.shiftEra(this.eras[index - 1]);
+            }
+        });
+    }
+
+    /**
+     * Executes the 'Time Shift' transition
+     */
+    async shiftEra(targetEra) {
+        if (targetEra === this.currentEra || this.isTransitioning) return;
+        
+        this.isTransitioning = true;
+        document.body.classList.add('time-shifting');
+
+        // 1. Play Transition Audio Trigger (Conceptual)
+        this.playAudioTrigger(targetEra);
+
+        // 2. Update States
+        this.updateUIState(targetEra);
+
+        // 3. Wait for CSS Transitions
+        await new Promise(resolve => setTimeout(resolve, 1200));
+
+        this.currentEra = targetEra;
+        this.isTransitioning = false;
+        document.body.classList.remove('time-shifting');
+    }
+
+    updateUIState(era) {
+        // Update Column Widths & Grayscale
+        this.columns.forEach(col => {
+            const colEra = col.id.replace('era-', '');
+            if (colEra === era) {
+                col.classList.remove('inactive');
+                col.classList.add('active');
+            } else {
+                col.classList.add('inactive');
+                col.classList.remove('active');
+            }
+        });
+
+        // Update Nav Link Active States
+        this.navLinks.forEach(link => {
+            const linkEra = link.getAttribute('data-era');
+            if (linkEra === era) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Log Era Change (for potential telemetry/analytics)
+        console.log(`[CHRONICLE] Era Shifted to: ${era}`);
+    }
+
+    /**
+     * Placeholder for Audio Management
+     * In a production environment, this would handle Web Audio API nodes
+     */
+    playAudioTrigger(era) {
+        const triggers = {
+            '1890': 'Victorian cobblestone and steam hum',
+            '2024': 'Digital white noise and urban traffic',
+            '2200': 'Bioluminescent drone and synthetic wind'
+        };
+        
+        console.log(`[AUDIO] Fading out current track...`);
+        console.log(`[AUDIO] Triggering ambient soundscape: ${triggers[era]}`);
+    }
+}
+
+// Initialize Engine on DOM Load
+document.addEventListener('DOMContentLoaded', () => {
+    window.chronicle = new TemporalEngine();
+});
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_50 -->
+</body>
+</html>
