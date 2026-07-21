@@ -4390,23 +4390,22 @@
           this.player.isJumping = true;
           this.player.canDoubleJump = true;
           this.playSFX('jump');
-          this.spawnDust(this.player.x + 20, this.groundY, 10, 'rgba(245, 158, 11, 0.6)');
+          this.spawnDust(this.player.x + 20, this.groundY, 8);
         } else if (this.player.canDoubleJump) {
           this.player.velocityY = -13.5;
           this.player.canDoubleJump = false;
           this.playSFX('jump');
-          this.spawnDust(this.player.x + 20, this.player.y + 40, 14, '#00f0ff');
-          this.triggerCameraShake(6, 12);
+          this.spawnDust(this.player.x + 20, this.player.y + 40, 10, '#00f0ff');
         }
       }
 
       slide() {
         if (!this.player.isSliding && this.player.isGrounded) {
           this.player.isSliding = true;
-          this.player.height = 36;
-          this.player.y = this.groundY - 36;
-          this.player.slideTimer = 34;
-          this.spawnDust(this.player.x, this.groundY, 8, 'rgba(255,255,255,0.6)');
+          this.player.height = 34;
+          this.player.y = this.groundY - 34;
+          this.player.slideTimer = 32;
+          this.spawnDust(this.player.x, this.groundY, 6);
         }
       }
 
@@ -4416,20 +4415,15 @@
         this.player.y = this.groundY - 60;
       }
 
-      triggerCameraShake(intensity = 8, duration = 15) {
-        this.shakeIntensity = intensity;
-        this.shakeTimer = duration;
-      }
-
-      spawnDust(x, y, count = 6, color = 'rgba(255,255,255,0.4)') {
+      spawnDust(x, y, count = 5, color = 'rgba(255,255,255,0.4)') {
         for (let i = 0; i < count; i++) {
           this.particles.push({
             x: x + (Math.random() * 20 - 10),
             y: y + (Math.random() * 10 - 5),
-            vx: -this.speed * 0.4 + (Math.random() * 3 - 1.5),
-            vy: Math.random() * -2.5 - 0.5,
-            size: Math.random() * 6 + 2,
-            alpha: 0.85,
+            vx: -this.speed * 0.4 + (Math.random() * 2 - 1),
+            vy: Math.random() * -2,
+            size: Math.random() * 5 + 2,
+            alpha: 0.8,
             color: color
           });
         }
@@ -4480,8 +4474,6 @@
       }
 
       start() {
-        this.shakeIntensity = 0;
-        this.shakeTimer = 0;
         this.loop();
       }
 
@@ -4507,13 +4499,6 @@
       update() {
         this.scoreDistance += Math.round(this.speed * 0.15);
         this.player.frameCount++;
-
-        // Camera Shake Decay
-        if (this.shakeTimer > 0) {
-          this.shakeTimer--;
-        } else {
-          this.shakeIntensity = 0;
-        }
 
         // Active Power-up timer
         if (this.activePowerup) {
@@ -4541,8 +4526,7 @@
             this.player.velocityY = 0;
             this.player.isGrounded = true;
             this.player.isJumping = false;
-            this.triggerCameraShake(4, 8);
-            this.spawnDust(this.player.x + 20, this.groundY, 6);
+            this.spawnDust(this.player.x + 20, this.groundY, 5);
           }
         } else if (this.player.isSliding) {
           this.player.slideTimer--;
@@ -4587,18 +4571,19 @@
               pBox.y + pBox.h > oBox.y) {
 
             if (this.activePowerup && this.activePowerup.type === 'SPEED_BOOST') {
-              this.spawnDust(obs.x, obs.y, 14, '#ffcc00');
+              // Destroy obstacle in dash mode!
+              this.spawnDust(obs.x, obs.y, 12, '#ffcc00');
               this.obstacles.splice(i, 1);
               continue;
             } else if (this.hasShield) {
+              // Shield absorbs hit
               this.hasShield = false;
               this.playSFX('hit');
-              this.triggerCameraShake(8, 14);
-              this.spawnDust(obs.x, obs.y, 16, '#00f0ff');
+              this.spawnDust(obs.x, obs.y, 15, '#00f0ff');
               this.obstacles.splice(i, 1);
               continue;
             } else {
-              this.triggerCameraShake(14, 20);
+              // Game Over Collision
               this.gameOver();
               return;
             }
@@ -4632,15 +4617,15 @@
               const count = (this.activePowerup && this.activePowerup.type === 'DOUBLE_COINS') ? 2 : 1;
               this.coinsCollected += count;
               this.playSFX('coin');
-              this.spawnDust(item.x, item.y, 5, '#f59e0b');
+              this.spawnDust(item.x, item.y, 4, '#f59e0b');
             } else if (item.type === 'crystal') {
               this.crystalsCollected++;
               this.playSFX('crystal');
-              this.spawnDust(item.x, item.y, 8, '#00f0ff');
+              this.spawnDust(item.x, item.y, 6, '#00f0ff');
             } else if (item.type === 'artifact') {
               this.artifactRecovered = this.level.artifact;
               this.playSFX('crystal');
-              this.spawnDust(item.x, item.y, 15, '#ec4899');
+              this.spawnDust(item.x, item.y, 12, '#ec4899');
             } else if (item.type === 'shield') {
               this.hasShield = true;
               this.playSFX('crystal');
@@ -4709,16 +4694,7 @@
       }
 
       render() {
-        this.ctx.save();
-
-        // Apply Camera Shake Offset
-        if (this.shakeTimer > 0) {
-          const sx = (Math.random() - 0.5) * this.shakeIntensity;
-          const sy = (Math.random() - 0.5) * this.shakeIntensity;
-          this.ctx.translate(sx, sy);
-        }
-
-        // 1. Multi-Layer Parallax Environment
+        // Clear & Draw Parallax Sky Background
         const bg = this.level.bgColors;
         const grad = this.ctx.createLinearGradient(0, 0, 0, this.groundY);
         grad.addColorStop(0, bg[0]);
@@ -4727,53 +4703,24 @@
         this.ctx.fillStyle = grad;
         this.ctx.fillRect(0, 0, this.width, this.height);
 
-        // Sky Rays & Moving Clouds
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.07)';
-        for (let i = 0; i < 6; i++) {
-          const cx = ((this.player.frameCount * 0.4 + i * 220) % (this.width + 300)) - 150;
-          this.ctx.beginPath();
-          this.ctx.arc(cx, 80 + (i % 3) * 25, 45 + (i % 2) * 25, 0, Math.PI * 2);
-          this.ctx.fill();
-        }
-
-        // Distant Era Silhouettes (Layer 1 Parallax)
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
-        for (let i = 0; i < 4; i++) {
-          const bx = ((this.player.frameCount * 0.8 + i * 320) % (this.width + 400)) - 100;
-          if (this.level.id === 'pyramids-of-giza') {
-            // Pyramid Silhouettes
-            this.ctx.beginPath();
-            this.ctx.moveTo(bx, this.groundY);
-            this.ctx.lineTo(bx + 110, this.groundY - 140);
-            this.ctx.lineTo(bx + 220, this.groundY);
-            this.ctx.fill();
-          } else if (this.level.id === 'colosseum') {
-            // Colosseum Arches
-            this.ctx.fillRect(bx, this.groundY - 120, 180, 120);
-          } else {
-            // Historic City Skyline / Watchtowers
-            this.ctx.fillRect(bx, this.groundY - 100, 140, 100);
-          }
-        }
-
-        // Midground Features (Layer 2 Parallax - Palm Trees / Banners / Torii Gates)
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+        // Distant Horizon Silhouettes / Clouds
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
         for (let i = 0; i < 5; i++) {
-          const px = ((this.player.frameCount * 2.2 + i * 260) % (this.width + 200)) - 50;
-          this.ctx.fillRect(px, this.groundY - 70, 8, 70);
+          const cx = ((this.player.frameCount * 0.5 + i * 240) % (this.width + 200)) - 100;
           this.ctx.beginPath();
-          this.ctx.arc(px + 4, this.groundY - 75, 24, 0, Math.PI * 2);
+          this.ctx.arc(cx, 120 + (i % 3) * 20, 40 + (i % 2) * 20, 0, Math.PI * 2);
           this.ctx.fill();
         }
 
-        // Foreground Ground Platform with Soft Top Highlight
+        // Draw Ground Platform
         this.ctx.fillStyle = this.level.groundColor;
         this.ctx.fillRect(0, this.groundY, this.width, this.height - this.groundY);
 
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-        this.ctx.fillRect(0, this.groundY, this.width, 5);
+        // Ground Top Accent Line
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        this.ctx.fillRect(0, this.groundY, this.width, 4);
 
-        // Draw Dust & Sparkle Particles
+        // Draw Particles
         this.particles.forEach(p => {
           this.ctx.save();
           this.ctx.globalAlpha = p.alpha;
@@ -4784,207 +4731,131 @@
           this.ctx.restore();
         });
 
-        // Draw Obstacles with Rich Textures & Shadows
+        // Draw Obstacles
         this.obstacles.forEach(obs => {
           this.ctx.save();
-          // Obstacle Ground Drop Shadow
-          this.ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-          this.ctx.beginPath();
-          this.ctx.ellipse(obs.x + obs.width / 2, this.groundY + 2, obs.width / 2 + 4, 5, 0, 0, Math.PI * 2);
-          this.ctx.fill();
-
           if (obs.type === 'boulder') {
             this.ctx.fillStyle = '#6e5d4f';
             this.ctx.beginPath();
             this.ctx.arc(obs.x + obs.width / 2, obs.y + obs.height / 2, obs.width / 2, 0, Math.PI * 2);
             this.ctx.fill();
-            this.ctx.strokeStyle = '#3d3229';
-            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = '#42372e';
             this.ctx.stroke();
           } else if (obs.type === 'pit') {
-            this.ctx.fillStyle = '#140e08';
+            this.ctx.fillStyle = '#1a130b';
             this.ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
           } else if (obs.type === 'drone') {
             this.ctx.fillStyle = '#00f0ff';
             this.ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-            this.ctx.shadowBlur = 12;
-            this.ctx.shadowColor = '#00f0ff';
           } else {
-            this.ctx.fillStyle = '#b91c1c';
+            this.ctx.fillStyle = '#a33636';
             this.ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-            this.ctx.strokeStyle = '#fef08a';
-            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = '#fff';
             this.ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
           }
           this.ctx.restore();
         });
 
-        // Draw Animated Collectibles (3D Rotating Coins & Crystals)
+        // Draw Collectibles
         this.collectibles.forEach(item => {
           this.ctx.save();
-          const bob = Math.sin(this.player.frameCount * 0.12) * 5;
-          const spin = Math.cos(this.player.frameCount * 0.18);
-
+          const bob = Math.sin(this.player.frameCount * 0.1) * 4;
           if (item.type === 'coin') {
-            // 3D Spinning Gold Coin
-            this.ctx.translate(item.x + 12, item.y + 12 + bob);
-            this.ctx.scale(Math.max(0.15, Math.abs(spin)), 1);
-
             this.ctx.fillStyle = '#f59e0b';
             this.ctx.beginPath();
-            this.ctx.arc(0, 0, 11, 0, Math.PI * 2);
+            this.ctx.arc(item.x + 12, item.y + 12 + bob, 10, 0, Math.PI * 2);
             this.ctx.fill();
-
             this.ctx.strokeStyle = '#fef08a';
-            this.ctx.lineWidth = 2;
             this.ctx.stroke();
           } else if (item.type === 'crystal') {
-            // Glowing Cyan Crystal
             this.ctx.fillStyle = '#00f0ff';
-            this.ctx.shadowBlur = 10;
-            this.ctx.shadowColor = '#00f0ff';
             this.ctx.beginPath();
-            this.ctx.moveTo(item.x + 13, item.y + bob);
-            this.ctx.lineTo(item.x + 24, item.y + 13 + bob);
-            this.ctx.lineTo(item.x + 13, item.y + 26 + bob);
-            this.ctx.lineTo(item.x + 2, item.y + 13 + bob);
-            this.ctx.closePath();
+            this.ctx.arc(item.x + 13, item.y + 13 + bob, 11, 0, Math.PI * 2);
             this.ctx.fill();
           } else if (item.type === 'artifact') {
-            // Recoverable Artifact Aura & Icon
-            this.ctx.fillStyle = 'rgba(236, 72, 153, 0.25)';
-            this.ctx.beginPath();
-            this.ctx.arc(item.x + 16, item.y + 16 + bob, 22, 0, Math.PI * 2);
-            this.ctx.fill();
-
-            this.ctx.font = '26px serif';
-            this.ctx.fillText(this.level.artifact.icon, item.x, item.y + 26 + bob);
+            this.ctx.font = '24px serif';
+            this.ctx.fillText(this.level.artifact.icon, item.x, item.y + 24 + bob);
           } else {
-            // Power-Up Badges
             this.ctx.fillStyle = '#a855f7';
-            this.ctx.shadowBlur = 12;
-            this.ctx.shadowColor = '#a855f7';
             this.ctx.beginPath();
-            this.ctx.arc(item.x + 14, item.y + 14 + bob, 13, 0, Math.PI * 2);
+            this.ctx.arc(item.x + 14, item.y + 14 + bob, 12, 0, Math.PI * 2);
             this.ctx.fill();
           }
           this.ctx.restore();
         });
 
-        // Draw Charming Mascot Character ("Chronos Kid")
+        // Draw Mascot Explorer Character ("Chronos Kid")
         this.renderMascot();
-
-        this.ctx.restore();
       }
 
       renderMascot() {
         const p = this.player;
         this.ctx.save();
 
-        // Mascot Ground Shadow
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-        this.ctx.beginPath();
-        this.ctx.ellipse(p.x + p.width / 2, this.groundY + 3, 22, 5, 0, 0, Math.PI * 2);
-        this.ctx.fill();
-
         // Shield Aura Effect
         if (this.hasShield) {
           this.ctx.strokeStyle = '#00f0ff';
-          this.ctx.lineWidth = 3.5;
-          this.ctx.shadowBlur = 15;
-          this.ctx.shadowColor = '#00f0ff';
+          this.ctx.lineWidth = 3;
           this.ctx.beginPath();
-          this.ctx.arc(p.x + p.width / 2, p.y + p.height / 2, 40, 0, Math.PI * 2);
+          this.ctx.arc(p.x + p.width / 2, p.y + p.height / 2, 38, 0, Math.PI * 2);
           this.ctx.stroke();
-          this.ctx.shadowBlur = 0;
         }
 
         // Speed Boost Dash Effect
         if (this.activePowerup && this.activePowerup.type === 'SPEED_BOOST') {
-          this.ctx.fillStyle = 'rgba(255, 204, 0, 0.35)';
-          this.ctx.fillRect(p.x - 30, p.y, p.width + 30, p.height);
+          this.ctx.fillStyle = 'rgba(255, 204, 0, 0.3)';
+          this.ctx.fillRect(p.x - 20, p.y, p.width + 20, p.height);
         }
 
         if (p.isSliding) {
           // Sliding Low Stance
-          this.ctx.fillStyle = '#ea580c'; // Jacket
-          this.ctx.fillRect(p.x, p.y + 12, p.width, p.height - 12);
+          this.ctx.fillStyle = '#d97706'; // Outfit
+          this.ctx.fillRect(p.x, p.y + 10, p.width, p.height - 10);
           // Head & Hat
-          this.ctx.fillStyle = '#fed7aa';
+          this.ctx.fillStyle = '#fde047';
           this.ctx.beginPath();
-          this.ctx.arc(p.x + p.width - 6, p.y + 14, 11, 0, Math.PI * 2);
+          this.ctx.arc(p.x + p.width - 6, p.y + 12, 10, 0, Math.PI * 2);
           this.ctx.fill();
-          // Hat
-          this.ctx.fillStyle = '#78350f';
-          this.ctx.fillRect(p.x + p.width - 16, p.y + 2, 22, 6);
         } else {
           // Standing / Running Stance
           // Backpack
-          this.ctx.fillStyle = '#92400e';
-          this.ctx.fillRect(p.x - 7, p.y + 18, 14, 24);
+          this.ctx.fillStyle = '#78350f';
+          this.ctx.fillRect(p.x - 6, p.y + 18, 12, 22);
 
-          // Body Explorer Jacket
-          this.ctx.fillStyle = '#ea580c';
+          // Body Coat
+          this.ctx.fillStyle = '#d97706';
           this.ctx.fillRect(p.x + 6, p.y + 16, 30, 26);
 
-          // Belt Pocket Watch Chain (Gold)
-          this.ctx.strokeStyle = '#f59e0b';
-          this.ctx.lineWidth = 2;
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 12, p.y + 36, 4, 0, Math.PI);
-          this.ctx.stroke();
-
-          // Wrist Time Device (Glowing Cyan)
+          // Belt Time Device (Glowing Cyan)
           this.ctx.fillStyle = '#00f0ff';
-          this.ctx.shadowBlur = 10;
+          this.ctx.shadowBlur = 8;
           this.ctx.shadowColor = '#00f0ff';
-          this.ctx.fillRect(p.x + 24, p.y + 34, 8, 6);
+          this.ctx.fillRect(p.x + 18, p.y + 38, 8, 6);
           this.ctx.shadowBlur = 0;
 
-          // Head & Expressive Face
-          this.ctx.fillStyle = '#fed7aa';
+          // Head
+          this.ctx.fillStyle = '#fde047';
           this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 12, 13, 0, Math.PI * 2);
+          this.ctx.arc(p.x + 22, p.y + 12, 12, 0, Math.PI * 2);
           this.ctx.fill();
-
-          // Large Expressive Eye
-          this.ctx.fillStyle = '#1e293b';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 25, p.y + 10, 3.5, 0, Math.PI * 2);
-          this.ctx.fill();
-          // Eye Specular Highlight
-          this.ctx.fillStyle = '#ffffff';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 26, p.y + 9, 1.2, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Friendly Smile
-          this.ctx.strokeStyle = '#9a3412';
-          this.ctx.lineWidth = 1.8;
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 24, p.y + 15, 4, 0, Math.PI * 0.85);
-          this.ctx.stroke();
 
           // Explorer Fedora Hat
-          this.ctx.fillStyle = '#78350f';
-          this.ctx.fillRect(p.x + 6, p.y + 1, 32, 6);
+          this.ctx.fillStyle = '#92400e';
+          this.ctx.fillRect(p.x + 8, p.y + 2, 28, 6);
           this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 2, 12, Math.PI, 0);
+          this.ctx.arc(p.x + 22, p.y + 3, 10, Math.PI, 0);
           this.ctx.fill();
 
-          // Brass Goggles Lens Glare
+          // Goggles Lens Glare
           this.ctx.fillStyle = '#00f0ff';
-          this.ctx.shadowBlur = 6;
-          this.ctx.shadowColor = '#00f0ff';
           this.ctx.beginPath();
-          this.ctx.arc(p.x + 20, p.y + 5, 3.5, 0, Math.PI * 2);
+          this.ctx.arc(p.x + 20, p.y + 6, 3, 0, Math.PI * 2);
           this.ctx.fill();
-          this.ctx.shadowBlur = 0;
 
-          // Explorer Leather Boots & Legs
-          const stride = Math.sin(p.frameCount * 0.38) * 11;
+          // Animated Legs
+          const stride = Math.sin(p.frameCount * 0.35) * 10;
           this.ctx.strokeStyle = '#451a03';
-          this.ctx.lineWidth = 6;
+          this.ctx.lineWidth = 5;
           this.ctx.beginPath();
           this.ctx.moveTo(p.x + 14, p.y + 42);
           this.ctx.lineTo(p.x + 14 + stride, p.y + 60);
@@ -5000,21 +4871,26 @@
         this.isGameOver = true;
         this.playSFX('hit');
 
+        // Calculate earned metrics
         const baseXP = Math.floor(this.scoreDistance * 0.1) + (this.coinsCollected * 2);
         const artifactXP = this.artifactRecovered ? this.artifactRecovered.xp : 0;
         const totalXP = baseXP + artifactXP;
 
+        // Persist to LocalStorage
         addXP(totalXP);
 
+        // Add Coins
         let currentCoins = parseInt(localStorage.getItem('chronicle_user_coins') || '0');
         currentCoins += this.coinsCollected;
         localStorage.setItem('chronicle_user_coins', currentCoins.toString());
 
+        // Save Highscore
         let bestDist = parseInt(localStorage.getItem('chronicle_runner_highscore') || '0');
         if (this.scoreDistance > bestDist) {
           localStorage.setItem('chronicle_runner_highscore', this.scoreDistance.toString());
         }
 
+        // Add recovered artifact to Museum
         if (this.artifactRecovered) {
           let museum = JSON.parse(localStorage.getItem('chronicle_unlocked_museum') || '[]');
           if (!museum.includes(this.artifactRecovered.name)) {
@@ -5023,6 +4899,7 @@
           }
         }
 
+        // Populate Summary Modal
         const modal = document.getElementById('runner-summary-modal');
         const lmName = document.getElementById('summary-landmark-name');
         const distEl = document.getElementById('summary-distance');
@@ -5049,6 +4926,7 @@
 
         if (modal) modal.classList.remove('hidden');
 
+        // Refresh main page UI metrics
         updateProgressUI();
       }
     }
