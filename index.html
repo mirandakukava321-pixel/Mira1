@@ -4344,12 +4344,6 @@
         this.hasShield = false;
         this.artifactRecovered = null;
 
-        // Parallax Right-to-Left Scroll Offsets
-        this.parallaxSkyOffset = 0;
-        this.parallaxDistOffset = 0;
-        this.parallaxMidOffset = 0;
-        this.groundTextureOffset = 0;
-
         this.spawnTimer = 0;
         this.isPaused = false;
         this.isGameOver = false;
@@ -4537,12 +4531,6 @@
           currentSpeed *= 0.65;
         }
 
-        // Update Parallax Right-to-Left Offsets
-        this.parallaxSkyOffset += currentSpeed * 0.12;
-        this.parallaxDistOffset += currentSpeed * 0.35;
-        this.parallaxMidOffset += currentSpeed * 0.65;
-        this.groundTextureOffset += currentSpeed;
-
         // Mascot Physics
         if (!this.player.isGrounded) {
           this.player.velocityY += this.gravity;
@@ -4574,7 +4562,7 @@
           }
         }
 
-        // Update Obstacles (Approaching from Right to Left)
+        // Update Obstacles
         for (let i = this.obstacles.length - 1; i >= 0; i--) {
           const obs = this.obstacles[i];
           obs.x -= currentSpeed;
@@ -4619,7 +4607,7 @@
           if (obs.x < -100) this.obstacles.splice(i, 1);
         }
 
-        // Update Collectibles (Approaching from Right to Left)
+        // Update Collectibles
         for (let i = this.collectibles.length - 1; i >= 0; i--) {
           const item = this.collectibles[i];
           item.x -= currentSpeed;
@@ -4730,7 +4718,7 @@
           this.ctx.translate(sx, sy);
         }
 
-        // 1. Multi-Layer Parallax Environment (Moving RIGHT to LEFT)
+        // 1. Multi-Layer Parallax Environment
         const bg = this.level.bgColors;
         const grad = this.ctx.createLinearGradient(0, 0, 0, this.groundY);
         grad.addColorStop(0, bg[0]);
@@ -4739,19 +4727,19 @@
         this.ctx.fillStyle = grad;
         this.ctx.fillRect(0, 0, this.width, this.height);
 
-        // Sky Rays & Moving Clouds (Slowest Right-to-Left)
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+        // Sky Rays & Moving Clouds
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.07)';
         for (let i = 0; i < 6; i++) {
-          const cx = (this.width + 300) - ((this.parallaxSkyOffset + i * 220) % (this.width + 300)) - 150;
+          const cx = ((this.player.frameCount * 0.4 + i * 220) % (this.width + 300)) - 150;
           this.ctx.beginPath();
           this.ctx.arc(cx, 80 + (i % 3) * 25, 45 + (i % 2) * 25, 0, Math.PI * 2);
           this.ctx.fill();
         }
 
-        // Distant Era Silhouettes (Layer 1 Parallax Right-to-Left)
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
-        for (let i = 0; i < 5; i++) {
-          const bx = (this.width + 400) - ((this.parallaxDistOffset + i * 320) % (this.width + 400)) - 100;
+        // Distant Era Silhouettes (Layer 1 Parallax)
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+        for (let i = 0; i < 4; i++) {
+          const bx = ((this.player.frameCount * 0.8 + i * 320) % (this.width + 400)) - 100;
           if (this.level.id === 'pyramids-of-giza') {
             // Pyramid Silhouettes
             this.ctx.beginPath();
@@ -4768,29 +4756,21 @@
           }
         }
 
-        // Midground Features (Layer 2 Parallax Right-to-Left - Palm Trees / Banners / Torii Gates)
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
-        for (let i = 0; i < 6; i++) {
-          const px = (this.width + 200) - ((this.parallaxMidOffset + i * 260) % (this.width + 200)) - 50;
+        // Midground Features (Layer 2 Parallax - Palm Trees / Banners / Torii Gates)
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+        for (let i = 0; i < 5; i++) {
+          const px = ((this.player.frameCount * 2.2 + i * 260) % (this.width + 200)) - 50;
           this.ctx.fillRect(px, this.groundY - 70, 8, 70);
           this.ctx.beginPath();
           this.ctx.arc(px + 4, this.groundY - 75, 24, 0, Math.PI * 2);
           this.ctx.fill();
         }
 
-        // Foreground Ground Platform with Soft Top Highlight & Texture Grid (Moving Right-to-Left)
+        // Foreground Ground Platform with Soft Top Highlight
         this.ctx.fillStyle = this.level.groundColor;
         this.ctx.fillRect(0, this.groundY, this.width, this.height - this.groundY);
 
-        // Synchronized Ground Joint Lines Moving Right-to-Left
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-        const groundTileWidth = 50;
-        const groundShift = (this.groundTextureOffset % groundTileWidth);
-        for (let gx = -groundShift; gx < this.width + groundTileWidth; gx += groundTileWidth) {
-          this.ctx.fillRect(gx, this.groundY, 3, this.height - this.groundY);
-        }
-
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
         this.ctx.fillRect(0, this.groundY, this.width, 5);
 
         // Draw Dust & Sparkle Particles
@@ -4891,7 +4871,7 @@
           this.ctx.restore();
         });
 
-        // Draw Cute Cartoon Explorer Girl Mascot ("Maya the Time Explorer") Facing RIGHT
+        // Draw Charming Mascot Character ("Chronos Kid")
         this.renderMascot();
 
         this.ctx.restore();
@@ -4901,8 +4881,8 @@
         const p = this.player;
         this.ctx.save();
 
-        // Ground Drop Shadow
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+        // Mascot Ground Shadow
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         this.ctx.beginPath();
         this.ctx.ellipse(p.x + p.width / 2, this.groundY + 3, 22, 5, 0, 0, Math.PI * 2);
         this.ctx.fill();
@@ -4919,143 +4899,98 @@
           this.ctx.shadowBlur = 0;
         }
 
-        // Speed Boost Dash Trail
+        // Speed Boost Dash Effect
         if (this.activePowerup && this.activePowerup.type === 'SPEED_BOOST') {
           this.ctx.fillStyle = 'rgba(255, 204, 0, 0.35)';
           this.ctx.fillRect(p.x - 30, p.y, p.width + 30, p.height);
         }
 
-        // Synchronized Hair & Stride Motion
-        const hairWave = Math.sin(p.frameCount * 0.35) * 4;
-        const stride = Math.sin(p.frameCount * 0.38) * 12;
-
         if (p.isSliding) {
-          // Low Sliding Stance (Trailing Hair & Boots Forward)
-          // Hair trailing left
-          this.ctx.fillStyle = '#5c2c16';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x - 4, p.y + 16, 10, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Explorer Jacket & Trousers
-          this.ctx.fillStyle = '#ea580c';
-          this.ctx.fillRect(p.x, p.y + 12, p.width - 6, p.height - 12);
-
-          // Head & Face
+          // Sliding Low Stance
+          this.ctx.fillStyle = '#ea580c'; // Jacket
+          this.ctx.fillRect(p.x, p.y + 12, p.width, p.height - 12);
+          // Head & Hat
           this.ctx.fillStyle = '#fed7aa';
           this.ctx.beginPath();
-          this.ctx.arc(p.x + p.width - 8, p.y + 14, 11, 0, Math.PI * 2);
+          this.ctx.arc(p.x + p.width - 6, p.y + 14, 11, 0, Math.PI * 2);
           this.ctx.fill();
-
-          // Hat Facing Right
+          // Hat
           this.ctx.fillStyle = '#78350f';
-          this.ctx.fillRect(p.x + p.width - 18, p.y + 2, 22, 6);
+          this.ctx.fillRect(p.x + p.width - 16, p.y + 2, 22, 6);
         } else {
-          // Standing / Running Stance Facing RIGHT ->
-          
-          // 1. Leather Backpack & Sleeping Bag Roll
+          // Standing / Running Stance
+          // Backpack
           this.ctx.fillStyle = '#92400e';
-          this.ctx.fillRect(p.x - 8, p.y + 18, 12, 24);
-          this.ctx.fillStyle = '#0d9488'; // Teal sleeping bag
-          this.ctx.fillRect(p.x - 9, p.y + 14, 14, 6);
+          this.ctx.fillRect(p.x - 7, p.y + 18, 14, 24);
 
-          // 2. Shoulder-Length Brown Hair Flowing Backward Left
-          this.ctx.fillStyle = '#5c2c16';
+          // Body Explorer Jacket
+          this.ctx.fillStyle = '#ea580c';
+          this.ctx.fillRect(p.x + 6, p.y + 16, 30, 26);
+
+          // Belt Pocket Watch Chain (Gold)
+          this.ctx.strokeStyle = '#f59e0b';
+          this.ctx.lineWidth = 2;
           this.ctx.beginPath();
-          this.ctx.arc(p.x + 12, p.y + 18 + hairWave, 12, 0, Math.PI * 2);
-          this.ctx.arc(p.x + 6, p.y + 24 + hairWave, 10, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // 3. Explorer Jacket & Cream Lapel Collar
-          this.ctx.fillStyle = '#ea580c'; // Terracotta jacket
-          this.ctx.fillRect(p.x + 6, p.y + 16, 26, 26);
-          this.ctx.fillStyle = '#fef3c7'; // Lapel collar
-          this.ctx.fillRect(p.x + 22, p.y + 16, 8, 12);
-
-          // 4. Gold Pocket Watch Chain & Trousers
-          this.ctx.fillStyle = '#451a03'; // Shorts/Trousers
-          this.ctx.fillRect(p.x + 8, p.y + 38, 22, 8);
-
-          this.ctx.strokeStyle = '#f59e0b'; // Gold chain
-          this.ctx.lineWidth = 1.8;
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 14, p.y + 36, 4, 0, Math.PI);
+          this.ctx.arc(p.x + 12, p.y + 36, 4, 0, Math.PI);
           this.ctx.stroke();
 
-          // 5. Wrist Time Device (Glowing Cyan on Right Arm)
+          // Wrist Time Device (Glowing Cyan)
           this.ctx.fillStyle = '#00f0ff';
-          this.ctx.shadowBlur = 8;
+          this.ctx.shadowBlur = 10;
           this.ctx.shadowColor = '#00f0ff';
-          this.ctx.fillRect(p.x + 26, p.y + 30, 7, 5);
+          this.ctx.fillRect(p.x + 24, p.y + 34, 8, 6);
           this.ctx.shadowBlur = 0;
 
-          // 6. Cute Head & Face Profile Facing Right
-          this.ctx.fillStyle = '#fed7aa'; // Skin tone
+          // Head & Expressive Face
+          this.ctx.fillStyle = '#fed7aa';
           this.ctx.beginPath();
           this.ctx.arc(p.x + 22, p.y + 12, 13, 0, Math.PI * 2);
           this.ctx.fill();
 
-          // Rosy Cheeks
-          this.ctx.fillStyle = 'rgba(244, 114, 182, 0.45)';
+          // Large Expressive Eye
+          this.ctx.fillStyle = '#1e293b';
           this.ctx.beginPath();
-          this.ctx.arc(p.x + 26, p.y + 15, 3.5, 0, Math.PI * 2);
+          this.ctx.arc(p.x + 25, p.y + 10, 3.5, 0, Math.PI * 2);
           this.ctx.fill();
-
-          // Large Expressive Eye Facing Right
-          this.ctx.fillStyle = '#1e1b4b';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 26, p.y + 10, 3.8, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Eye Dual Specular Highlights
+          // Eye Specular Highlight
           this.ctx.fillStyle = '#ffffff';
           this.ctx.beginPath();
-          this.ctx.arc(p.x + 27.2, p.y + 8.8, 1.3, 0, Math.PI * 2);
-          this.ctx.arc(p.x + 25.2, p.y + 11.2, 0.7, 0, Math.PI * 2);
+          this.ctx.arc(p.x + 26, p.y + 9, 1.2, 0, Math.PI * 2);
           this.ctx.fill();
 
-          // Warm Smile Curve
-          this.ctx.strokeStyle = '#be123c';
+          // Friendly Smile
+          this.ctx.strokeStyle = '#9a3412';
           this.ctx.lineWidth = 1.8;
           this.ctx.beginPath();
-          this.ctx.arc(p.x + 25, p.y + 15, 4, 0, Math.PI * 0.8);
+          this.ctx.arc(p.x + 24, p.y + 15, 4, 0, Math.PI * 0.85);
           this.ctx.stroke();
 
-          // 7. Explorer Fedora Hat
-          this.ctx.fillStyle = '#78350f'; // Brown fedora
+          // Explorer Fedora Hat
+          this.ctx.fillStyle = '#78350f';
           this.ctx.fillRect(p.x + 6, p.y + 1, 32, 6);
           this.ctx.beginPath();
           this.ctx.arc(p.x + 22, p.y + 2, 12, Math.PI, 0);
           this.ctx.fill();
 
-          // Dark Leather Hat Band & Gold Buckle
-          this.ctx.fillStyle = '#3d1e03';
-          this.ctx.fillRect(p.x + 10, p.y + 5, 24, 2.5);
-          this.ctx.fillStyle = '#f59e0b';
-          this.ctx.fillRect(p.x + 26, p.y + 4.5, 4, 3.5);
+          // Brass Goggles Lens Glare
+          this.ctx.fillStyle = '#00f0ff';
+          this.ctx.shadowBlur = 6;
+          this.ctx.shadowColor = '#00f0ff';
+          this.ctx.beginPath();
+          this.ctx.arc(p.x + 20, p.y + 5, 3.5, 0, Math.PI * 2);
+          this.ctx.fill();
+          this.ctx.shadowBlur = 0;
 
-          // 8. Animated Legs & Boots (No Foot Sliding)
-          if (!p.isGrounded) {
-            // Tucked Jump Pose
-            this.ctx.strokeStyle = '#3d1e03';
-            this.ctx.lineWidth = 6;
-            this.ctx.beginPath();
-            this.ctx.moveTo(p.x + 14, p.y + 42);
-            this.ctx.lineTo(p.x + 24, p.y + 52);
-            this.ctx.moveTo(p.x + 24, p.y + 42);
-            this.ctx.lineTo(p.x + 32, p.y + 50);
-            this.ctx.stroke();
-          } else {
-            // Running Leg Stride
-            this.ctx.strokeStyle = '#3d1e03';
-            this.ctx.lineWidth = 6;
-            this.ctx.beginPath();
-            this.ctx.moveTo(p.x + 14, p.y + 42);
-            this.ctx.lineTo(p.x + 14 + stride, p.y + 60);
-            this.ctx.moveTo(p.x + 26, p.y + 42);
-            this.ctx.lineTo(p.x + 26 - stride, p.y + 60);
-            this.ctx.stroke();
-          }
+          // Explorer Leather Boots & Legs
+          const stride = Math.sin(p.frameCount * 0.38) * 11;
+          this.ctx.strokeStyle = '#451a03';
+          this.ctx.lineWidth = 6;
+          this.ctx.beginPath();
+          this.ctx.moveTo(p.x + 14, p.y + 42);
+          this.ctx.lineTo(p.x + 14 + stride, p.y + 60);
+          this.ctx.moveTo(p.x + 28, p.y + 42);
+          this.ctx.lineTo(p.x + 28 - stride, p.y + 60);
+          this.ctx.stroke();
         }
 
         this.ctx.restore();
