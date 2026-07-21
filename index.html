@@ -66,11 +66,11 @@
         <a href="#destinations-gallery" class="text-white/60 hover:text-white transition">Featured Destinations</a>
         <a href="#how-it-works" class="text-white/60 hover:text-white transition">How It Works</a>
       </div>
-      <div class="flex items-center gap-3" style="position:relative;z-index:100">
-        <button onclick="toggleTimePassport(true)" class="font-label-tech text-xs px-3.5 py-2 border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 rounded flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,175,85,0.15)] transition duration-300 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
+      <div class="flex items-center gap-3">
+        <button onclick="toggleTimePassport(true)" class="font-label-tech text-xs px-3.5 py-2 border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 rounded flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,175,85,0.15)] transition duration-300">
           <span>📜</span> PASSPORT
         </button>
-        <button onclick="triggerDefaultWarp()" class="font-label-tech text-xs px-4 py-2 border border-primary/45 text-primary hover:bg-primary/10 hover:border-primary rounded shadow-[0_0_15px_rgba(0,240,255,0.15)] transition duration-300 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
+        <button onclick="triggerDefaultWarp()" class="font-label-tech text-xs px-4 py-2 border border-primary/45 text-primary hover:bg-primary/10 hover:border-primary rounded shadow-[0_0_15px_rgba(0,240,255,0.15)] transition duration-300">
           INITIATE WARP
         </button>
       </div>
@@ -82,13 +82,13 @@
       <div class="absolute w-[500px] h-[500px] rounded-full bg-primary/5 blur-[150px] -z-10 pointer-events-none"></div>
       <div class="absolute w-[400px] h-[400px] rounded-full bg-purple-500/5 blur-[150px] -z-10 pointer-events-none translate-y-32"></div>
 
-      <!-- Sci-fi Time portal outline (pointer-events:none so buttons underneath remain clickable) -->
-      <div class="relative w-72 h-72 rounded-full border border-primary/15 flex items-center justify-center mb-8 animate-[spin_60s_linear_infinite] pointer-events-none">
-        <div class="absolute w-64 h-64 rounded-full border border-dashed border-primary/20 pointer-events-none"></div>
-        <div class="absolute w-56 h-56 rounded-full border border-purple-500/30 pointer-events-none"></div>
-        <div class="absolute w-48 h-48 rounded-full border border-primary/40 animate-[spin_20s_linear_infinite_reverse] pointer-events-none"></div>
+      <!-- Sci-fi Time portal outline -->
+      <div class="relative w-72 h-72 rounded-full border border-primary/15 flex items-center justify-center mb-8 animate-[spin_60s_linear_infinite]">
+        <div class="absolute w-64 h-64 rounded-full border border-dashed border-primary/20"></div>
+        <div class="absolute w-56 h-56 rounded-full border border-purple-500/30"></div>
+        <div class="absolute w-48 h-48 rounded-full border border-primary/40 animate-[spin_20s_linear_infinite_reverse]"></div>
         <!-- Portal Core Pulsing Light -->
-        <div class="w-12 h-12 rounded-full bg-primary/20 shadow-[0_0_40px_rgba(0,240,255,0.6)] animate-pulse pointer-events-none"></div>
+        <div class="w-12 h-12 rounded-full bg-primary/20 shadow-[0_0_40px_rgba(0,240,255,0.6)] animate-pulse"></div>
       </div>
 
       <!-- Hero Header -->
@@ -99,15 +99,9 @@
         Explore the past. Experience the present. Discover the future.
       </p>
 
-      <div class="flex flex-col sm:flex-row items-center gap-4 justify-center" style="position:relative;z-index:100">
-        <button id="initiate-portal-jump-btn" onclick="triggerDefaultWarp()" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_45px_rgba(0,240,255,0.55)] transform hover:-translate-y-0.5 transition duration-300 uppercase cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
-          Initiate Portal Jump
-        </button>
-        <button id="hero-play-minigame-btn" onclick="openTimeExplorerModal()" class="font-label-tech text-sm px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_45px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5 transition duration-300 uppercase flex items-center gap-2 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
-          <span>🎮</span>
-          <span>Play Mini Game</span>
-        </button>
-      </div>
+      <button onclick="triggerDefaultWarp()" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_45px_rgba(0,240,255,0.55)] transform hover:-translate-y-0.5 transition duration-300 uppercase">
+        Initiate Portal Jump
+      </button>
     </section>
 
     <!-- 2. TIME ERA PREVIEW -->
@@ -171,13 +165,7 @@
                 <p class="font-label-tech text-[10px] text-white/50 tracking-widest uppercase">TEMPORAL RECONNAISSANCE METRICS</p>
               </div>
             </div>
-            <div class="flex items-center gap-3">
-              <button onclick="openTimeExplorerModal()" class="px-4 py-2 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-label-tech text-[11px] font-bold tracking-wider transition flex items-center gap-1.5 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-                <span>🏃</span>
-                <span>PLAY MINI GAME</span>
-              </button>
-              <span id="progress-text" class="font-mono text-sm font-bold text-primary">0 / 11 Landmarks Explored (0%)</span>
-            </div>
+            <span id="progress-text" class="font-mono text-sm font-bold text-primary">0 / 11 Landmarks Explored (0%)</span>
           </div>
 
           <!-- Outer Progress Bar -->
@@ -481,10 +469,6 @@
     <!-- HEADER -->
     <header class="w-full flex items-center justify-between px-6 py-4 glassmorphic border-b border-white/5 mx-auto max-w-[1440px] mt-4 rounded-lg">
       <div class="flex items-center gap-3">
-        <!-- Back to Homepage button - always visible -->
-        <button id="back-to-home-btn" onclick="showHomepage(event)" class="font-label-tech text-[10px] px-3 py-1.5 border border-primary/40 text-primary hover:bg-primary/10 rounded flex items-center gap-1.5 transition duration-300" title="Back to Homepage" style="pointer-events:auto;cursor:pointer">
-          ← HOME
-        </button>
         <!-- Logo -->
         <span class="font-display-past text-2xl font-bold tracking-wider text-white select-none">CHRONICLE</span>
         <span class="font-label-tech text-[10px] text-white/40 border border-white/10 px-2 py-0.5 rounded">v2.0.4-sys</span>
@@ -576,12 +560,22 @@
           </div>
         </div>
 
-        <!-- Center Control Bar: Zoom & Reset -->
-        <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg font-mono text-xs text-white">
-          <button onclick="zoomInspection(-0.25)" class="px-2.5 py-0.5 hover:bg-white/10 rounded font-bold text-cyan-300 transition" title="Zoom Out (-)">−</button>
-          <span id="inspection-zoom-level" class="text-[11px] text-white/80 min-w-[45px] text-center font-bold">100%</span>
-          <button onclick="zoomInspection(0.25)" class="px-2.5 py-0.5 hover:bg-white/10 rounded font-bold text-cyan-300 transition" title="Zoom In (+)">+</button>
-          <button onclick="resetInspectionTransform()" class="px-2.5 py-0.5 ml-1 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 rounded text-[10px] tracking-wider font-label-tech transition">RESET</button>
+        <!-- Center Control Bar: Era Switcher & Zoom Controls -->
+        <div class="flex items-center gap-3">
+          <!-- Timeline Era Switcher -->
+          <div class="flex items-center gap-1 bg-white/5 border border-white/10 p-1 rounded-lg font-mono text-[10px]">
+            <button id="inspect-era-1890-btn" onclick="switchInspectionEra('1890')" class="px-2.5 py-1 rounded transition text-amber-300 font-bold bg-amber-500/20 border border-amber-500/40">1890 PAST</button>
+            <button id="inspect-era-2024-btn" onclick="switchInspectionEra('2024')" class="px-2.5 py-1 rounded transition text-white/60 hover:text-white border border-transparent">2024 PRESENT</button>
+            <button id="inspect-era-2200-btn" onclick="switchInspectionEra('2200')" class="px-2.5 py-1 rounded transition text-white/60 hover:text-white border border-transparent">2200 FUTURE</button>
+          </div>
+
+          <!-- Zoom Controls -->
+          <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg font-mono text-xs text-white">
+            <button onclick="zoomInspection(-0.25)" class="px-2.5 py-0.5 hover:bg-white/10 rounded font-bold text-cyan-300 transition" title="Zoom Out (-)">−</button>
+            <span id="inspection-zoom-level" class="text-[11px] text-white/80 min-w-[45px] text-center font-bold">100%</span>
+            <button onclick="zoomInspection(0.25)" class="px-2.5 py-0.5 hover:bg-white/10 rounded font-bold text-cyan-300 transition" title="Zoom In (+)">+</button>
+            <button onclick="resetInspectionTransform()" class="px-2.5 py-0.5 ml-1 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 rounded text-[10px] tracking-wider font-label-tech transition">RESET</button>
+          </div>
         </div>
 
         <!-- Right HUD & Close -->
@@ -614,156 +608,6 @@
         </div>
         <div id="inspection-hint-banner" class="text-amber-300 font-bold hidden md:block">
           💡 Click directly on the anomaly object to restore the timeline!
-    </div>
-
-    <!-- ==================== TIME EXPLORER ADVENTURE MINI-GAME MODAL ==================== -->
-    <div id="time-explorer-game-modal" class="fixed inset-0 z-[120] bg-black/95 backdrop-blur-xl flex flex-col justify-between hidden transition-opacity duration-300 select-none">
-      <!-- Modal Top Navigation Header -->
-      <header class="px-6 py-4 border-b border-white/10 bg-black/80 flex items-center justify-between z-10 shrink-0">
-        <div class="flex items-center gap-3">
-          <span class="text-2xl animate-bounce">🏃</span>
-          <div>
-            <h3 class="font-display-present text-lg sm:text-xl font-bold text-white tracking-wider">TIME EXPLORER ADVENTURE</h3>
-            <p class="font-label-tech text-[10px] text-cyan-400 tracking-widest uppercase">ENDLESS RUNNER MINI-GAME // HISTORICAL RECOVERY</p>
-          </div>
-        </div>
-        
-        <div class="flex items-center gap-3">
-          <button id="runner-audio-btn" onclick="toggleRunnerAudio()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white font-mono text-xs font-bold transition flex items-center gap-1.5">
-            🔊 <span id="runner-audio-status">AUDIO ON</span>
-          </button>
-          <button onclick="closeTimeExplorerModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-red-500/20 hover:border-red-500/40 border border-white/20 text-white hover:text-red-400 flex items-center justify-center text-lg font-bold transition">
-            ✕
-          </button>
-        </div>
-      </header>
-
-      <!-- Level Selector Screen (Shown before playing) -->
-      <div id="runner-level-select-screen" class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full flex flex-col gap-6">
-        <div class="glassmorphic p-6 border border-white/10 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-purple-950/30 to-amber-950/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <h2 class="font-display-present text-2xl font-bold text-white mb-1">SELECT TIME ERA RUNNER LEVEL</h2>
-            <p class="text-white/60 text-xs font-mono">Visit landmarks on the main website to unlock new historical runner levels!</p>
-          </div>
-          <div class="flex items-center gap-4 font-mono text-xs">
-            <span class="px-3 py-1.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold" id="runner-total-coins-badge">🪙 0 Coins</span>
-            <span class="px-3 py-1.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold" id="runner-highscore-badge">🏆 Best: 0m</span>
-          </div>
-        </div>
-
-        <!-- Grid of Landmark Runner Levels -->
-        <div id="runner-levels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Dynamically generated level cards -->
-        </div>
-      </div>
-
-      <!-- Game Canvas & HUD View (Shown during gameplay) -->
-      <div id="runner-gameplay-screen" class="flex-1 relative w-full h-full flex flex-col items-center justify-center hidden overflow-hidden bg-slate-950">
-        <!-- Real-time HUD Header Bar -->
-        <div id="runner-hud" class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none font-mono text-xs">
-          <!-- Left Stats: Distance, Coins, Crystals -->
-          <div class="flex items-center gap-3 bg-black/70 backdrop-blur-md border border-white/10 px-4 py-2 rounded-xl pointer-events-auto shadow-lg">
-            <span id="hud-distance" class="text-amber-300 font-bold tracking-wider text-sm sm:text-base">0m</span>
-            <span class="text-white/30">|</span>
-            <span id="hud-coins" class="text-yellow-400 font-bold">🪙 0</span>
-            <span class="text-white/30">|</span>
-            <span id="hud-crystals" class="text-cyan-400 font-bold">⏳ 0</span>
-            <span class="text-white/30">|</span>
-            <span id="hud-xp" class="text-emerald-400 font-bold">⚡ 0 XP</span>
-          </div>
-
-          <!-- Center Power-Up Active Status -->
-          <div id="hud-powerup-bar" class="hidden sm:flex items-center gap-2">
-            <!-- Active power-ups rendered here -->
-          </div>
-
-          <!-- Right Controls: Pause -->
-          <div class="flex items-center gap-2 pointer-events-auto">
-            <button id="runner-pause-btn" onclick="toggleRunnerPause()" class="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold tracking-wider transition">
-              ⏸️ PAUSE
-            </button>
-          </div>
-        </div>
-
-        <!-- Canvas Container -->
-        <div class="relative w-full h-full flex items-center justify-center">
-          <canvas id="runner-canvas" class="w-full h-full max-w-[1200px] max-h-[675px] object-contain rounded-xl shadow-2xl border border-white/10 bg-black"></canvas>
-        </div>
-
-        <!-- On-Screen Mobile Touch Controls -->
-        <div id="runner-mobile-controls" class="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between pointer-events-auto select-none sm:hidden">
-          <button id="touch-slide-btn" class="w-20 h-20 rounded-2xl bg-cyan-500/30 active:bg-cyan-500/60 border border-cyan-400/50 text-cyan-200 text-xs font-bold font-mono shadow-lg backdrop-blur-md flex flex-col items-center justify-center gap-1 active:scale-95 transition">
-            <span class="text-2xl">⏬</span>
-            <span>SLIDE</span>
-          </button>
-          <button id="touch-jump-btn" class="w-24 h-24 rounded-2xl bg-amber-500/40 active:bg-amber-500/70 border border-amber-400/60 text-amber-100 text-xs font-bold font-mono shadow-xl backdrop-blur-md flex flex-col items-center justify-center gap-1 active:scale-95 transition">
-            <span class="text-3xl">⏫</span>
-            <span>JUMP</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- End-of-Run Summary Modal -->
-      <div id="runner-summary-modal" class="fixed inset-0 z-[130] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="glassmorphic max-w-md w-full p-6 sm:p-8 border border-white/20 rounded-3xl bg-slate-900/90 shadow-2xl flex flex-col gap-6 text-center transform transition-all duration-300">
-          <div>
-            <div class="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-3xl flex items-center justify-center mx-auto mb-3 shadow-[0_0_20px_rgba(245,158,11,0.3)]">
-              🏆
-            </div>
-            <h3 class="font-display-present text-2xl font-bold text-white mb-1">EXPEDITION COMPLETE!</h3>
-            <p id="summary-landmark-name" class="font-label-tech text-xs text-cyan-400 tracking-widest uppercase">ANCIENT EGYPT RUN</p>
-          </div>
-
-          <!-- Stats Breakdown Grid -->
-          <div class="grid grid-cols-2 gap-3 font-mono text-xs">
-            <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
-              <span class="text-white/50 block mb-1">DISTANCE</span>
-              <span id="summary-distance" class="text-amber-300 font-bold text-lg">0m</span>
-            </div>
-            <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
-              <span class="text-white/50 block mb-1">COINS EARNED</span>
-              <span id="summary-coins" class="text-yellow-400 font-bold text-lg">🪙 +0</span>
-            </div>
-            <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
-              <span class="text-white/50 block mb-1">TIME CRYSTALS</span>
-              <span id="summary-crystals" class="text-cyan-400 font-bold text-lg">⏳ +0</span>
-            </div>
-            <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
-              <span class="text-white/50 block mb-1">TOTAL XP GAINED</span>
-              <span id="summary-xp" class="text-emerald-400 font-bold text-lg">⚡ +0 XP</span>
-            </div>
-          </div>
-
-          <!-- Recovered Artifact Banner -->
-          <div id="summary-artifact-banner" class="hidden p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-left flex items-center gap-3">
-            <span class="text-3xl" id="summary-artifact-icon">🏺</span>
-            <div>
-              <span class="font-label-tech text-[10px] text-amber-300 font-bold block">NEW ARTIFACT RECOVERED!</span>
-              <span id="summary-artifact-name" class="font-mono text-xs text-white font-bold">Pharaoh Gold Mask</span>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex items-center gap-3">
-            <button onclick="restartRunnerLevel()" class="flex-1 py-3 bg-primary hover:bg-primary/90 text-black font-label-tech font-bold text-xs tracking-wider rounded-xl transition shadow-lg">
-              🔄 RUN AGAIN
-            </button>
-            <button onclick="exitRunnerToLevels()" class="flex-1 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-label-tech font-bold text-xs tracking-wider rounded-xl transition">
-              🗺️ SELECT ERA
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom Instruction Footer -->
-      <footer class="px-6 py-3 border-t border-white/10 bg-black/90 flex items-center justify-between text-[11px] font-mono text-white/50 shrink-0 select-none">
-        <div class="flex items-center gap-4">
-          <span>⌨️ Arrow Up / Space = Jump (Double Jump in Mid-Air)</span>
-          <span>⌨️ Arrow Down = Slide</span>
-          <span>📱 Touch Buttons for Mobile</span>
-        </div>
-        <div class="text-cyan-400 font-bold hidden md:block font-mono">
-          ⚡ Time Explorer Adventure v1.0
         </div>
       </footer>
     </div>
@@ -1290,7 +1134,7 @@
   </div>
 
   <!-- 7. PORTAL TIME WORMHOLE LOADER -->
-  <div id="portal-loader" class="fixed inset-0 z-[9999] bg-black flex flex-col align-items-center justify-content-center transition opacity-0 invisible pointer-events-none" style="opacity:0;visibility:hidden;pointer-events:none;">
+  <div id="portal-loader">
     <canvas id="portal-canvas" class="absolute inset-0 w-full h-full"></canvas>
     <div class="relative z-10 text-center space-y-5">
       <!-- Rotating Time Portal Ring -->
@@ -2360,6 +2204,11 @@
         // Update active UI classes
         this.updateUIState(targetEra);
 
+        // Refresh era-specific anomaly target layer
+        if (typeof renderCurrentLandmarkAnomaly === 'function') {
+          renderCurrentLandmarkAnomaly();
+        }
+
         // Wait for CSS column width transitions
         await new Promise(resolve => setTimeout(resolve, 1200));
 
@@ -2827,9 +2676,7 @@
     let portalParticles = [];
 
     function initPortalCanvas() {
-      if (portalCanvas) return; // already initialized
       portalCanvas = document.getElementById('portal-canvas');
-      if (!portalCanvas) return;
       portalCtx = portalCanvas.getContext('2d');
       resizePortalCanvas();
       window.addEventListener('resize', resizePortalCanvas);
@@ -2843,20 +2690,6 @@
     }
 
     function startPortalWarpAnimation(onComplete) {
-      // Ensure canvas is initialized before animating
-      initPortalCanvas();
-
-      // If canvas still unavailable, skip animation and go straight to callback
-      if (!portalCanvas || !portalCtx) {
-        const loaderEl = document.getElementById('portal-loader');
-        if (loaderEl) loaderEl.classList.add('active');
-        setTimeout(() => {
-          if (loaderEl) loaderEl.classList.remove('active');
-          if (onComplete) onComplete();
-        }, 800);
-        return;
-      }
-
       portalActive = true;
       portalProgress = 0;
       portalParticles = [];
@@ -2872,8 +2705,7 @@
         });
       }
 
-      const loaderEl = document.getElementById('portal-loader');
-      if (loaderEl) loaderEl.classList.add('active');
+      document.getElementById('portal-loader').classList.add('active');
       playPortalWarpSound();
       animatePortalWarp(onComplete);
     }
@@ -2936,183 +2768,86 @@
 
     // Swap website content to the selected geographic location
     function swapLocationContent(place) {
-      if (!place) return;
-      // Helper: safely set innerText / innerHTML on an element
-      function _set(id, text, html) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        if (html !== undefined) el.innerHTML = html;
-        else el.innerText = text;
-      }
+      // 1. Update Coordinates and narrative readouts
+      document.getElementById('past-readout-coords').innerText = place.eras["1890"].readout;
+      document.getElementById('present-readout-coords').innerText = place.eras["2024"].readout;
+      document.getElementById('future-readout-coords').innerText = place.eras["2200"].readout;
 
-      // 1. Coordinates
-      _set('past-readout-coords',    place.eras["1890"].readout);
-      _set('present-readout-coords', place.eras["2024"].readout);
-      _set('future-readout-coords',  place.eras["2200"].readout);
+      // 2. Update Card Titles
+      document.getElementById('past-card-title').innerText = place.eras["1890"].title;
+      document.getElementById('present-card-title').innerText = place.eras["2024"].title;
+      document.getElementById('future-card-title').innerText = place.eras["2200"].title;
 
-      // 2. Card Titles
-      _set('past-card-title',    place.eras["1890"].title);
-      _set('present-card-title', place.eras["2024"].title);
-      _set('future-card-title',  place.eras["2200"].title);
-
-      // 3. Descriptions
+      // 3. Update Descriptions
       const pastDesc = document.getElementById('past-card-desc');
-      if (pastDesc) {
-        pastDesc.innerText = place.eras["1890"].desc;
-        pastDesc.className = "font-display-past text-sm text-[#f4ecd8]/90 leading-relaxed mb-4 drop-cap";
-      }
-      _set('present-card-desc', place.eras["2024"].desc);
+      pastDesc.innerText = place.eras["1890"].desc;
+      pastDesc.className = "font-display-past text-sm text-[#f4ecd8]/90 leading-relaxed mb-4 drop-cap";
+
+      document.getElementById('present-card-desc').innerText = place.eras["2024"].desc;
+      
       const futDesc = document.getElementById('future-card-desc');
-      if (futDesc) {
-        if (place.eras["2200"].desc.includes('<span')) {
-          futDesc.innerHTML = place.eras["2200"].desc;
-        } else {
-          futDesc.innerHTML = `<span class="bg-cyan-950/40 text-cyan-400 border border-cyan-500/20 px-1 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider mr-1">BIO-NET</span> ${place.eras["2200"].desc}`;
-        }
-      }
-
-      // 4. CTA Buttons
-      _set('past-card-btn',    undefined, place.eras["1890"].cta);
-      _set('present-card-btn', undefined, place.eras["2024"].cta);
-      _set('future-card-btn',  undefined, place.eras["2200"].cta);
-
-      // 5. Background Images
-      const pastImg    = document.getElementById('past-img-layer');
-      const presentImg = document.getElementById('present-img-layer');
-      const futureImg  = document.getElementById('future-img-layer');
-      if (pastImg)    pastImg.style.backgroundImage    = `url('${place.images.past}')`;
-      if (presentImg) presentImg.style.backgroundImage = `url('${place.images.present}')`;
-      if (futureImg)  futureImg.style.backgroundImage  = `url('${place.images.future}')`;
-
-      // 6. Three.js rotation calibration
-      try {
-        const latRad = (place.lat * Math.PI) / 180;
-        const lngRad = (place.lng * Math.PI) / 180;
-        targetRotationX = latRad * 0.4;
-        targetRotationZ = lngRad * 0.3;
-      } catch (_) {}
-    }
-
-    // Reconnected Main Action Helpers for Play Mini Game, Portal Jump & Passport
-    function openMiniGame() {
-      if (typeof openTimeExplorerModal === 'function') {
-        openTimeExplorerModal();
+      if (place.eras["2200"].desc.includes('<span')) {
+        futDesc.innerHTML = place.eras["2200"].desc;
       } else {
-        window.location.href = "./index.html#mini-game";
+        futDesc.innerHTML = `<span class="bg-cyan-950/40 text-cyan-400 border border-cyan-500/20 px-1 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider mr-1">BIO-NET</span> ${place.eras["2200"].desc}`;
       }
+
+      // 4. Update CTA Buttons text
+      document.getElementById('past-card-btn').innerHTML = place.eras["1890"].cta;
+      document.getElementById('present-card-btn').innerHTML = place.eras["2024"].cta;
+      document.getElementById('future-card-btn').innerHTML = place.eras["2200"].cta;
+
+      // 5. Swap Landmark Background Images
+      const pastImg = document.getElementById('past-img-layer');
+      const presentImg = document.getElementById('present-img-layer');
+      const futureImg = document.getElementById('future-img-layer');
+
+      pastImg.style.backgroundImage = `url('${place.images.past}')`;
+      presentImg.style.backgroundImage = `url('${place.images.present}')`;
+      futureImg.style.backgroundImage = `url('${place.images.future}')`;
+
+      // 6. Calibrate Three.js Spatial Alignments
+      const latRad = (place.lat * Math.PI) / 180;
+      const lngRad = (place.lng * Math.PI) / 180;
+      
+      targetRotationX = latRad * 0.4;
+      targetRotationZ = lngRad * 0.3;
     }
 
-    function openPassport() {
-      if (typeof toggleTimePassport === 'function') {
-        toggleTimePassport(true);
-      }
-    }
-
-    function initiatePortalJump(url) {
-      const place = (typeof places !== 'undefined' && places && places[selectedPlaceIndex]) ? places[selectedPlaceIndex] : (typeof places !== 'undefined' && places ? places[0] : null);
+    // Triggers location portal loading jump sequence
+    function initiatePortalJump() {
+      const place = places[selectedPlaceIndex];
       
       // Exit Nav console
-      if (typeof toggleGeographicPortal === 'function') {
-        toggleGeographicPortal(false);
-      }
+      toggleGeographicPortal(false);
 
       // Start full-screen loading portal animation
-      if (typeof startPortalWarpAnimation === 'function') {
-        startPortalWarpAnimation(() => {
-          // Teleportation Complete callback: Update main DOM content
-          if (place) {
-            swapLocationContent(place);
-            if (typeof recordVisit === 'function') recordVisit(place.id, currentEra);
-          }
+      startPortalWarpAnimation(() => {
+        // Teleportation Complete callback: Update main DOM content
+        swapLocationContent(place);
 
-          // Ensure homepage container is hidden after warp jump completes
-          const homepage = document.getElementById('homepage-container');
-          if (homepage) {
-            homepage.classList.add('hidden');
-          }
+        // Record landmark visit in Time Passport & LocalStorage
+        recordVisit(place.id, currentEra);
 
-          // Ensure the main container is visible
-          const mainContainer = document.getElementById('main-container');
-          if (mainContainer) {
-            mainContainer.classList.remove('hidden');
-            window.dispatchEvent(new Event('resize'));
-          }
-
-          // Boot Three.js particle system + TemporalEngine (first visit only)
-          if (typeof window.bootChronicleView === 'function') window.bootChronicleView();
-
-          if (typeof url === 'string' && url) {
-            window.location.href = url;
-          }
-        });
-      }
-
-      // Fallback safety timeout (1200ms) so portal jump cannot remain loading forever
-      setTimeout(() => {
+        // Ensure homepage container is hidden after warp jump completes
         const homepage = document.getElementById('homepage-container');
-        if (homepage && !homepage.classList.contains('hidden')) {
+        if (homepage) {
           homepage.classList.add('hidden');
         }
+
+        // Ensure the main container is visible
         const mainContainer = document.getElementById('main-container');
-        if (mainContainer && mainContainer.classList.contains('hidden')) {
+        if (mainContainer) {
           mainContainer.classList.remove('hidden');
+          // Trigger layout resize event for canvas components
           window.dispatchEvent(new Event('resize'));
-          // Boot Three.js + TemporalEngine in fallback path too
-          if (typeof window.bootChronicleView === 'function') window.bootChronicleView();
         }
-        if (typeof url === 'string' && url) {
-          window.location.href = url;
-        }
-      }, 1200);
+      });
     }
 
     // Homepage Action Helpers
-    function triggerDefaultWarp(url) {
-      initiatePortalJump(url);
-    }
-
-    // ==================== CENTRALIZED BUTTON WIRING ====================
-    // Uses data-action attributes so ALL matching buttons are wired at once,
-    // regardless of how many exist in the HTML. Runs after DOM is ready.
-    function _wireButtons() {
-      // Wire every [data-action="portal"] button
-      document.querySelectorAll('[data-action="portal"]').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          console.log('[Chronicle] Portal Jump triggered');
-          initiatePortalJump();
-        });
-      });
-
-      // Wire every [data-action="mini-game"] button
-      document.querySelectorAll('[data-action="mini-game"]').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          console.log('[Chronicle] Mini-game triggered');
-          openMiniGame();
-        });
-      });
-
-      // Wire every [data-action="passport"] button
-      document.querySelectorAll('[data-action="passport"]').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          console.log('[Chronicle] Passport triggered');
-          openPassport();
-        });
-      });
-
-      console.log('Button handlers initialized');
-      console.log('Portal buttons:', document.querySelectorAll('[data-action="portal"]').length);
-      console.log('Mini-game buttons:', document.querySelectorAll('[data-action="mini-game"]').length);
-      console.log('Passport buttons:', document.querySelectorAll('[data-action="passport"]').length);
-    }
-
-    // Run immediately if DOM already loaded, otherwise wait
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', _wireButtons);
-    } else {
-      _wireButtons();
+    function triggerDefaultWarp() {
+      initiatePortalJump();
     }
 
     function showHomepage(event) {
@@ -3469,32 +3204,71 @@
     }
 
     // ==================== SPOT THE TIME ANOMALY ENGINE ====================
+    let currentInspectionEra = "1890";
+
+    function getAnomalyForPlaceAndEra(placeId, era) {
+      const data = ANOMALIES_DATA[placeId];
+      if (!data) return null;
+      // Single era definition check
+      if (data.era && data.era === era) return data;
+      // Multi-era dictionary check
+      if (data[era]) return data[era];
+      return null;
+    }
+
+    function isAnomalySolved(placeId, era) {
+      const solvedList = getSolvedAnomalies();
+      const keyWithEra = `${placeId}_${era}`;
+      return solvedList.includes(keyWithEra) || solvedList.includes(placeId);
+    }
+
+    function solveAnomaly(placeId, era, clickX, clickY) {
+      const place = places.find(p => p.id === placeId);
+      const activeEra = era || currentEra || "1890";
+      const anomalyInfo = getAnomalyForPlaceAndEra(placeId, activeEra);
+      if (!anomalyInfo) return;
+
+      const solvedList = getSolvedAnomalies();
+      const keyWithEra = `${placeId}_${activeEra}`;
+
+      if (!solvedList.includes(keyWithEra) && !solvedList.includes(placeId)) {
+        solvedList.push(keyWithEra);
+        saveSolvedAnomalies(solvedList);
+
+        addXP(50);
+
+        // Confetti explosion
+        fireConfetti(clickX || window.innerWidth / 2, clickY || window.innerHeight / 2);
+
+        // Audio synthesis chime
+        playSuccessAudio();
+
+        // Toast alert
+        showToast("🎉 Timeline Restored! +50 XP", `You discovered and fixed the ${anomalyInfo.name}!`, "discovery");
+
+        // Refresh views
+        renderCurrentLandmarkAnomaly();
+        if (document.getElementById('anomaly-inspection-modal').classList.contains('open')) {
+          renderInspectionAnomalyTarget(placeId, currentInspectionEra);
+        }
+        updateProgressUI();
+        checkAchievements();
+      }
+    }
 
     function renderCurrentLandmarkAnomaly() {
       const place = places[selectedPlaceIndex];
       if (!place) return;
 
-<<<<<<< HEAD
-      // Reset hint level on destination shift
-      currentHintLevel = 1;
-=======
-      // Clean up previous overlays across all era sections
+      // Ensure NO anomaly overlays exist on the main page
       document.querySelectorAll('.anomaly-search-overlay').forEach(el => el.remove());
->>>>>>> parent of 1203a48 (Restrict anomaly rendering exclusively to full-screen inspection mode and clean main timeline view)
 
+      const activeEra = currentEra || "1890";
+      const anomalyInfo = getAnomalyForPlaceAndEra(place.id, activeEra);
+      const isSolved = isAnomalySolved(place.id, activeEra);
       const solvedList = getSolvedAnomalies();
-      const isSolved = solvedList.includes(place.id);
-      const anomalyInfo = ANOMALIES_DATA[place.id] || {
-        name: "Unknown Anomaly",
-        icon: "❓",
-        era: "1890",
-        coords: { x: 50, y: 50 },
-        hint1: "Look around the scene carefully.",
-        hint2Region: { left: "40%", top: "40%", width: "140px", height: "140px" },
-        desc: "A misplaced object from another time period."
-      };
 
-      // Update HUD text & status
+      // Update HUD text & status metrics only
       const hudName = document.getElementById('hud-anomaly-name');
       const hudHint = document.getElementById('hud-hint-text');
       const hudIcon = document.getElementById('hud-mission-icon');
@@ -3506,6 +3280,18 @@
 
       if (hudXpBadge) hudXpBadge.innerText = `⚡ ${getUserXP()} XP`;
       if (hudProgress) hudProgress.innerText = `${solvedList.length}/${places.length} Anomalies Restored`;
+
+      if (!anomalyInfo) {
+        if (hudIcon) hudIcon.innerText = "✓";
+        if (hudTitle) {
+          hudTitle.innerText = "TIMELINE STABLE";
+          hudTitle.className = "font-label-tech text-[10px] text-emerald-400 tracking-wider uppercase font-bold";
+        }
+        if (hudName) hudName.innerText = `Timeline Stable in ${activeEra}`;
+        if (hudHint) hudHint.innerText = `No temporal anomaly detected in the ${activeEra} era for ${place.name}.`;
+        if (hintBtn) hintBtn.style.display = 'none';
+        return;
+      }
 
       if (isSolved) {
         if (hudIcon) hudIcon.innerText = "✓";
@@ -3523,82 +3309,23 @@
           hudTitle.className = "font-label-tech text-[10px] text-primary tracking-wider uppercase font-bold";
         }
         if (hudName) hudName.innerText = `Search for: ${anomalyInfo.name}`;
-<<<<<<< HEAD
-        if (hudHint) hudHint.innerText = `Hint: Something from another era has appeared here. Click on the image layer to locate it!`;
-=======
-        if (hudHint) hudHint.innerText = `Hint: Something from another era has appeared in ${activeEra}. Click on the image layer to locate it!`;
->>>>>>> parent of 1203a48 (Restrict anomaly rendering exclusively to full-screen inspection mode and clean main timeline view)
+        if (hudHint) hudHint.innerText = `Click on the image to launch Full-Screen Inspection Mode and search for the ${anomalyInfo.name}!`;
         if (hintBtn) hintBtn.style.display = 'inline-flex';
         if (hintLvlText) hintLvlText.innerText = "LVL 1";
       }
 
-<<<<<<< HEAD
-      // Target active era column (#era-1890 as primary historical view)
-      const eraSection = document.getElementById('era-1890');
-      if (!eraSection) return;
-
-      // Clean up previous overlays across all era sections
-      document.querySelectorAll('.anomaly-search-overlay').forEach(el => el.remove());
-
-=======
-      // Target section matching active era
-      const targetSectionId = activeEra === "1890" ? "era-1890" : activeEra === "2024" ? "era-2024" : "era-2200";
-      const eraSection = document.getElementById(targetSectionId);
-      if (!eraSection) return;
-
->>>>>>> parent of 1203a48 (Restrict anomaly rendering exclusively to full-screen inspection mode and clean main timeline view)
-      // Create dedicated search overlay at higher z-index (z-25) inside era section
-      const overlay = document.createElement('div');
-      overlay.className = 'anomaly-search-overlay absolute inset-0 z-25 pointer-events-auto cursor-crosshair overflow-hidden rounded-lg';
-      eraSection.appendChild(overlay);
-
-      // Create Target Node
-      const node = document.createElement('div');
-      node.id = 'anomaly-target-node';
-      node.className = `anomaly-target-node ${isSolved ? 'solved' : ''}`;
-      node.style.left = `${anomalyInfo.coords.x}%`;
-      node.style.top = `${anomalyInfo.coords.y}%`;
-      node.innerHTML = anomalyInfo.svgGraphic || `<span class="text-3xl">${anomalyInfo.icon}</span>`;
-      node.title = isSolved ? `Restored: ${anomalyInfo.name}` : `Click to Restore ${anomalyInfo.name}`;
-
-      const triggerSolve = (e) => {
-        if (e) {
-          e.stopPropagation();
-          e.preventDefault();
+      // Main page image sections click handler to open inspection viewer
+      ['era-1890', 'era-2024', 'era-2200'].forEach(eraId => {
+        const sec = document.getElementById(eraId);
+        if (sec) {
+          sec.style.cursor = 'pointer';
+          sec.onclick = (e) => {
+            if (e.target.closest('button, a, .glassmorphic-card, #anomaly-mission-hud')) return;
+            const era = eraId.replace('era-', '');
+            openImageInspectionModal(era);
+          };
         }
-        const clientX = (e && e.touches && e.touches[0]) ? e.touches[0].clientX : (e ? e.clientX : window.innerWidth / 2);
-        const clientY = (e && e.touches && e.touches[0]) ? e.touches[0].clientY : (e ? e.clientY : window.innerHeight / 2);
-
-        if (!isSolved) {
-<<<<<<< HEAD
-          solveAnomaly(place.id, clientX, clientY);
-=======
-          solveAnomaly(place.id, activeEra, clientX, clientY);
->>>>>>> parent of 1203a48 (Restrict anomaly rendering exclusively to full-screen inspection mode and clean main timeline view)
-        } else {
-          showToast("Timeline Stable", `You have already restored the ${anomalyInfo.name} (+50 XP)!`, "info");
-        }
-      };
-
-      node.addEventListener('click', triggerSolve);
-      node.addEventListener('touchstart', triggerSolve, { passive: false });
-
-      overlay.appendChild(node);
-
-      // Attach miss-click handler or inspect trigger to overlay background
-      const handleOverlayClick = (e) => {
-        const target = e.target;
-        if (target !== node && !node.contains(target)) {
-<<<<<<< HEAD
-          // Open full-screen inspection mode on image click
-          openImageInspectionModal("1890");
-=======
-          openImageInspectionModal(activeEra);
->>>>>>> parent of 1203a48 (Restrict anomaly rendering exclusively to full-screen inspection mode and clean main timeline view)
-        }
-      };
-
-      overlay.addEventListener('click', handleOverlayClick);
+      });
     }
 
     function spawnMissClickX(clientX, clientY, container) {
@@ -3659,50 +3386,92 @@
       const place = places[selectedPlaceIndex];
       if (!modal || !place) return;
 
-      const targetEra = customEra || currentEra || "1890";
-      const titleEl = document.getElementById('inspection-title');
-      const imgEl = document.getElementById('inspection-target-img');
+      currentInspectionEra = customEra || currentEra || "1890";
+      switchInspectionEra(currentInspectionEra);
+
       const xpEl = document.getElementById('inspection-xp-badge');
-
-      if (titleEl) titleEl.innerText = `${place.name.toUpperCase()} (${targetEra}) — IMAGE INSPECTOR`;
       if (xpEl) xpEl.innerText = `⚡ ${getUserXP()} XP`;
-
-      // Set high resolution image source for target era
-      let imgSrc = place.images.past;
-      if (targetEra === "2024") imgSrc = place.images.present;
-      if (targetEra === "2200") imgSrc = place.images.future;
-      if (imgEl) imgEl.src = imgSrc;
-
-      // Reset transform state
-      resetInspectionTransform();
-
-      // Render anomaly inside inspection container
-      renderInspectionAnomalyTarget(place.id);
 
       // Show modal
       modal.classList.add('open');
     }
 
+    function switchInspectionEra(newEra) {
+      currentInspectionEra = newEra;
+      const place = places[selectedPlaceIndex];
+      if (!place) return;
+
+      const titleEl = document.getElementById('inspection-title');
+      const imgEl = document.getElementById('inspection-target-img');
+
+      if (titleEl) titleEl.innerText = `${place.name.toUpperCase()} (${newEra}) — IMAGE INSPECTOR`;
+
+      // Set high resolution image source for target era
+      let imgSrc = place.images.past;
+      if (newEra === "2024") imgSrc = place.images.present;
+      if (newEra === "2200") imgSrc = place.images.future;
+      if (imgEl) imgEl.src = imgSrc;
+
+      // Update Era Switcher button styles
+      ['1890', '2024', '2200'].forEach(e => {
+        const btn = document.getElementById(`inspect-era-${e}-btn`);
+        if (btn) {
+          if (e === newEra) {
+            btn.className = "px-2.5 py-1 rounded transition text-amber-300 font-bold bg-amber-500/20 border border-amber-500/40";
+          } else {
+            btn.className = "px-2.5 py-1 rounded transition text-white/60 hover:text-white border border-transparent";
+          }
+        }
+      });
+
+      // Reset transform state
+      resetInspectionTransform();
+
+      // Render era-specific anomaly inside inspection container
+      renderInspectionAnomalyTarget(place.id, newEra);
+    }
+
     function closeImageInspectionModal() {
       const modal = document.getElementById('anomaly-inspection-modal');
+      const container = document.getElementById('inspection-anomaly-container');
+      // Completely remove anomaly overlay from DOM when closing inspection view
+      if (container) container.innerHTML = '';
+
       if (modal) {
         modal.classList.remove('open');
         resetInspectionTransform();
       }
     }
 
-    function renderInspectionAnomalyTarget(placeId) {
+    function renderInspectionAnomalyTarget(placeId, era) {
       const container = document.getElementById('inspection-anomaly-container');
+      const hintBanner = document.getElementById('inspection-hint-banner');
       if (!container) return;
       container.innerHTML = '';
 
-      const solvedList = getSolvedAnomalies();
-      const isSolved = solvedList.includes(placeId);
-      const anomalyInfo = ANOMALIES_DATA[placeId] || {
-        name: "Unknown Anomaly",
-        icon: "❓",
-        coords: { x: 50, y: 50 }
-      };
+      const activeEra = era || currentInspectionEra || "1890";
+      const anomalyInfo = getAnomalyForPlaceAndEra(placeId, activeEra);
+
+      if (!anomalyInfo) {
+        // No anomaly for this era!
+        if (hintBanner) {
+          hintBanner.innerText = `✓ Timeline Stable in ${activeEra}. No anomaly detected in this era.`;
+          hintBanner.className = "text-emerald-400 font-bold hidden md:block font-mono text-[11px]";
+        }
+        return;
+      }
+
+      const isSolved = isAnomalySolved(placeId, activeEra);
+
+      if (hintBanner) {
+        if (isSolved) {
+          hintBanner.innerText = `✓ Timeline Restored! ${anomalyInfo.name} (+50 XP)`;
+          hintBanner.className = "text-emerald-400 font-bold hidden md:block font-mono text-[11px]";
+        } else {
+          hintBanner.innerText = `💡 Anomaly Detected in ${activeEra}: Click the misplaced ${anomalyInfo.name} to restore!`;
+          hintBanner.className = "text-amber-300 font-bold hidden md:block font-mono text-[11px]";
+        }
+      }
 
       const node = document.createElement('div');
       node.id = 'inspection-anomaly-target-node';
@@ -3721,8 +3490,7 @@
         const clientY = (e && e.touches && e.touches[0]) ? e.touches[0].clientY : (e ? e.clientY : window.innerHeight / 2);
 
         if (!isSolved) {
-          solveAnomaly(placeId, clientX, clientY);
-          renderInspectionAnomalyTarget(placeId);
+          solveAnomaly(placeId, activeEra, clientX, clientY);
         } else {
           showToast("Timeline Stable", `You have already restored the ${anomalyInfo.name} (+50 XP)!`, "info");
         }
@@ -4207,935 +3975,29 @@
       });
     }
 
-    // ==================== TIME EXPLORER ADVENTURE ENDLESS RUNNER ENGINE ====================
-    let runnerEngineInstance = null;
-    let isRunnerAudioEnabled = true;
-
-    const RUNNER_LEVELS = [
-      {
-        id: "pyramids-of-giza",
-        name: "Ancient Egypt",
-        era: "2560 BC",
-        bgColors: ["#2b1b0e", "#704318", "#c49247"],
-        groundColor: "#b58034",
-        landmarkIcon: "🏺",
-        artifact: { name: "Pharaoh Gold Mask", icon: "🏺", xp: 50 },
-        obstacles: [
-          { name: "Rolling Boulder", type: "boulder", width: 42, height: 42, yOffset: 0 },
-          { name: "Sand Pit", type: "pit", width: 55, height: 18, yOffset: 0 },
-          { name: "Ancient Column", type: "column", width: 36, height: 68, yOffset: 0 }
-        ]
-      },
-      {
-        id: "colosseum",
-        name: "Ancient Rome",
-        era: "80 AD",
-        bgColors: ["#1c162b", "#523678", "#9c70b8"],
-        groundColor: "#856d56",
-        landmarkIcon: "🏛️",
-        artifact: { name: "Roman Gold Coin", icon: "🪙", xp: 50 },
-        obstacles: [
-          { name: "Chariot", type: "chariot", width: 60, height: 40, yOffset: 0 },
-          { name: "Gladiator Shield", type: "shield", width: 38, height: 50, yOffset: 0 },
-          { name: "Broken Pillar", type: "column", width: 34, height: 62, yOffset: 0 }
-        ]
-      },
-      {
-        id: "big-ben",
-        name: "Victorian London",
-        era: "1890",
-        bgColors: ["#141921", "#334154", "#63768d"],
-        groundColor: "#475261",
-        landmarkIcon: "🕰️",
-        artifact: { name: "Viking Brass Compass", icon: "🧭", xp: 50 },
-        obstacles: [
-          { name: "Steam Vent", type: "vent", width: 35, height: 45, yOffset: 0 },
-          { name: "Wooden Barrel", type: "barrel", width: 38, height: 42, yOffset: 0 },
-          { name: "Iron Spikes", type: "spikes", width: 44, height: 28, yOffset: 0 }
-        ]
-      },
-      {
-        id: "tokyo-tower",
-        name: "Feudal & Future Tokyo",
-        era: "1890 / 2200",
-        bgColors: ["#0b162b", "#1c3c6e", "#3a70b8"],
-        groundColor: "#2a364a",
-        landmarkIcon: "🏯",
-        artifact: { name: "Samurai Helmet", icon: "🥷", xp: 50 },
-        obstacles: [
-          { name: "Cyber Drone", type: "drone", width: 45, height: 35, yOffset: 35 },
-          { name: "Laser Barrier", type: "laser", width: 30, height: 65, yOffset: 0 },
-          { name: "Bamboo Gate", type: "barrel", width: 40, height: 46, yOffset: 0 }
-        ]
-      },
-      {
-        id: "great-wall",
-        name: "Great Wall of China",
-        era: "1368 AD",
-        bgColors: ["#1f140e", "#543321", "#965b3c"],
-        groundColor: "#7a553e",
-        landmarkIcon: "🧱",
-        artifact: { name: "Ancient Scroll", icon: "📜", xp: 50 },
-        obstacles: [
-          { name: "Stone Boulder", type: "boulder", width: 44, height: 44, yOffset: 0 },
-          { name: "Garrison Shield", type: "shield", width: 36, height: 52, yOffset: 0 },
-          { name: "Dragon Torch", type: "vent", width: 32, height: 48, yOffset: 0 }
-        ]
-      },
-      {
-        id: "statue-of-liberty",
-        name: "New York Harbor",
-        era: "1886 AD",
-        bgColors: ["#0e1b26", "#234159", "#4a779d"],
-        groundColor: "#475966",
-        landmarkIcon: "🗽",
-        artifact: { name: "Liberty Medallion", icon: "🏅", xp: 50 },
-        obstacles: [
-          { name: "Wooden Crates", type: "barrel", width: 40, height: 44, yOffset: 0 },
-          { name: "Harbor Anchor", type: "spikes", width: 45, height: 35, yOffset: 0 },
-          { name: "Steam Pipe", type: "vent", width: 34, height: 50, yOffset: 0 }
-        ]
-      },
-      {
-        id: "eiffel-tower",
-        name: "Parisian Seine",
-        era: "1889 AD",
-        bgColors: ["#1d172b", "#4b3b6e", "#8b71bd"],
-        groundColor: "#594d6e",
-        landmarkIcon: "🗼",
-        artifact: { name: "Eiffel Pocket Watch", icon: "⌚", xp: 50 },
-        obstacles: [
-          { name: "Scaffolding Beam", type: "column", width: 32, height: 66, yOffset: 0 },
-          { name: "Wine Barrel", type: "barrel", width: 38, height: 40, yOffset: 0 },
-          { name: "Cobblestone Cart", type: "chariot", width: 52, height: 38, yOffset: 0 }
-        ]
-      },
-      {
-        id: "taj-mahal",
-        name: "Mughal Agra",
-        era: "1632 AD",
-        bgColors: ["#2b181c", "#6e3a46", "#b86e80"],
-        groundColor: "#7e525d",
-        landmarkIcon: "🕌",
-        artifact: { name: "Mughal Emerald", icon: "💎", xp: 50 },
-        obstacles: [
-          { name: "Marble Pedestal", type: "column", width: 34, height: 60, yOffset: 0 },
-          { name: "Spiced Jar", type: "barrel", width: 36, height: 42, yOffset: 0 },
-          { name: "Fountain Basin", type: "pit", width: 50, height: 18, yOffset: 0 }
-        ]
-      },
-      {
-        id: "burj-khalifa",
-        name: "Dubai Dunes",
-        era: "2024 / 2200",
-        bgColors: ["#2b210e", "#6e531d", "#b88e36"],
-        groundColor: "#a37a2c",
-        landmarkIcon: "🏙️",
-        artifact: { name: "Desert Solar Crystal", icon: "☀️", xp: 50 },
-        obstacles: [
-          { name: "Hover Barrier", type: "laser", width: 32, height: 62, yOffset: 0 },
-          { name: "Dune Pit", type: "pit", width: 54, height: 18, yOffset: 0 },
-          { name: "Flying Probe", type: "drone", width: 42, height: 32, yOffset: 30 }
-        ]
-      },
-      {
-        id: "sydney-opera-house",
-        name: "Sydney Wharf",
-        era: "1973 AD",
-        bgColors: ["#0e222b", "#205063", "#458da8"],
-        groundColor: "#3e6270",
-        landmarkIcon: "⛵",
-        artifact: { name: "Colonial Ship Wheel", icon: "☸️", xp: 50 },
-        obstacles: [
-          { name: "Cargo Barrel", type: "barrel", width: 38, height: 42, yOffset: 0 },
-          { name: "Iron Anchor", type: "spikes", width: 42, height: 32, yOffset: 0 },
-          { name: "Wharf Spindle", type: "column", width: 30, height: 58, yOffset: 0 }
-        ]
-      },
-      {
-        id: "tbilisi",
-        name: "Narikala Fortress",
-        era: "4th Century",
-        bgColors: ["#2b1c12", "#6b4229", "#b37349"],
-        groundColor: "#804e2d",
-        landmarkIcon: "🏰",
-        artifact: { name: "Georgian Golden Bowl", icon: "🥣", xp: 50 },
-        obstacles: [
-          { name: "Fortress Wall Fragment", type: "column", width: 38, height: 64, yOffset: 0 },
-          { name: "Wine Amphora", type: "barrel", width: 36, height: 44, yOffset: 0 },
-          { name: "Red Brick Mound", type: "boulder", width: 44, height: 38, yOffset: 0 }
-        ]
-      }
-    ];
-
-    class TimeExplorerEngine {
-      constructor(canvas, levelData) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-        this.level = levelData;
-
-        this.width = 1000;
-        this.height = 560;
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
-
-        this.groundY = this.height - 100;
-        this.gravity = 0.65;
-        this.speed = 7.5;
-        this.scoreDistance = 0;
-        this.coinsCollected = 0;
-        this.crystalsCollected = 0;
-
-        // Mascot Player State
-        this.player = {
-          x: 120,
-          y: this.groundY - 60,
-          width: 44,
-          height: 60,
-          velocityY: 0,
-          isGrounded: true,
-          isJumping: false,
-          isSliding: false,
-          canDoubleJump: true,
-          slideTimer: 0,
-          frameCount: 0
-        };
-
-        // Active Entities & Objects
-        this.obstacles = [];
-        this.collectibles = [];
-        this.particles = [];
-        this.powerups = [];
-        this.activePowerup = null; // { type, timer }
-        this.hasShield = false;
-        this.artifactRecovered = null;
-
-        this.spawnTimer = 0;
-        this.isPaused = false;
-        this.isGameOver = false;
-        this.animationFrameId = null;
-
-        // Input Bindings
-        this.bindEvents();
-      }
-
-      bindEvents() {
-        this.keyHandler = (e) => {
-          if (this.isGameOver) return;
-          if (e.code === 'ArrowUp' || e.code === 'Space') {
-            e.preventDefault();
-            this.jump();
-          } else if (e.code === 'ArrowDown') {
-            e.preventDefault();
-            this.slide();
-          }
-        };
-        window.addEventListener('keydown', this.keyHandler);
-
-        // Mobile Controls
-        const jumpBtn = document.getElementById('touch-jump-btn');
-        const slideBtn = document.getElementById('touch-slide-btn');
-        if (jumpBtn) {
-          jumpBtn.onpointerdown = (e) => { e.preventDefault(); this.jump(); };
-        }
-        if (slideBtn) {
-          slideBtn.onpointerdown = (e) => { e.preventDefault(); this.slide(); };
-        }
-      }
-
-      unbindEvents() {
-        if (this.keyHandler) window.removeEventListener('keydown', this.keyHandler);
-      }
-
-      jump() {
-        if (this.player.isSliding) this.cancelSlide();
-
-        if (this.player.isGrounded) {
-          this.player.velocityY = -15.5;
-          this.player.isGrounded = false;
-          this.player.isJumping = true;
-          this.player.canDoubleJump = true;
-          this.playSFX('jump');
-          this.spawnDust(this.player.x + 20, this.groundY, 8);
-        } else if (this.player.canDoubleJump) {
-          this.player.velocityY = -13.5;
-          this.player.canDoubleJump = false;
-          this.playSFX('jump');
-          this.spawnDust(this.player.x + 20, this.player.y + 40, 10, '#00f0ff');
-        }
-      }
-
-      slide() {
-        if (!this.player.isSliding && this.player.isGrounded) {
-          this.player.isSliding = true;
-          this.player.height = 34;
-          this.player.y = this.groundY - 34;
-          this.player.slideTimer = 32;
-          this.spawnDust(this.player.x, this.groundY, 6);
-        }
-      }
-
-      cancelSlide() {
-        this.player.isSliding = false;
-        this.player.height = 60;
-        this.player.y = this.groundY - 60;
-      }
-
-      spawnDust(x, y, count = 5, color = 'rgba(255,255,255,0.4)') {
-        for (let i = 0; i < count; i++) {
-          this.particles.push({
-            x: x + (Math.random() * 20 - 10),
-            y: y + (Math.random() * 10 - 5),
-            vx: -this.speed * 0.4 + (Math.random() * 2 - 1),
-            vy: Math.random() * -2,
-            size: Math.random() * 5 + 2,
-            alpha: 0.8,
-            color: color
-          });
-        }
-      }
-
-      playSFX(type) {
-        if (!isRunnerAudioEnabled) return;
-        try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          const now = ctx.currentTime;
-          if (type === 'jump') {
-            osc.frequency.setValueAtTime(300, now);
-            osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
-            osc.start(now);
-            osc.stop(now + 0.15);
-          } else if (type === 'coin') {
-            osc.frequency.setValueAtTime(987.77, now);
-            osc.frequency.setValueAtTime(1318.51, now + 0.08);
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
-            osc.start(now);
-            osc.stop(now + 0.16);
-          } else if (type === 'crystal') {
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(1046.50, now);
-            osc.frequency.setValueAtTime(1567.98, now + 0.1);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
-            osc.start(now);
-            osc.stop(now + 0.2);
-          } else if (type === 'hit') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(160, now);
-            osc.frequency.linearRampToValueAtTime(40, now + 0.25);
-            gain.gain.setValueAtTime(0.3, now);
-            gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
-            osc.start(now);
-            osc.stop(now + 0.25);
-          }
-        } catch (e) {}
-      }
-
-      start() {
-        this.loop();
-      }
-
-      pause() {
-        this.isPaused = !this.isPaused;
-        const btn = document.getElementById('runner-pause-btn');
-        if (btn) btn.innerText = this.isPaused ? '▶ RESUME' : '⏸️ PAUSE';
-      }
-
-      stop() {
-        this.unbindEvents();
-        if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
-      }
-
-      loop() {
-        if (!this.isPaused && !this.isGameOver) {
-          this.update();
-          this.render();
-        }
-        this.animationFrameId = requestAnimationFrame(() => this.loop());
-      }
-
-      update() {
-        this.scoreDistance += Math.round(this.speed * 0.15);
-        this.player.frameCount++;
-
-        // Active Power-up timer
-        if (this.activePowerup) {
-          this.activePowerup.timer--;
-          if (this.activePowerup.timer <= 0) {
-            this.activePowerup = null;
-          }
-        }
-
-        // Apply Speed boost or Slowdown modifier
-        let currentSpeed = this.speed + (this.scoreDistance * 0.001);
-        if (this.activePowerup && this.activePowerup.type === 'SPEED_BOOST') {
-          currentSpeed *= 1.6;
-        } else if (this.activePowerup && this.activePowerup.type === 'SLOWDOWN') {
-          currentSpeed *= 0.65;
-        }
-
-        // Mascot Physics
-        if (!this.player.isGrounded) {
-          this.player.velocityY += this.gravity;
-          this.player.y += this.player.velocityY;
-
-          if (this.player.y >= this.groundY - this.player.height) {
-            this.player.y = this.groundY - this.player.height;
-            this.player.velocityY = 0;
-            this.player.isGrounded = true;
-            this.player.isJumping = false;
-            this.spawnDust(this.player.x + 20, this.groundY, 5);
-          }
-        } else if (this.player.isSliding) {
-          this.player.slideTimer--;
-          if (this.player.slideTimer <= 0) {
-            this.cancelSlide();
-          }
-        }
-
-        // Spawning Logic
-        this.spawnTimer++;
-        if (this.spawnTimer > Math.max(45, 90 - Math.floor(this.scoreDistance * 0.02))) {
-          this.spawnTimer = 0;
-          if (Math.random() < 0.65) {
-            this.spawnObstacle();
-          } else {
-            this.spawnCollectible();
-          }
-        }
-
-        // Update Obstacles
-        for (let i = this.obstacles.length - 1; i >= 0; i--) {
-          const obs = this.obstacles[i];
-          obs.x -= currentSpeed;
-
-          // Collision Check
-          const pBox = {
-            x: this.player.x + 8,
-            y: this.player.y + 6,
-            w: this.player.width - 16,
-            h: this.player.height - 8
-          };
-          const oBox = {
-            x: obs.x + 4,
-            y: obs.y + 4,
-            w: obs.width - 8,
-            h: obs.height - 8
-          };
-
-          if (pBox.x < oBox.x + oBox.w &&
-              pBox.x + pBox.w > oBox.x &&
-              pBox.y < oBox.y + oBox.h &&
-              pBox.y + pBox.h > oBox.y) {
-
-            if (this.activePowerup && this.activePowerup.type === 'SPEED_BOOST') {
-              // Destroy obstacle in dash mode!
-              this.spawnDust(obs.x, obs.y, 12, '#ffcc00');
-              this.obstacles.splice(i, 1);
-              continue;
-            } else if (this.hasShield) {
-              // Shield absorbs hit
-              this.hasShield = false;
-              this.playSFX('hit');
-              this.spawnDust(obs.x, obs.y, 15, '#00f0ff');
-              this.obstacles.splice(i, 1);
-              continue;
-            } else {
-              // Game Over Collision
-              this.gameOver();
-              return;
-            }
-          }
-
-          if (obs.x < -100) this.obstacles.splice(i, 1);
-        }
-
-        // Update Collectibles
-        for (let i = this.collectibles.length - 1; i >= 0; i--) {
-          const item = this.collectibles[i];
-          item.x -= currentSpeed;
-
-          // Magnet Effect
-          if (this.activePowerup && this.activePowerup.type === 'MAGNET') {
-            const dx = (this.player.x + 20) - item.x;
-            const dy = (this.player.y + 20) - item.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 260) {
-              item.x += dx * 0.15;
-              item.y += dy * 0.15;
-            }
-          }
-
-          // Pickup Collision Check
-          const pBox = { x: this.player.x, y: this.player.y, w: this.player.width, h: this.player.height };
-          if (item.x < pBox.x + pBox.w && item.x + item.width > pBox.x &&
-              item.y < pBox.y + pBox.h && item.y + item.height > pBox.y) {
-
-            if (item.type === 'coin') {
-              const count = (this.activePowerup && this.activePowerup.type === 'DOUBLE_COINS') ? 2 : 1;
-              this.coinsCollected += count;
-              this.playSFX('coin');
-              this.spawnDust(item.x, item.y, 4, '#f59e0b');
-            } else if (item.type === 'crystal') {
-              this.crystalsCollected++;
-              this.playSFX('crystal');
-              this.spawnDust(item.x, item.y, 6, '#00f0ff');
-            } else if (item.type === 'artifact') {
-              this.artifactRecovered = this.level.artifact;
-              this.playSFX('crystal');
-              this.spawnDust(item.x, item.y, 12, '#ec4899');
-            } else if (item.type === 'shield') {
-              this.hasShield = true;
-              this.playSFX('crystal');
-            } else if (item.type === 'magnet') {
-              this.activePowerup = { type: 'MAGNET', timer: 300 };
-              this.playSFX('crystal');
-            } else if (item.type === 'boost') {
-              this.activePowerup = { type: 'SPEED_BOOST', timer: 200 };
-              this.playSFX('crystal');
-            }
-
-            this.collectibles.splice(i, 1);
-            continue;
-          }
-
-          if (item.x < -50) this.collectibles.splice(i, 1);
-        }
-
-        // Update Particles
-        for (let i = this.particles.length - 1; i >= 0; i--) {
-          const p = this.particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          p.alpha -= 0.03;
-          if (p.alpha <= 0) this.particles.splice(i, 1);
-        }
-
-        // Update HUD DOM metrics
-        const distEl = document.getElementById('hud-distance');
-        const coinEl = document.getElementById('hud-coins');
-        const cryEl = document.getElementById('hud-crystals');
-        const xpEl = document.getElementById('hud-xp');
-
-        if (distEl) distEl.innerText = `${this.scoreDistance}m`;
-        if (coinEl) coinEl.innerText = `🪙 ${this.coinsCollected}`;
-        if (cryEl) cryEl.innerText = `⏳ ${this.crystalsCollected}`;
-        if (xpEl) xpEl.innerText = `⚡ ${Math.floor(this.scoreDistance * 0.1) + this.coinsCollected * 2} XP`;
-      }
-
-      spawnObstacle() {
-        const obsDef = this.level.obstacles[Math.floor(Math.random() * this.level.obstacles.length)];
-        this.obstacles.push({
-          x: this.width + 40,
-          y: this.groundY - obsDef.height - obsDef.yOffset,
-          width: obsDef.width,
-          height: obsDef.height,
-          type: obsDef.type,
-          name: obsDef.name
-        });
-      }
-
-      spawnCollectible() {
-        const rand = Math.random();
-        const yPos = this.groundY - (Math.random() < 0.4 ? 120 : 45);
-        if (rand < 0.55) {
-          this.collectibles.push({ x: this.width + 30, y: yPos, width: 24, height: 24, type: 'coin' });
-        } else if (rand < 0.75) {
-          this.collectibles.push({ x: this.width + 30, y: yPos - 30, width: 26, height: 26, type: 'crystal' });
-        } else if (rand < 0.88 && !this.artifactRecovered) {
-          this.collectibles.push({ x: this.width + 30, y: this.groundY - 50, width: 32, height: 32, type: 'artifact' });
-        } else {
-          const powerTypes = ['shield', 'magnet', 'boost'];
-          const pType = powerTypes[Math.floor(Math.random() * powerTypes.length)];
-          this.collectibles.push({ x: this.width + 30, y: yPos - 20, width: 28, height: 28, type: pType });
-        }
-      }
-
-      render() {
-        // Clear & Draw Parallax Sky Background
-        const bg = this.level.bgColors;
-        const grad = this.ctx.createLinearGradient(0, 0, 0, this.groundY);
-        grad.addColorStop(0, bg[0]);
-        grad.addColorStop(0.5, bg[1]);
-        grad.addColorStop(1, bg[2]);
-        this.ctx.fillStyle = grad;
-        this.ctx.fillRect(0, 0, this.width, this.height);
-
-        // Distant Horizon Silhouettes / Clouds
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-        for (let i = 0; i < 5; i++) {
-          const cx = ((this.player.frameCount * 0.5 + i * 240) % (this.width + 200)) - 100;
-          this.ctx.beginPath();
-          this.ctx.arc(cx, 120 + (i % 3) * 20, 40 + (i % 2) * 20, 0, Math.PI * 2);
-          this.ctx.fill();
-        }
-
-        // Draw Ground Platform
-        this.ctx.fillStyle = this.level.groundColor;
-        this.ctx.fillRect(0, this.groundY, this.width, this.height - this.groundY);
-
-        // Ground Top Accent Line
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-        this.ctx.fillRect(0, this.groundY, this.width, 4);
-
-        // Draw Particles
-        this.particles.forEach(p => {
-          this.ctx.save();
-          this.ctx.globalAlpha = p.alpha;
-          this.ctx.fillStyle = p.color;
-          this.ctx.beginPath();
-          this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.restore();
-        });
-
-        // Draw Obstacles
-        this.obstacles.forEach(obs => {
-          this.ctx.save();
-          if (obs.type === 'boulder') {
-            this.ctx.fillStyle = '#6e5d4f';
-            this.ctx.beginPath();
-            this.ctx.arc(obs.x + obs.width / 2, obs.y + obs.height / 2, obs.width / 2, 0, Math.PI * 2);
-            this.ctx.fill();
-            this.ctx.strokeStyle = '#42372e';
-            this.ctx.stroke();
-          } else if (obs.type === 'pit') {
-            this.ctx.fillStyle = '#1a130b';
-            this.ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-          } else if (obs.type === 'drone') {
-            this.ctx.fillStyle = '#00f0ff';
-            this.ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-          } else {
-            this.ctx.fillStyle = '#a33636';
-            this.ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-            this.ctx.strokeStyle = '#fff';
-            this.ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
-          }
-          this.ctx.restore();
-        });
-
-        // Draw Collectibles
-        this.collectibles.forEach(item => {
-          this.ctx.save();
-          const bob = Math.sin(this.player.frameCount * 0.1) * 4;
-          if (item.type === 'coin') {
-            this.ctx.fillStyle = '#f59e0b';
-            this.ctx.beginPath();
-            this.ctx.arc(item.x + 12, item.y + 12 + bob, 10, 0, Math.PI * 2);
-            this.ctx.fill();
-            this.ctx.strokeStyle = '#fef08a';
-            this.ctx.stroke();
-          } else if (item.type === 'crystal') {
-            this.ctx.fillStyle = '#00f0ff';
-            this.ctx.beginPath();
-            this.ctx.arc(item.x + 13, item.y + 13 + bob, 11, 0, Math.PI * 2);
-            this.ctx.fill();
-          } else if (item.type === 'artifact') {
-            this.ctx.font = '24px serif';
-            this.ctx.fillText(this.level.artifact.icon, item.x, item.y + 24 + bob);
-          } else {
-            this.ctx.fillStyle = '#a855f7';
-            this.ctx.beginPath();
-            this.ctx.arc(item.x + 14, item.y + 14 + bob, 12, 0, Math.PI * 2);
-            this.ctx.fill();
-          }
-          this.ctx.restore();
-        });
-
-        // Draw Mascot Explorer Character ("Chronos Kid")
-        this.renderMascot();
-      }
-
-      renderMascot() {
-        const p = this.player;
-        this.ctx.save();
-
-        // Shield Aura Effect
-        if (this.hasShield) {
-          this.ctx.strokeStyle = '#00f0ff';
-          this.ctx.lineWidth = 3;
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + p.width / 2, p.y + p.height / 2, 38, 0, Math.PI * 2);
-          this.ctx.stroke();
-        }
-
-        // Speed Boost Dash Effect
-        if (this.activePowerup && this.activePowerup.type === 'SPEED_BOOST') {
-          this.ctx.fillStyle = 'rgba(255, 204, 0, 0.3)';
-          this.ctx.fillRect(p.x - 20, p.y, p.width + 20, p.height);
-        }
-
-        if (p.isSliding) {
-          // Sliding Low Stance
-          this.ctx.fillStyle = '#d97706'; // Outfit
-          this.ctx.fillRect(p.x, p.y + 10, p.width, p.height - 10);
-          // Head & Hat
-          this.ctx.fillStyle = '#fde047';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + p.width - 6, p.y + 12, 10, 0, Math.PI * 2);
-          this.ctx.fill();
-        } else {
-          // Standing / Running Stance
-          // Backpack
-          this.ctx.fillStyle = '#78350f';
-          this.ctx.fillRect(p.x - 6, p.y + 18, 12, 22);
-
-          // Body Coat
-          this.ctx.fillStyle = '#d97706';
-          this.ctx.fillRect(p.x + 6, p.y + 16, 30, 26);
-
-          // Belt Time Device (Glowing Cyan)
-          this.ctx.fillStyle = '#00f0ff';
-          this.ctx.shadowBlur = 8;
-          this.ctx.shadowColor = '#00f0ff';
-          this.ctx.fillRect(p.x + 18, p.y + 38, 8, 6);
-          this.ctx.shadowBlur = 0;
-
-          // Head
-          this.ctx.fillStyle = '#fde047';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 12, 12, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Explorer Fedora Hat
-          this.ctx.fillStyle = '#92400e';
-          this.ctx.fillRect(p.x + 8, p.y + 2, 28, 6);
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 3, 10, Math.PI, 0);
-          this.ctx.fill();
-
-          // Goggles Lens Glare
-          this.ctx.fillStyle = '#00f0ff';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 20, p.y + 6, 3, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Animated Legs
-          const stride = Math.sin(p.frameCount * 0.35) * 10;
-          this.ctx.strokeStyle = '#451a03';
-          this.ctx.lineWidth = 5;
-          this.ctx.beginPath();
-          this.ctx.moveTo(p.x + 14, p.y + 42);
-          this.ctx.lineTo(p.x + 14 + stride, p.y + 60);
-          this.ctx.moveTo(p.x + 28, p.y + 42);
-          this.ctx.lineTo(p.x + 28 - stride, p.y + 60);
-          this.ctx.stroke();
-        }
-
-        this.ctx.restore();
-      }
-
-      gameOver() {
-        this.isGameOver = true;
-        this.playSFX('hit');
-
-        // Calculate earned metrics
-        const baseXP = Math.floor(this.scoreDistance * 0.1) + (this.coinsCollected * 2);
-        const artifactXP = this.artifactRecovered ? this.artifactRecovered.xp : 0;
-        const totalXP = baseXP + artifactXP;
-
-        // Persist to LocalStorage
-        addXP(totalXP);
-
-        // Add Coins
-        let currentCoins = parseInt(localStorage.getItem('chronicle_user_coins') || '0');
-        currentCoins += this.coinsCollected;
-        localStorage.setItem('chronicle_user_coins', currentCoins.toString());
-
-        // Save Highscore
-        let bestDist = parseInt(localStorage.getItem('chronicle_runner_highscore') || '0');
-        if (this.scoreDistance > bestDist) {
-          localStorage.setItem('chronicle_runner_highscore', this.scoreDistance.toString());
-        }
-
-        // Add recovered artifact to Museum
-        if (this.artifactRecovered) {
-          let museum = JSON.parse(localStorage.getItem('chronicle_unlocked_museum') || '[]');
-          if (!museum.includes(this.artifactRecovered.name)) {
-            museum.push(this.artifactRecovered.name);
-            localStorage.setItem('chronicle_unlocked_museum', JSON.stringify(museum));
-          }
-        }
-
-        // Populate Summary Modal
-        const modal = document.getElementById('runner-summary-modal');
-        const lmName = document.getElementById('summary-landmark-name');
-        const distEl = document.getElementById('summary-distance');
-        const coinEl = document.getElementById('summary-coins');
-        const cryEl = document.getElementById('summary-crystals');
-        const xpEl = document.getElementById('summary-xp');
-        const artBanner = document.getElementById('summary-artifact-banner');
-        const artIcon = document.getElementById('summary-artifact-icon');
-        const artName = document.getElementById('summary-artifact-name');
-
-        if (lmName) lmName.innerText = `${this.level.name.toUpperCase()} RUN`;
-        if (distEl) distEl.innerText = `${this.scoreDistance}m`;
-        if (coinEl) coinEl.innerText = `🪙 +${this.coinsCollected}`;
-        if (cryEl) cryEl.innerText = `⏳ +${this.crystalsCollected}`;
-        if (xpEl) xpEl.innerText = `⚡ +${totalXP} XP`;
-
-        if (this.artifactRecovered && artBanner) {
-          artBanner.classList.remove('hidden');
-          if (artIcon) artIcon.innerText = this.artifactRecovered.icon;
-          if (artName) artName.innerText = `${this.artifactRecovered.name} (+${this.artifactRecovered.xp} XP)`;
-        } else if (artBanner) {
-          artBanner.classList.add('hidden');
-        }
-
-        if (modal) modal.classList.remove('hidden');
-
-        // Refresh main page UI metrics
-        updateProgressUI();
-      }
-    }
-
-    // ==================== MINI-GAME UI & MODAL CONTROLLERS ====================
-
-    function openTimeExplorerModal() {
-      const modal = document.getElementById('time-explorer-game-modal');
-      const selectScreen = document.getElementById('runner-level-select-screen');
-      const gameplayScreen = document.getElementById('runner-gameplay-screen');
-      const summaryModal = document.getElementById('runner-summary-modal');
-
-      if (!modal) return;
-
-      modal.classList.remove('hidden');
-      if (selectScreen) selectScreen.classList.remove('hidden');
-      if (gameplayScreen) gameplayScreen.classList.add('hidden');
-      if (summaryModal) summaryModal.classList.add('hidden');
-
-      renderRunnerLevelsGrid();
-    }
-
-    function closeTimeExplorerModal() {
-      if (runnerEngineInstance) {
-        runnerEngineInstance.stop();
-        runnerEngineInstance = null;
-      }
-      const modal = document.getElementById('time-explorer-game-modal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function renderRunnerLevelsGrid() {
-      const grid = document.getElementById('runner-levels-grid');
-      const coinsBadge = document.getElementById('runner-total-coins-badge');
-      const hsBadge = document.getElementById('runner-highscore-badge');
-
-      if (!grid) return;
-      grid.innerHTML = '';
-
-      const visitedList = getVisitedLandmarks();
-      const visitedIds = new Set(visitedList.map(v => v.id));
-
-      const totalCoins = parseInt(localStorage.getItem('chronicle_user_coins') || '0');
-      const highscore = parseInt(localStorage.getItem('chronicle_runner_highscore') || '0');
-
-      if (coinsBadge) coinsBadge.innerText = `🪙 ${totalCoins} Coins`;
-      if (hsBadge) hsBadge.innerText = `🏆 Best: ${highscore}m`;
-
-      RUNNER_LEVELS.forEach(lvl => {
-        // Level unlocked if visited on main site OR first level (Pyramids of Giza)
-        const isUnlocked = lvl.id === "pyramids-of-giza" || visitedIds.has(lvl.id);
-        const card = document.createElement('div');
-        card.className = `glassmorphic p-5 border rounded-2xl flex flex-col justify-between transition duration-300 relative overflow-hidden ${
-          isUnlocked 
-            ? 'border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(0,240,255,0.15)] bg-slate-900/60 cursor-pointer' 
-            : 'border-white/10 bg-black/40 opacity-60'
-        }`;
-
-        card.innerHTML = `
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-3xl p-2 rounded-xl bg-white/5 border border-white/10">${lvl.landmarkIcon}</span>
-              <span class="font-mono text-[10px] px-2.5 py-1 rounded-full font-bold ${
-                isUnlocked ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'bg-white/5 text-white/40'
-              }">
-                ${isUnlocked ? 'UNLOCKED ✓' : 'LOCKED 🔒'}
-              </span>
-            </div>
-            <h4 class="font-display-present text-lg font-bold text-white mb-0.5">${lvl.name}</h4>
-            <p class="font-mono text-xs text-amber-300 mb-2">${lvl.era}</p>
-            <p class="font-mono text-[11px] text-white/50 leading-relaxed">
-              Recover the <span class="text-white font-bold">${lvl.artifact.icon} ${lvl.artifact.name}</span> in this historical era run!
-            </p>
-          </div>
-
-          <button onclick="${isUnlocked ? `startRunnerLevel('${lvl.id}')` : `jumpToLandmarkFromRunner('${lvl.id}')`}" class="w-full mt-4 py-2.5 rounded-xl font-label-tech text-xs tracking-wider font-bold transition flex items-center justify-center gap-2 ${
-            isUnlocked 
-              ? 'bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black shadow-lg' 
-              : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
-          }">
-            <span>${isUnlocked ? '▶ PLAY RUNNER' : '🗺️ VISIT LANDMARK TO UNLOCK'}</span>
-          </button>
-        `;
-
-        grid.appendChild(card);
-      });
-    }
-
-    function jumpToLandmarkFromRunner(placeId) {
-      closeTimeExplorerModal();
-      jumpToDestinationHomepage(placeId);
-    }
-
-    function startRunnerLevel(placeId) {
-      const lvl = RUNNER_LEVELS.find(l => l.id === placeId) || RUNNER_LEVELS[0];
-      const selectScreen = document.getElementById('runner-level-select-screen');
-      const gameplayScreen = document.getElementById('runner-gameplay-screen');
-      const summaryModal = document.getElementById('runner-summary-modal');
-      const canvas = document.getElementById('runner-canvas');
-
-      if (!gameplayScreen || !canvas) return;
-
-      if (selectScreen) selectScreen.classList.add('hidden');
-      if (summaryModal) summaryModal.classList.add('hidden');
-      gameplayScreen.classList.remove('hidden');
-
-      if (runnerEngineInstance) {
-        runnerEngineInstance.stop();
-      }
-
-      runnerEngineInstance = new TimeExplorerEngine(canvas, lvl);
-      runnerEngineInstance.start();
-    }
-
-    function toggleRunnerAudio() {
-      isRunnerAudioEnabled = !isRunnerAudioEnabled;
-      const status = document.getElementById('runner-audio-status');
-      if (status) status.innerText = isRunnerAudioEnabled ? 'AUDIO ON' : 'AUDIO MUTED';
-    }
-
-    function toggleRunnerPause() {
-      if (runnerEngineInstance) {
-        runnerEngineInstance.pause();
-      }
-    }
-
-    function restartRunnerLevel() {
-      if (runnerEngineInstance) {
-        const lvlId = runnerEngineInstance.level.id;
-        document.getElementById('runner-summary-modal').classList.add('hidden');
-        startRunnerLevel(lvlId);
-      }
-    }
-
-    function exitRunnerToLevels() {
-      if (runnerEngineInstance) {
-        runnerEngineInstance.stop();
-        runnerEngineInstance = null;
-      }
-      openTimeExplorerModal();
-    }
+    // Hook Anomaly renderer into location swap
+    const originalSwapLocationContent = swapLocationContent;
+    swapLocationContent = function(place) {
+      originalSwapLocationContent(place);
+      renderCurrentLandmarkAnomaly();
+    };
+
+    // --- 9. DOM Load initialization ---
+    document.addEventListener('DOMContentLoaded', () => {
+      initThreeJS();
+      initPortalCanvas();
+      loadCustomPlaces();
+      window.chronicle = new TemporalEngine();
+      swapLocationContent(places[0]);
+
+      // Initialize Progress, Badges, Anomalies & Inspection Viewport events
+      updateProgressUI();
+      updateHomepageBadges();
+      checkAchievements();
+      renderCurrentLandmarkAnomaly();
+      initInspectionViewportEvents();
+    });
   </script>
-  <!-- Standalone button handler: runs AFTER all inline JS, bulletproof modal wiring -->
   <script src="script.js" defer></script>
 </body>
 </html>
