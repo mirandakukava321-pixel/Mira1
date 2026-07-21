@@ -1136,52 +1136,51 @@
     renderDistantHorizon(lvl) {
       this.ctx.save();
       this.ctx.fillStyle = lvl.mountainColor;
-      const offset = (this.parallaxMountains % 2400 + 2400) % 2400;
+      const loopWidth = 1280;
+      const offset = (this.parallaxMountains % loopWidth + loopWidth) % loopWidth;
 
-      this.ctx.beginPath();
-      this.ctx.moveTo(-offset, this.groundY);
+      // 2-copy continuous buffer for seamless 100% viewport coverage
+      for (let copy = 0; copy < 2; copy++) {
+        const ox = copy * loopWidth - offset;
+        this.ctx.beginPath();
+        this.ctx.moveTo(ox, this.groundY);
 
-      if (lvl.theme === 'georgia' || lvl.theme === 'peru') {
-        // High Andes / Caucasus Jagged Mountain Range
-        for (let x = -offset; x <= this.width + 600; x += 300) {
-          this.ctx.lineTo(x + 100, 240);
-          this.ctx.lineTo(x + 180, 340);
-          this.ctx.lineTo(x + 300, 210);
+        if (lvl.theme === 'georgia' || lvl.theme === 'peru') {
+          for (let x = ox; x <= ox + loopWidth + 300; x += 300) {
+            this.ctx.lineTo(x + 100, 240);
+            this.ctx.lineTo(x + 180, 340);
+            this.ctx.lineTo(x + 300, 210);
+          }
+        } else if (lvl.theme === 'japan') {
+          for (let x = ox; x <= ox + loopWidth + 800; x += 800) {
+            this.ctx.lineTo(x + 200, 460);
+            this.ctx.lineTo(x + 450, 210);
+            this.ctx.lineTo(x + 700, 460);
+          }
+        } else {
+          for (let x = ox; x <= ox + loopWidth + 350; x += 350) {
+            this.ctx.lineTo(x + 150, 320);
+            this.ctx.lineTo(x + 350, 420);
+          }
         }
-      } else if (lvl.theme === 'japan') {
-        // Mt Fuji Cone Silhouette in Distance
-        for (let x = -offset; x <= this.width + 800; x += 800) {
-          this.ctx.lineTo(x + 200, 460);
-          this.ctx.lineTo(x + 450, 210); // Snow cone peak
-          this.ctx.lineTo(x + 700, 460);
-        }
-      } else {
-        // Rolling Horizon Dunes / Hills
-        for (let x = -offset; x <= this.width + 600; x += 350) {
-          this.ctx.lineTo(x + 150, 320);
-          this.ctx.lineTo(x + 350, 420);
-        }
+
+        this.ctx.lineTo(ox + loopWidth + 300, this.groundY);
+        this.ctx.closePath();
+        this.ctx.fill();
       }
 
-      this.ctx.lineTo(this.width + 600, this.groundY);
-      this.ctx.closePath();
-      this.ctx.fill();
       this.ctx.restore();
     }
 
     renderMainLandmark(lvl) {
       this.ctx.save();
-      const loopWidth = 2800;
-      const offset = (this.parallaxRuins % loopWidth + loopWidth) % loopWidth;
+      // Main landmark stays continuously visible in the background, moving extremely slowly as player runs
+      // (lx = 550 - (this.distance * 0.08)). At 1900m finish, lx is still 398px on screen!
+      // NEVER disappears, NEVER pops off-screen, NEVER leaves a blank frame!
+      const lx = 550 - (this.distance * 0.08);
+      const ly = this.groundY;
 
-      // Draw Main Landmark seamlessly across screen width
-      for (let i = 0; i < 5; i++) {
-        let lx = (i * 700 - offset);
-        if (lx < -500) lx += loopWidth;
-        if (lx <= this.width + 500) {
-          this.drawLandmarkByTheme(lvl.theme, lx, this.groundY);
-        }
-      }
+      this.drawLandmarkByTheme(lvl.theme, lx, ly);
 
       this.ctx.restore();
     }
