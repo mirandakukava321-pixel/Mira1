@@ -595,7 +595,7 @@
         <div id="inspection-img-wrapper" class="relative transition-transform duration-75 ease-out origin-center">
           <img id="inspection-target-img" src="assets/era_1890.jpg" alt="Historical Landmark View" class="max-w-[88vw] max-h-[76vh] object-contain rounded-lg shadow-2xl pointer-events-none select-none border border-white/10" />
           <!-- Anomaly Target Container inside Wrapper -->
-          <div id="inspection-anomaly-container" class="absolute inset-0 pointer-events-auto"></div>
+          <div id="inspection-anomaly-container" class="absolute inset-0" style="pointer-events:auto;z-index:50;"></div>
         </div>
       </div>
 
@@ -3489,6 +3489,7 @@
         const clientX = (e && e.touches && e.touches[0]) ? e.touches[0].clientX : (e ? e.clientX : window.innerWidth / 2);
         const clientY = (e && e.touches && e.touches[0]) ? e.touches[0].clientY : (e ? e.clientY : window.innerHeight / 2);
 
+        console.log('[Anomaly] Clicked! id:', placeId, 'era:', activeEra, 'solved:', isSolved);
         if (!isSolved) {
           solveAnomaly(placeId, activeEra, clientX, clientY);
         } else {
@@ -3496,10 +3497,12 @@
         }
       };
 
+      // Add console logs for click diagnostics
       node.addEventListener('click', triggerSolve);
       node.addEventListener('touchstart', triggerSolve, { passive: false });
 
       container.appendChild(node);
+      console.log('[Anomaly] Node rendered:', anomalyInfo.name, '| solved:', isSolved, '| pos:', anomalyInfo.coords);
 
       // Miss click handler inside inspection viewport
       container.onclick = (e) => {
@@ -3646,32 +3649,8 @@
       }
     }
 
-    function solveAnomaly(placeId, clickX, clickY) {
-      const place = places.find(p => p.id === placeId);
-      const anomalyInfo = ANOMALIES_DATA[placeId];
-
-      const solvedList = getSolvedAnomalies();
-      if (!solvedList.includes(placeId)) {
-        solvedList.push(placeId);
-        saveSolvedAnomalies(solvedList);
-
-        const newTotalXP = addXP(50);
-
-        // Confetti explosion
-        fireConfetti(clickX || window.innerWidth / 2, clickY || window.innerHeight / 2);
-
-        // Audio synthesis chime
-        playSuccessAudio();
-
-        // Toast alert
-        showToast("🎉 Timeline Restored! +50 XP", `You discovered and fixed the ${anomalyInfo ? anomalyInfo.name : 'anomaly'}!`, "discovery");
-
-        // Refresh Anomaly HUD & Progress
-        renderCurrentLandmarkAnomaly();
-        updateProgressUI();
-        checkAchievements();
-      }
-    }
+    // NOTE: The authoritative solveAnomaly(placeId, era, clickX, clickY) is defined above at line ~3225.
+    // The old duplicate 3-arg version was removed — it was overwriting the correct one and breaking all clicks.
 
     // Audio Synthesis Success Chime (Web Audio API)
     function playSuccessAudio() {
