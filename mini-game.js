@@ -1,7 +1,7 @@
 /**
  * mini-game.js — Time Explorer Adventure — World Tour
- * Completely isolated 2D side-scrolling runner mini-game with multi-level progression
- * and growing artifact bag system.
+ * Completely isolated 2D side-scrolling runner mini-game with multi-level progression,
+ * growing artifact bag system, and rich thematic postcard-level background illustrations.
  */
 
 (function () {
@@ -18,15 +18,15 @@
       artifactIcon: "🪲",
       artifactColor: "#f59e0b",
       theme: "desert",
-      bgSky: ["#0a0814", "#2a1428", "#571f38"],
-      moonColor: "rgba(251, 191, 36, 0.9)",
-      mountainColor: "#1e1320",
-      ruinColor: "#2d1b2d",
-      treeColor: "#1a2e26",
+      bgSky: ["#0c0612", "#3d1a24", "#d97706"],
+      moonColor: "rgba(251, 191, 36, 0.95)",
+      mountainColor: "#21110b",
+      ruinColor: "#361b0f",
+      treeColor: "#1c2e1f",
       groundColor: "#170f1a",
       groundBorder: "#f59e0b",
       icon: "🏜️",
-      desc: "Sprint through ancient desert sands! Jump over temporal spikes and recover the 🪲 Golden Scarab."
+      desc: "Sprint through ancient desert sands! Avoid temporal spikes and recover the 🪲 Golden Scarab."
     },
     {
       id: "paris",
@@ -37,11 +37,11 @@
       artifactIcon: "🏅",
       artifactColor: "#38bdf8",
       theme: "paris",
-      bgSky: ["#070d1a", "#101e38", "#1d3257"],
-      moonColor: "rgba(224, 242, 254, 0.9)",
-      mountainColor: "#0f172a",
-      ruinColor: "#1e293b",
-      treeColor: "#0f2338",
+      bgSky: ["#060a17", "#1c294a", "#524368"],
+      moonColor: "rgba(224, 242, 254, 0.95)",
+      mountainColor: "#0b1224",
+      ruinColor: "#17233c",
+      treeColor: "#0c2033",
       groundColor: "#0b132b",
       groundBorder: "#38bdf8",
       icon: "🗼",
@@ -56,11 +56,11 @@
       artifactIcon: "☦️",
       artifactColor: "#a855f7",
       theme: "georgia",
-      bgSky: ["#0d0c1d", "#1a1638", "#2d2456"],
-      moonColor: "rgba(233, 213, 255, 0.9)",
-      mountainColor: "#16132b",
-      ruinColor: "#221c44",
-      treeColor: "#182c23",
+      bgSky: ["#090918", "#1e1842", "#5c3d75"],
+      moonColor: "rgba(233, 213, 255, 0.95)",
+      mountainColor: "#131029",
+      ruinColor: "#241d47",
+      treeColor: "#172b22",
       groundColor: "#110e24",
       groundBorder: "#a855f7",
       icon: "🏔️",
@@ -75,11 +75,11 @@
       artifactIcon: "🪷",
       artifactColor: "#ec4899",
       theme: "india",
-      bgSky: ["#140718", "#2b1033", "#4c1a59"],
-      moonColor: "rgba(251, 207, 232, 0.9)",
-      mountainColor: "#1c0b24",
-      ruinColor: "#2a1236",
-      treeColor: "#192e22",
+      bgSky: ["#140718", "#3b1245", "#a63f6d"],
+      moonColor: "rgba(251, 207, 232, 0.95)",
+      mountainColor: "#1e0a26",
+      ruinColor: "#33123d",
+      treeColor: "#182d21",
       groundColor: "#16081e",
       groundBorder: "#ec4899",
       icon: "🕌",
@@ -94,11 +94,11 @@
       artifactIcon: "🎭",
       artifactColor: "#06b6d4",
       theme: "sydney",
-      bgSky: ["#050e1a", "#0b223d", "#143963"],
-      moonColor: "rgba(207, 250, 254, 0.9)",
-      mountainColor: "#08192e",
-      ruinColor: "#112a4a",
-      treeColor: "#0f2d30",
+      bgSky: ["#040c18", "#11365c", "#32719e"],
+      moonColor: "rgba(207, 250, 254, 0.95)",
+      mountainColor: "#07182e",
+      ruinColor: "#102c4f",
+      treeColor: "#0e2b2e",
       groundColor: "#061324",
       groundBorder: "#06b6d4",
       icon: "🌊",
@@ -113,10 +113,10 @@
       artifactIcon: "🪙",
       artifactColor: "#eab308",
       theme: "rome",
-      bgSky: ["#120a06", "#2b180d", "#4d2b15"],
-      moonColor: "rgba(254, 240, 138, 0.9)",
-      mountainColor: "#1c100a",
-      ruinColor: "#2e1a10",
+      bgSky: ["#170b05", "#421d0d", "#a3501a"],
+      moonColor: "rgba(254, 240, 138, 0.95)",
+      mountainColor: "#1f0d06",
+      ruinColor: "#361a0b",
       treeColor: "#192c1a",
       groundColor: "#140a06",
       groundBorder: "#eab308",
@@ -132,11 +132,11 @@
       artifactIcon: "🌸",
       artifactColor: "#f43f5e",
       theme: "japan",
-      bgSky: ["#140714", "#2e0f2d", "#521b50"],
-      moonColor: "rgba(254, 205, 211, 0.9)",
-      mountainColor: "#1e0b20",
-      ruinColor: "#2f1232",
-      treeColor: "#2d162d",
+      bgSky: ["#170718", "#3d103d", "#a04789"],
+      moonColor: "rgba(254, 205, 211, 0.95)",
+      mountainColor: "#1f0b21",
+      ruinColor: "#361138",
+      treeColor: "#2b142b",
       groundColor: "#170718",
       groundBorder: "#f43f5e",
       icon: "🗻",
@@ -151,10 +151,10 @@
       artifactIcon: "🗝️",
       artifactColor: "#fbbf24",
       theme: "london",
-      bgSky: ["#070a12", "#101726", "#1c273e"],
-      moonColor: "rgba(254, 243, 199, 0.9)",
-      mountainColor: "#0c121e",
-      ruinColor: "#172236",
+      bgSky: ["#080c16", "#1a2842", "#47546e"],
+      moonColor: "rgba(254, 243, 199, 0.95)",
+      mountainColor: "#0b1221",
+      ruinColor: "#18263d",
       treeColor: "#102324",
       groundColor: "#090d16",
       groundBorder: "#fbbf24",
@@ -170,10 +170,10 @@
       artifactIcon: "🗽",
       artifactColor: "#10b981",
       theme: "newyork",
-      bgSky: ["#051214", "#0e262a", "#194248"],
-      moonColor: "rgba(209, 250, 229, 0.9)",
-      mountainColor: "#091c1f",
-      ruinColor: "#123035",
+      bgSky: ["#061317", "#153d45", "#326c75"],
+      moonColor: "rgba(209, 250, 229, 0.95)",
+      mountainColor: "#071b1f",
+      ruinColor: "#11333a",
       treeColor: "#0f2e24",
       groundColor: "#061315",
       groundBorder: "#10b981",
@@ -189,10 +189,10 @@
       artifactIcon: "🐉",
       artifactColor: "#10b981",
       theme: "china",
-      bgSky: ["#120808", "#2a1212", "#4a1f1f"],
-      moonColor: "rgba(254, 226, 226, 0.9)",
-      mountainColor: "#1c0d0d",
-      ruinColor: "#2e1515",
+      bgSky: ["#140808", "#381414", "#943b3b"],
+      moonColor: "rgba(254, 226, 226, 0.95)",
+      mountainColor: "#210c0c",
+      ruinColor: "#381414",
       treeColor: "#1c2b1c",
       groundColor: "#140808",
       groundBorder: "#10b981",
@@ -208,10 +208,10 @@
       artifactIcon: "🌿",
       artifactColor: "#84cc16",
       theme: "greece",
-      bgSky: ["#071018", "#102236", "#1c3c5c"],
-      moonColor: "rgba(236, 252, 203, 0.9)",
-      mountainColor: "#0e1b29",
-      ruinColor: "#172d45",
+      bgSky: ["#06101c", "#14304f", "#336999"],
+      moonColor: "rgba(236, 252, 203, 0.95)",
+      mountainColor: "#0b1a2c",
+      ruinColor: "#163152",
       treeColor: "#172d1d",
       groundColor: "#09121c",
       groundBorder: "#84cc16",
@@ -227,10 +227,10 @@
       artifactIcon: "☀️",
       artifactColor: "#f97316",
       theme: "peru",
-      bgSky: ["#170c06", "#361b0c", "#5c3014"],
-      moonColor: "rgba(254, 215, 170, 0.9)",
-      mountainColor: "#241309",
-      ruinColor: "#3a1f0f",
+      bgSky: ["#170c06", "#421f0b", "#9c4c1e"],
+      moonColor: "rgba(254, 215, 170, 0.95)",
+      mountainColor: "#210e05",
+      ruinColor: "#381909",
       treeColor: "#1d2e16",
       groundColor: "#180c06",
       groundBorder: "#f97316",
@@ -419,7 +419,7 @@
       this.distance = 0;
       this.baseSpeed = 6.5;
       this.currentSpeed = 6.5;
-      this.targetDistance = 1900; // Finish portal appears at 1900m
+      this.targetDistance = 1900;
 
       // Entities
       this.player = null;
@@ -485,7 +485,7 @@
       } else if (count <= 7) {
         return { stage: 4, name: 'Expedition Pack', width: 22, height: 26, color: '#d97706', icon: '🎒' };
       } else {
-        return { stage: 5, name: 'Master Adventurer Pack', width: 26, height: 30, color: '#f59e0b', icon: '🎒✨' };
+        return { stage: 5, name: 'Master Pack', width: 26, height: 30, color: '#f59e0b', icon: '🎒✨' };
       }
     }
 
@@ -710,7 +710,7 @@
       this.animatingArtifacts = [];
       this.bagBounceTimer = 0;
 
-      // Spawn level unique artifact at distance ~900m if not already in scene
+      // Spawn level unique artifact at distance ~900m
       this.levelArtifact = {
         x: this.width + 1200,
         y: this.groundY - 110,
@@ -796,7 +796,7 @@
         obs.x -= this.currentSpeed;
 
         if (this.checkCollision(this.player, obs)) {
-          this.triggerGameOver('TEMPORAL COLLISION', `You collided with a temporal obstacle in ${this.currentLevel.name}!`);
+          this.triggerGameOver('TEMPORAL COLLISION', `You collided with an obstacle in ${this.currentLevel.name}!`);
           return;
         }
 
@@ -868,7 +868,7 @@
         animArt.alpha -= 0.02;
 
         if (animArt.scale <= 0.2 || animArt.alpha <= 0) {
-          this.bagBounceTimer = 15; // Bounce & glow bag!
+          this.bagBounceTimer = 15;
           this.spawnSparkles(targetX, targetY, animArt.color, 12);
           this.animatingArtifacts.splice(i, 1);
         }
@@ -1056,28 +1056,31 @@
       if (this.gameoverScreen) this.gameoverScreen.classList.remove('hidden');
     }
 
-    // --- Rendering Engines ---
+    // --- Rich Vector Parallax Illustration Engine ---
     render() {
       this.ctx.clearRect(0, 0, this.width, this.height);
 
       const lvl = this.currentLevel;
 
-      // Layer 0: Sky
+      // Layer 0: Sky Gradient & Celestial Orbs
       this.renderSky(lvl);
 
-      // Layer 1: Mountains & Distant Skyline
-      this.renderMountains(lvl);
+      // Layer 1: Distant Mountains / Horizon Silhouette
+      this.renderDistantHorizon(lvl);
 
-      // Layer 2: Ruins & Architecture
-      this.renderRuins(lvl);
+      // Layer 2: Main Recognized Landmark Layer (Pyramids, Eiffel Tower, Sameba, Taj Mahal, Sydney Opera, Colosseum, Mt Fuji, Big Ben, Liberty, Great Wall, Acropolis, Machu Picchu)
+      this.renderMainLandmark(lvl);
 
-      // Layer 3: Trees & Foreground Landmarks
-      this.renderTrees(lvl);
+      // Layer 3: Middleground Architecture & Scenery
+      this.renderMiddleground(lvl);
 
-      // Layer 4: Ground Platform
+      // Layer 4: Foreground Vegetation & Details
+      this.renderForegroundDetails(lvl);
+
+      // Layer 5: Collision Ground
       this.renderGround(lvl);
 
-      // Layer 5: Entities
+      // Layer 6: Game Entities
       if (this.finishPortal && this.finishPortal.spawned) {
         this.renderFinishPortal();
       }
@@ -1099,18 +1102,34 @@
       this.ctx.fillStyle = grad;
       this.ctx.fillRect(0, 0, this.width, this.height);
 
-      // Celestial Orb (Moon/Sun)
+      // Celestial Orb (Moon / Sun)
       this.ctx.save();
       this.ctx.fillStyle = lvl.moonColor;
       this.ctx.shadowColor = lvl.moonColor;
-      this.ctx.shadowBlur = 30;
+      this.ctx.shadowBlur = 35;
       this.ctx.beginPath();
-      this.ctx.arc(1020, 130, 45, 0, Math.PI * 2);
+      this.ctx.arc(1040, 130, 48, 0, Math.PI * 2);
       this.ctx.fill();
+
+      // Flying Birds / Petals effect in sky
+      const time = this.lastTime * 0.001;
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      for (let i = 0; i < 5; i++) {
+        const bx = (this.width - ((time * 40 + i * 220) % (this.width + 300)));
+        const by = 80 + Math.sin(time + i) * 15;
+        this.ctx.beginPath();
+        this.ctx.moveTo(bx, by);
+        this.ctx.lineTo(bx - 10, by - 6);
+        this.ctx.lineTo(bx - 5, by + 2);
+        this.ctx.lineTo(bx + 5, by + 2);
+        this.ctx.lineTo(bx + 10, by - 6);
+        this.ctx.fill();
+      }
+
       this.ctx.restore();
     }
 
-    renderMountains(lvl) {
+    renderDistantHorizon(lvl) {
       this.ctx.save();
       this.ctx.fillStyle = lvl.mountainColor;
       const offset = this.parallaxMountains;
@@ -1118,141 +1137,377 @@
       this.ctx.beginPath();
       this.ctx.moveTo(-offset, this.groundY);
 
-      if (lvl.theme === 'desert') {
-        // Pyramids & Dunes
-        this.ctx.lineTo(180 - offset, 310);
-        this.ctx.lineTo(420 - offset, this.groundY);
-        this.ctx.lineTo(650 - offset, 370);
-        this.ctx.lineTo(920 - offset, this.groundY);
-        this.ctx.lineTo(1150 - offset, 290);
-        this.ctx.lineTo(1420 - offset, this.groundY);
-
-        this.ctx.lineTo(1280 + 180 - offset, 310);
-        this.ctx.lineTo(1280 + 420 - offset, this.groundY);
-        this.ctx.lineTo(1280 + 650 - offset, 370);
-        this.ctx.lineTo(1280 + 920 - offset, this.groundY);
-        this.ctx.lineTo(1280 + 1150 - offset, 290);
-        this.ctx.lineTo(1280 + 1420 - offset, this.groundY);
-      } else if (lvl.theme === 'paris') {
-        // Eiffel Tower Skyline
-        this.ctx.lineTo(200 - offset, 460);
-        this.ctx.lineTo(350 - offset, 240); // Eiffel spire
-        this.ctx.lineTo(500 - offset, 460);
-        this.ctx.lineTo(850 - offset, 480);
-        this.ctx.lineTo(1100 - offset, 430);
-        this.ctx.lineTo(1450 - offset, 480);
-
-        this.ctx.lineTo(1280 + 200 - offset, 460);
-        this.ctx.lineTo(1280 + 350 - offset, 240);
-        this.ctx.lineTo(1280 + 500 - offset, 460);
-        this.ctx.lineTo(1280 + 1450 - offset, this.groundY);
-      } else if (lvl.theme === 'georgia') {
-        // Caucasus Jagged Peaks
-        this.ctx.lineTo(150 - offset, 260);
-        this.ctx.lineTo(380 - offset, 390);
-        this.ctx.lineTo(620 - offset, 220);
-        this.ctx.lineTo(880 - offset, 410);
-        this.ctx.lineTo(1120 - offset, 250);
-        this.ctx.lineTo(1400 - offset, this.groundY);
-
-        this.ctx.lineTo(1280 + 150 - offset, 260);
-        this.ctx.lineTo(1280 + 620 - offset, 220);
-        this.ctx.lineTo(1280 + 1400 - offset, this.groundY);
-      } else if (lvl.theme === 'india') {
-        // Taj Mahal Dome Silhouette
-        this.ctx.lineTo(300 - offset, 480);
-        this.ctx.lineTo(400 - offset, 280); // Central Dome
-        this.ctx.lineTo(500 - offset, 480);
-        this.ctx.lineTo(900 - offset, 490);
-        this.ctx.lineTo(1000 - offset, 300);
-        this.ctx.lineTo(1100 - offset, 490);
-
-        this.ctx.lineTo(1280 + 400 - offset, 280);
-        this.ctx.lineTo(1280 + 1000 - offset, 300);
-        this.ctx.lineTo(1280 + 1400 - offset, this.groundY);
+      if (lvl.theme === 'georgia' || lvl.theme === 'peru') {
+        // High Andes / Caucasus Jagged Mountain Range
+        for (let x = -offset; x < this.width + 500; x += 300) {
+          this.ctx.lineTo(x + 100, 240);
+          this.ctx.lineTo(x + 180, 340);
+          this.ctx.lineTo(x + 300, 210);
+        }
       } else if (lvl.theme === 'japan') {
-        // Mt Fuji Cone
-        this.ctx.lineTo(400 - offset, 460);
-        this.ctx.lineTo(650 - offset, 220); // Fuji Peak
-        this.ctx.lineTo(900 - offset, 460);
-
-        this.ctx.lineTo(1280 + 650 - offset, 220);
-        this.ctx.lineTo(1280 + 1400 - offset, this.groundY);
+        // Mt Fuji Cone Silhouette in Distance
+        for (let x = -offset; x < this.width + 600; x += 800) {
+          this.ctx.lineTo(x + 200, 460);
+          this.ctx.lineTo(x + 450, 210); // Snow cone peak
+          this.ctx.lineTo(x + 700, 460);
+        }
       } else {
-        // Standard Mountain Range
-        this.ctx.lineTo(200 - offset, 320);
-        this.ctx.lineTo(450 - offset, 420);
-        this.ctx.lineTo(700 - offset, 300);
-        this.ctx.lineTo(950 - offset, 440);
-        this.ctx.lineTo(1200 - offset, 310);
-
-        this.ctx.lineTo(1280 + 200 - offset, 320);
-        this.ctx.lineTo(1280 + 700 - offset, 300);
-        this.ctx.lineTo(1280 + 1400 - offset, this.groundY);
+        // Rolling Horizon Dunes / Hills
+        for (let x = -offset; x < this.width + 400; x += 350) {
+          this.ctx.lineTo(x + 150, 320);
+          this.ctx.lineTo(x + 350, 420);
+        }
       }
 
+      this.ctx.lineTo(this.width + 500, this.groundY);
       this.ctx.closePath();
       this.ctx.fill();
       this.ctx.restore();
     }
 
-    renderRuins(lvl) {
+    renderMainLandmark(lvl) {
       this.ctx.save();
-      this.ctx.fillStyle = lvl.ruinColor;
       const offset = this.parallaxRuins;
 
-      for (let i = 0; i < 4; i++) {
-        const x = (i * 450 - offset) % (this.width + 450);
-        const actualX = x < -150 ? x + this.width + 450 : x;
+      // Draw Main Landmark every 700px loop so it is ALWAYS clearly visible
+      for (let i = 0; i < 3; i++) {
+        const x = (i * 700 - offset) % (this.width + 700);
+        const lx = x < -300 ? x + this.width + 700 : x;
+        const ly = this.groundY;
 
-        if (lvl.theme === 'georgia') {
-          // Narikala Fortress & Georgian Church Domes
-          this.ctx.fillRect(actualX, this.groundY - 120, 80, 120);
-          this.ctx.beginPath();
-          this.ctx.arc(actualX + 40, this.groundY - 120, 30, Math.PI, 0);
-          this.ctx.fill();
-          this.ctx.fillRect(actualX + 37, this.groundY - 170, 6, 20); // Cross spire
-        } else if (lvl.theme === 'paris') {
-          // Parisian Mansard Rooftops
-          this.ctx.fillRect(actualX, this.groundY - 100, 120, 100);
-          this.ctx.beginPath();
-          this.ctx.moveTo(actualX - 10, this.groundY - 100);
-          this.ctx.lineTo(actualX + 60, this.groundY - 140);
-          this.ctx.lineTo(actualX + 130, this.groundY - 100);
-          this.ctx.fill();
-        } else {
-          // Ancient Columns / Arches
-          this.ctx.fillRect(actualX, this.groundY - 140, 24, 140);
-          this.ctx.fillRect(actualX + 70, this.groundY - 140, 24, 140);
-          this.ctx.fillRect(actualX - 10, this.groundY - 160, 114, 20);
-        }
+        this.drawLandmarkByTheme(lvl.theme, lx, ly);
       }
+
       this.ctx.restore();
     }
 
-    renderTrees(lvl) {
+    drawLandmarkByTheme(theme, x, y) {
+      this.ctx.save();
+
+      if (theme === 'egypt') {
+        // EGYPT: Great Pyramids & Khafre Capstone + Great Sphinx
+        this.ctx.fillStyle = '#2d180d';
+
+        // Khafre Pyramid (Center)
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
+        this.ctx.lineTo(x + 160, y - 260);
+        this.ctx.lineTo(x + 320, y);
+        this.ctx.fill();
+
+        // Capstone highlight
+        this.ctx.fillStyle = '#d97706';
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + 140, y - 227);
+        this.ctx.lineTo(x + 160, y - 260);
+        this.ctx.lineTo(x + 180, y - 227);
+        this.ctx.fill();
+
+        // Great Pyramid (Right)
+        this.ctx.fillStyle = '#26130a';
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + 220, y);
+        this.ctx.lineTo(x + 360, y - 290);
+        this.ctx.lineTo(x + 500, y);
+        this.ctx.fill();
+
+        // Great Sphinx Silhouette (Left)
+        this.ctx.fillStyle = '#3a1f11';
+        this.ctx.fillRect(x - 90, y - 40, 110, 40); // Body
+        this.ctx.fillRect(x - 50, y - 75, 45, 40);  // Head & Nemes
+      } else if (theme === 'paris') {
+        // PARIS: Eiffel Tower (3 Tiers, Arched Base, Spire & Glowing Beacon)
+        this.ctx.fillStyle = '#17233c';
+        this.ctx.strokeStyle = '#38bdf8';
+        this.ctx.lineWidth = 2;
+
+        // Base Legs & Arch
+        this.ctx.fillRect(x, y - 60, 25, 60);
+        this.ctx.fillRect(x + 95, y - 60, 25, 60);
+        this.ctx.beginPath();
+        this.ctx.arc(x + 60, y - 30, 40, Math.PI, 0);
+        this.ctx.stroke();
+
+        // Platform 1 & 2
+        this.ctx.fillRect(x - 10, y - 75, 140, 15);
+        this.ctx.fillRect(x + 15, y - 160, 90, 12);
+
+        // Tower Taper to Spire
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + 20, y - 75);
+        this.ctx.lineTo(x + 45, y - 310);
+        this.ctx.lineTo(x + 75, y - 310);
+        this.ctx.lineTo(x + 100, y - 75);
+        this.ctx.fill();
+
+        // Top Spire & Beacon Light
+        this.ctx.fillRect(x + 57, y - 360, 6, 50);
+
+        this.ctx.fillStyle = 'rgba(56, 189, 248, 0.25)';
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + 60, y - 360);
+        this.ctx.lineTo(x - 200, y - 460);
+        this.ctx.lineTo(x - 160, y - 260);
+        this.ctx.fill();
+      } else if (theme === 'georgia') {
+        // GEORGIA: Sameba Cathedral (Gold/Purple Dome & Cross) + Narikala Fortress
+        this.ctx.fillStyle = '#241d47';
+        this.ctx.strokeStyle = '#a855f7';
+        this.ctx.lineWidth = 2;
+
+        // Cathedral Base
+        this.ctx.fillRect(x, y - 150, 160, 150);
+
+        // Tier 2 & Octagonal Drum
+        this.ctx.fillRect(x + 30, y - 220, 100, 70);
+
+        // Golden Conical Dome
+        this.ctx.fillStyle = '#f59e0b';
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + 30, y - 220);
+        this.ctx.lineTo(x + 80, y - 285);
+        this.ctx.lineTo(x + 130, y - 220);
+        this.ctx.fill();
+
+        // Orthodox Cross Spire
+        this.ctx.fillRect(x + 77, y - 310, 6, 25);
+        this.ctx.fillRect(x + 70, y - 302, 20, 5);
+
+        // Narikala Fortress Cliff Wall (Right)
+        this.ctx.fillStyle = '#1a1438';
+        this.ctx.fillRect(x + 220, y - 110, 140, 110);
+        for (let b = 0; b < 5; b++) {
+          this.ctx.fillRect(x + 220 + b * 28, y - 130, 14, 20); // Battlements
+        }
+      } else if (theme === 'india') {
+        // INDIA: Taj Mahal (Grand Central Onion Dome, Minarets & Arches)
+        this.ctx.fillStyle = '#33123d';
+
+        // Main Marble Tomb Structure
+        this.ctx.fillRect(x + 40, y - 160, 180, 160);
+
+        // Central Arch Cutout
+        this.ctx.fillStyle = '#1e0a26';
+        this.ctx.fillRect(x + 95, y - 110, 70, 110);
+        this.ctx.beginPath();
+        this.ctx.arc(x + 130, y - 110, 35, Math.PI, 0);
+        this.ctx.fill();
+
+        // Central Onion Dome
+        this.ctx.fillStyle = '#4a1b59';
+        this.ctx.beginPath();
+        this.ctx.arc(x + 130, y - 220, 50, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.fillRect(x + 127, y - 290, 6, 25); // Finial
+
+        // 4 Minaret Towers
+        this.ctx.fillStyle = '#260c2e';
+        this.ctx.fillRect(x - 20, y - 220, 20, 220);
+        this.ctx.fillRect(x + 260, y - 220, 20, 220);
+        this.ctx.fillRect(x - 24, y - 240, 28, 20);
+        this.ctx.fillRect(x + 256, y - 240, 28, 20);
+      } else if (theme === 'sydney') {
+        // SYDNEY: Opera House Shell Sails & Harbour Bridge Arch
+        this.ctx.fillStyle = '#102c4f';
+
+        // Opera House Overlapping Shell Sails
+        this.ctx.beginPath();
+        this.ctx.arc(x + 60, y - 40, 75, Math.PI * 1.25, Math.PI * 1.85);
+        this.ctx.arc(x + 130, y - 40, 60, Math.PI * 1.25, Math.PI * 1.85);
+        this.ctx.arc(x + 190, y - 40, 45, Math.PI * 1.25, Math.PI * 1.85);
+        this.ctx.lineTo(x + 260, y);
+        this.ctx.lineTo(x, y);
+        this.ctx.fill();
+
+        // Sydney Harbour Bridge Arch (Right)
+        this.ctx.strokeStyle = '#06b6d4';
+        this.ctx.lineWidth = 3;
+        this.ctx.beginPath();
+        this.ctx.arc(x + 400, y, 160, Math.PI, 0);
+        this.ctx.stroke();
+      } else if (theme === 'rome') {
+        // ROME: The Colosseum Tiered Arches
+        this.ctx.fillStyle = '#361a0b';
+        this.ctx.strokeStyle = '#eab308';
+        this.ctx.lineWidth = 1.5;
+
+        this.ctx.fillRect(x, y - 180, 280, 180);
+
+        // Arched Arcade Windows
+        this.ctx.fillStyle = '#1f0d06';
+        for (let row = 0; row < 3; row++) {
+          for (let col = 0; col < 7; col++) {
+            const ax = x + 15 + col * 36;
+            const ay = y - 45 - row * 52;
+            this.ctx.fillRect(ax, ay, 20, 32);
+            this.ctx.beginPath();
+            this.ctx.arc(ax + 10, ay, 10, Math.PI, 0);
+            this.ctx.fill();
+          }
+        }
+      } else if (theme === 'japan') {
+        // JAPAN: 5-Story Pagoda & Mt Fuji Peak
+        this.ctx.fillStyle = '#361138';
+
+        // Pagoda Tiered Roofs
+        for (let tier = 0; tier < 5; tier++) {
+          const tw = 120 - tier * 18;
+          const ty = y - 60 - tier * 42;
+          this.ctx.fillRect(x + 60 - tw / 2, ty, tw, 10);
+          this.ctx.fillRect(x + 60 - (tw - 20) / 2, ty - 32, tw - 20, 32);
+        }
+        this.ctx.fillRect(x + 57, y - 290, 6, 30); // Finial
+      } else if (theme === 'london') {
+        // LONDON: Big Ben Elizabeth Clock Tower & Palace of Westminster
+        this.ctx.fillStyle = '#18263d';
+
+        // Tower Body
+        this.ctx.fillRect(x + 40, y - 280, 55, 280);
+
+        // Clock Face (Glowing Yellow)
+        this.ctx.fillStyle = '#fbbf24';
+        this.ctx.beginPath();
+        this.ctx.arc(x + 67, y - 220, 18, 0, Math.PI * 2);
+        this.ctx.fill();
+
+        // Spire Top
+        this.ctx.fillStyle = '#18263d';
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + 35, y - 280);
+        this.ctx.lineTo(x + 67, y - 350);
+        this.ctx.lineTo(x + 99, y - 280);
+        this.ctx.fill();
+      } else if (theme === 'newyork') {
+        // NEW YORK: Statue of Liberty & Manhattan Skyline
+        this.ctx.fillStyle = '#11333a';
+
+        // Statue Pedestal & Robe
+        this.ctx.fillRect(x + 60, y - 80, 50, 80);
+        this.ctx.fillRect(x + 70, y - 180, 30, 100);
+
+        // Crown Spikes
+        for (let s = -3; s <= 3; s++) {
+          this.ctx.fillRect(x + 85 + s * 5, y - 198 - Math.abs(s) * 2, 3, 15);
+        }
+
+        // Glowing Torch Flame
+        this.ctx.fillStyle = '#10b981';
+        this.ctx.shadowColor = '#10b981';
+        this.ctx.shadowBlur = 15;
+        this.ctx.beginPath();
+        this.ctx.arc(x + 115, y - 210, 12, 0, Math.PI * 2);
+        this.ctx.fill();
+      } else if (theme === 'china') {
+        // CHINA: Great Wall Stone Watchtowers & Wall Profile
+        this.ctx.fillStyle = '#381414';
+
+        // Watchtower 1 & Wall
+        this.ctx.fillRect(x, y - 130, 75, 130);
+        this.ctx.fillRect(x - 20, y - 70, 320, 70); // Wall rampart
+        this.ctx.fillRect(x + 200, y - 150, 80, 150);
+
+        // Crenellations
+        for (let c = 0; c < 4; c++) {
+          this.ctx.fillRect(x + c * 18, y - 148, 10, 18);
+          this.ctx.fillRect(x + 200 + c * 20, y - 168, 10, 18);
+        }
+      } else if (theme === 'greece') {
+        // GREECE: The Parthenon Temple (White Marble Columns & Pediment)
+        this.ctx.fillStyle = '#163152';
+        this.ctx.strokeStyle = '#84cc16';
+        this.ctx.lineWidth = 1.5;
+
+        // Base & Fluted Columns
+        this.ctx.fillRect(x, y - 20, 240, 20);
+        for (let col = 0; col < 8; col++) {
+          this.ctx.fillRect(x + 12 + col * 30, y - 140, 16, 120);
+        }
+        // Architrave & Triangular Pediment
+        this.ctx.fillRect(x - 5, y - 160, 250, 20);
+        this.ctx.beginPath();
+        this.ctx.moveTo(x - 10, y - 160);
+        this.ctx.lineTo(x + 120, y - 215);
+        this.ctx.lineTo(x + 250, y - 160);
+        this.ctx.fill();
+      } else if (theme === 'peru') {
+        // PERU: Machu Picchu Citadel Terraces & Huayna Picchu Peak
+        this.ctx.fillStyle = '#381909';
+
+        // Mountain Peak
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + 40, y);
+        this.ctx.lineTo(x + 200, y - 310);
+        this.ctx.lineTo(x + 360, y);
+        this.ctx.fill();
+
+        // Inca Terraced Stone Walls
+        this.ctx.fillStyle = '#261105';
+        for (let t = 0; t < 5; t++) {
+          this.ctx.fillRect(x + t * 40, y - 30 - t * 25, 220, 25);
+        }
+      }
+
+      this.ctx.restore();
+    }
+
+    renderMiddleground(lvl) {
       this.ctx.save();
       this.ctx.fillStyle = lvl.treeColor;
       const offset = this.parallaxTrees;
 
-      for (let i = 0; i < 6; i++) {
-        const x = (i * 300 - offset) % (this.width + 300);
-        const actualX = x < -80 ? x + this.width + 300 : x;
+      for (let i = 0; i < 5; i++) {
+        const x = (i * 350 - offset) % (this.width + 350);
+        const mx = x < -100 ? x + this.width + 350 : x;
+        const my = this.groundY;
 
-        if (lvl.theme === 'desert') {
-          // Palm Trees
-          this.ctx.fillRect(actualX + 12, this.groundY - 90, 8, 90);
+        if (lvl.theme === 'paris') {
+          // Haussmann Rooftops & Streetlamps
+          this.ctx.fillRect(mx, my - 70, 90, 70);
+          this.ctx.fillRect(mx + 120, my - 90, 2, 90); // Vintage lamp post
+          this.ctx.fillStyle = '#f59e0b';
           this.ctx.beginPath();
-          this.ctx.arc(actualX + 16, this.groundY - 90, 35, 0, Math.PI * 2);
+          this.ctx.arc(mx + 121, my - 90, 6, 0, Math.PI * 2);
+          this.ctx.fill();
+          this.ctx.fillStyle = lvl.treeColor;
+        } else if (lvl.theme === 'georgia') {
+          // Tbilisi Balconies & Stone Streets
+          this.ctx.fillRect(mx, my - 80, 70, 80);
+          this.ctx.fillRect(mx - 10, my - 60, 90, 12); // Wooden balcony
+        } else if (lvl.theme === 'japan') {
+          // Red Torii Gate
+          this.ctx.fillStyle = '#f43f5e';
+          this.ctx.fillRect(mx, my - 110, 10, 110);
+          this.ctx.fillRect(mx + 70, my - 110, 10, 110);
+          this.ctx.fillRect(mx - 15, my - 110, 110, 14);
+          this.ctx.fillRect(mx - 5, my - 95, 90, 10);
+          this.ctx.fillStyle = lvl.treeColor;
+        } else if (lvl.theme === 'desert') {
+          // Palm Trees & Sand Dunes
+          this.ctx.fillRect(mx + 15, my - 85, 8, 85);
+          this.ctx.beginPath();
+          this.ctx.arc(mx + 19, my - 85, 32, 0, Math.PI * 2);
           this.ctx.fill();
         } else {
-          // Foliage
+          // Standard Foliage Trees
           this.ctx.beginPath();
-          this.ctx.arc(actualX, this.groundY - 80, 32, 0, Math.PI * 2);
-          this.ctx.arc(actualX + 24, this.groundY - 95, 28, 0, Math.PI * 2);
+          this.ctx.arc(mx, my - 75, 30, 0, Math.PI * 2);
+          this.ctx.arc(mx + 22, my - 90, 25, 0, Math.PI * 2);
           this.ctx.fill();
-          this.ctx.fillRect(actualX + 8, this.groundY - 50, 12, 50);
+          this.ctx.fillRect(mx + 8, my - 45, 10, 45);
         }
+      }
+
+      this.ctx.restore();
+    }
+
+    renderForegroundDetails(lvl) {
+      this.ctx.save();
+      // Subtle foreground details (grass, flowers, fence posts)
+      this.ctx.fillStyle = lvl.groundBorder;
+      this.ctx.globalAlpha = 0.3;
+
+      for (let x = 0; x < this.width; x += 180) {
+        this.ctx.fillRect(x, this.groundY - 6, 8, 6);
       }
       this.ctx.restore();
     }
@@ -1268,7 +1523,7 @@
       this.ctx.fillStyle = lvl.groundBorder;
       this.ctx.fillRect(0, this.groundY, this.width, 4);
 
-      // Diagonal stone tiles
+      // Diagonal stone tiles pattern
       this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
       this.ctx.lineWidth = 2;
       for (let x = -this.parallaxGround; x < this.width; x += 40) {
@@ -1439,8 +1694,6 @@
 
       this.ctx.shadowColor = '#00f0ff';
       this.ctx.shadowBlur = 30;
-
-      const time = this.lastTime * 0.003;
 
       // Swirling ring
       this.ctx.strokeStyle = '#00f0ff';
