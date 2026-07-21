@@ -703,3 +703,20 @@ dialog[open] {
     transform-origin: center center;
 }
 
+/* ==================== TIME EXPLORER ADVENTURE ENDLESS RUNNER ==================== */
+
+#time-explorer-game-modal {
+    overscroll-behavior: contain;
+}
+
+#runner-canvas {
+    touch-action: none;
+    box-shadow: 0 0 50px rgba(0, 240, 255, 0.15);
+}
+
+#touch-jump-btn, #touch-slide-btn {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+
