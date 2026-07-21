@@ -100,7 +100,7 @@
       </p>
 
       <div class="flex flex-col sm:flex-row items-center gap-4 justify-center" style="position:relative;z-index:100">
-        <button id="portal-jump-btn" data-action="portal" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_45px_rgba(0,240,255,0.55)] transform hover:-translate-y-0.5 transition duration-300 uppercase cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
+        <button id="initiate-portal-jump-btn" data-action="portal" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_45px_rgba(0,240,255,0.55)] transform hover:-translate-y-0.5 transition duration-300 uppercase cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
           Initiate Portal Jump
         </button>
         <button id="hero-play-minigame-btn" data-action="mini-game" class="font-label-tech text-sm px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_45px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5 transition duration-300 uppercase flex items-center gap-2 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
@@ -481,6 +481,10 @@
     <!-- HEADER -->
     <header class="w-full flex items-center justify-between px-6 py-4 glassmorphic border-b border-white/5 mx-auto max-w-[1440px] mt-4 rounded-lg">
       <div class="flex items-center gap-3">
+        <!-- Back to Homepage button - always visible -->
+        <button id="back-to-home-btn" onclick="showHomepage(event)" class="font-label-tech text-[10px] px-3 py-1.5 border border-primary/40 text-primary hover:bg-primary/10 rounded flex items-center gap-1.5 transition duration-300" title="Back to Homepage" style="pointer-events:auto;cursor:pointer">
+          ← HOME
+        </button>
         <!-- Logo -->
         <span class="font-display-past text-2xl font-bold tracking-wider text-white select-none">CHRONICLE</span>
         <span class="font-label-tech text-[10px] text-white/40 border border-white/10 px-2 py-0.5 rounded">v2.0.4-sys</span>
@@ -1286,7 +1290,7 @@
   </div>
 
   <!-- 7. PORTAL TIME WORMHOLE LOADER -->
-  <div id="portal-modal" class="fixed inset-0 z-[9999] bg-black flex flex-col align-items-center justify-content-center transition opacity-0 invisible pointer-events-none" style="opacity:0;visibility:hidden;pointer-events:none;">
+  <div id="portal-warp-modal" data-alias="portal-modal" class="fixed inset-0 z-[9999] bg-black flex flex-col align-items-center justify-content-center transition opacity-0 invisible pointer-events-none" style="opacity:0;visibility:hidden;pointer-events:none;">
     <canvas id="portal-canvas" class="absolute inset-0 w-full h-full"></canvas>
     <div class="relative z-10 text-center space-y-5">
       <!-- Rotating Time Portal Ring -->
@@ -2844,7 +2848,7 @@
 
       // If canvas still unavailable, skip animation and go straight to callback
       if (!portalCanvas || !portalCtx) {
-        const loaderEl = document.getElementById('portal-modal');
+        const loaderEl = document.getElementById('portal-warp-modal');
         if (loaderEl) loaderEl.classList.add('active');
         setTimeout(() => {
           if (loaderEl) loaderEl.classList.remove('active');
@@ -2868,7 +2872,7 @@
         });
       }
 
-      const loaderEl = document.getElementById('portal-modal');
+      const loaderEl = document.getElementById('portal-warp-modal');
       if (loaderEl) loaderEl.classList.add('active');
       playPortalWarpSound();
       animatePortalWarp(onComplete);
@@ -2907,14 +2911,14 @@
       if (portalProgress > 100) {
         portalProgress = 100;
         portalActive = false;
-        document.getElementById('portal-modal').classList.remove('active');
+        document.getElementById('portal-warp-modal').classList.remove('active');
         if (onComplete) onComplete();
         return;
       }
 
       // Update Loader telemetry texts
       document.getElementById('portal-progress').style.width = `${portalProgress}%`;
-      const telemetryEl = document.querySelector('#portal-modal .font-mono');
+      const telemetryEl = document.querySelector('#portal-warp-modal .font-mono');
       if (telemetryEl) telemetryEl.innerText = `CALIBRATING TACHYON FLUX: ${Math.floor(portalProgress)}%`;
 
       const states = [
@@ -2932,50 +2936,61 @@
 
     // Swap website content to the selected geographic location
     function swapLocationContent(place) {
-      // 1. Update Coordinates and narrative readouts
-      document.getElementById('past-readout-coords').innerText = place.eras["1890"].readout;
-      document.getElementById('present-readout-coords').innerText = place.eras["2024"].readout;
-      document.getElementById('future-readout-coords').innerText = place.eras["2200"].readout;
-
-      // 2. Update Card Titles
-      document.getElementById('past-card-title').innerText = place.eras["1890"].title;
-      document.getElementById('present-card-title').innerText = place.eras["2024"].title;
-      document.getElementById('future-card-title').innerText = place.eras["2200"].title;
-
-      // 3. Update Descriptions
-      const pastDesc = document.getElementById('past-card-desc');
-      pastDesc.innerText = place.eras["1890"].desc;
-      pastDesc.className = "font-display-past text-sm text-[#f4ecd8]/90 leading-relaxed mb-4 drop-cap";
-
-      document.getElementById('present-card-desc').innerText = place.eras["2024"].desc;
-      
-      const futDesc = document.getElementById('future-card-desc');
-      if (place.eras["2200"].desc.includes('<span')) {
-        futDesc.innerHTML = place.eras["2200"].desc;
-      } else {
-        futDesc.innerHTML = `<span class="bg-cyan-950/40 text-cyan-400 border border-cyan-500/20 px-1 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider mr-1">BIO-NET</span> ${place.eras["2200"].desc}`;
+      if (!place) return;
+      // Helper: safely set innerText / innerHTML on an element
+      function _set(id, text, html) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (html !== undefined) el.innerHTML = html;
+        else el.innerText = text;
       }
 
-      // 4. Update CTA Buttons text
-      document.getElementById('past-card-btn').innerHTML = place.eras["1890"].cta;
-      document.getElementById('present-card-btn').innerHTML = place.eras["2024"].cta;
-      document.getElementById('future-card-btn').innerHTML = place.eras["2200"].cta;
+      // 1. Coordinates
+      _set('past-readout-coords',    place.eras["1890"].readout);
+      _set('present-readout-coords', place.eras["2024"].readout);
+      _set('future-readout-coords',  place.eras["2200"].readout);
 
-      // 5. Swap Landmark Background Images
-      const pastImg = document.getElementById('past-img-layer');
+      // 2. Card Titles
+      _set('past-card-title',    place.eras["1890"].title);
+      _set('present-card-title', place.eras["2024"].title);
+      _set('future-card-title',  place.eras["2200"].title);
+
+      // 3. Descriptions
+      const pastDesc = document.getElementById('past-card-desc');
+      if (pastDesc) {
+        pastDesc.innerText = place.eras["1890"].desc;
+        pastDesc.className = "font-display-past text-sm text-[#f4ecd8]/90 leading-relaxed mb-4 drop-cap";
+      }
+      _set('present-card-desc', place.eras["2024"].desc);
+      const futDesc = document.getElementById('future-card-desc');
+      if (futDesc) {
+        if (place.eras["2200"].desc.includes('<span')) {
+          futDesc.innerHTML = place.eras["2200"].desc;
+        } else {
+          futDesc.innerHTML = `<span class="bg-cyan-950/40 text-cyan-400 border border-cyan-500/20 px-1 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider mr-1">BIO-NET</span> ${place.eras["2200"].desc}`;
+        }
+      }
+
+      // 4. CTA Buttons
+      _set('past-card-btn',    undefined, place.eras["1890"].cta);
+      _set('present-card-btn', undefined, place.eras["2024"].cta);
+      _set('future-card-btn',  undefined, place.eras["2200"].cta);
+
+      // 5. Background Images
+      const pastImg    = document.getElementById('past-img-layer');
       const presentImg = document.getElementById('present-img-layer');
-      const futureImg = document.getElementById('future-img-layer');
+      const futureImg  = document.getElementById('future-img-layer');
+      if (pastImg)    pastImg.style.backgroundImage    = `url('${place.images.past}')`;
+      if (presentImg) presentImg.style.backgroundImage = `url('${place.images.present}')`;
+      if (futureImg)  futureImg.style.backgroundImage  = `url('${place.images.future}')`;
 
-      pastImg.style.backgroundImage = `url('${place.images.past}')`;
-      presentImg.style.backgroundImage = `url('${place.images.present}')`;
-      futureImg.style.backgroundImage = `url('${place.images.future}')`;
-
-      // 6. Calibrate Three.js Spatial Alignments
-      const latRad = (place.lat * Math.PI) / 180;
-      const lngRad = (place.lng * Math.PI) / 180;
-      
-      targetRotationX = latRad * 0.4;
-      targetRotationZ = lngRad * 0.3;
+      // 6. Three.js rotation calibration
+      try {
+        const latRad = (place.lat * Math.PI) / 180;
+        const lngRad = (place.lng * Math.PI) / 180;
+        targetRotationX = latRad * 0.4;
+        targetRotationZ = lngRad * 0.3;
+      } catch (_) {}
     }
 
     // Reconnected Main Action Helpers for Play Mini Game, Portal Jump & Passport

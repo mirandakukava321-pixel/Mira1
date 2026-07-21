@@ -441,7 +441,7 @@ dialog[open] {
 }
 
 /* Full Screen Portal Loader Overlay */
-#portal-modal {
+#portal-warp-modal {
     position: fixed;
     inset: 0;
     z-index: 9999;
@@ -456,7 +456,7 @@ dialog[open] {
     pointer-events: none;
 }
 
-#portal-modal.active {
+#portal-warp-modal.active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;

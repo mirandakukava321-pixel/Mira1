@@ -1,202 +1,299 @@
 /**
- * script.js — Bulletproof button wiring for Chronicle: Temporal Navigation Engine
+ * script.js — Chronicle: Temporal Navigation Engine
+ * Bulletproof button wiring + canvas/scene initialization on portal jump.
  *
- * Runs deferred AFTER all inline JS. Handles:
- *   1. Play Mini Game  (#hero-play-minigame-btn) → opens #mini-game-overlay
- *   2. Initiate Portal Jump (#portal-jump-btn, [data-action="portal"])
- *   3. Passport (#passport-btn, [data-action="passport"])
- *   4. Modal close buttons and backdrop dismiss
+ * Critical fixes in this version:
+ *  1. initThreeJS() called when main-container becomes visible (was NEVER called)
+ *  2. window.chronicle (TemporalEngine) instantiated on first portal jump
+ *  3. initPortalCanvas() called to wire portal-warp-modal canvas
+ *  4. startPortalWarpAnimation() called directly for the warp effect
+ *  5. Proper view swap: homepage hidden, main-container shown
+ *  6. Back-to-Home button wired
  */
 
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ─────────────────────────────────────────────────────────────
-   *  1. PLAY MINI GAME — hero button
+   *  1. INITIATE PORTAL JUMP — hero + nav buttons
+   *  This is the main fix: ensures Three.js and TemporalEngine start
+   * ───────────────────────────────────────────────────────────── */
+  const allPortalBtns = document.querySelectorAll(
+    '#initiate-portal-jump-btn, #navWarpButton, [data-action="portal"]'
+  );
+
+  allPortalBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('[script.js] Portal Jump clicked — starting warp sequence');
+      _launchPortalJump();
+    });
+  });
+  console.log('[script.js] ✓ Portal buttons wired:', allPortalBtns.length);
+
+  /* ─────────────────────────────────────────────────────────────
+   *  2. PLAY MINI GAME — hero button
    * ───────────────────────────────────────────────────────────── */
   const playBtn   = document.getElementById('hero-play-minigame-btn');
-  const gameModal = document.getElementById('mini-game-overlay');
+  const gameOverlay = document.getElementById('mini-game-overlay');
 
-  if (playBtn && gameModal) {
+  if (playBtn && gameOverlay) {
     playBtn.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('[script.js] Play Mini Game clicked');
-
-      // Show the overlay first so the user sees immediate feedback
-      gameModal.classList.remove('hidden');
-      gameModal.style.display = 'flex';
-
-      // Delegate to inline engine for level-select rendering (try/catch safe)
+      gameOverlay.classList.remove('hidden');
+      gameOverlay.style.display = 'flex';
       try {
-        if (typeof openTimeExplorerModal === 'function') {
-          openTimeExplorerModal();
-        }
+        if (typeof openTimeExplorerModal === 'function') openTimeExplorerModal();
       } catch (err) {
         console.warn('[script.js] openTimeExplorerModal() threw:', err);
-      }
-
-      // Call game init if exposed
-      try {
-        if (typeof initGame === 'function') initGame();
-      } catch (err) {
-        console.warn('[script.js] initGame() threw:', err);
       }
     });
     console.log('[script.js] ✓ hero-play-minigame-btn wired');
   } else {
-    console.error(
-      '[script.js] Play Mini Game button or Game Modal not found in DOM.',
-      '| playBtn:', playBtn,
-      '| gameModal:', gameModal
-    );
+    console.error('[script.js] ✗ play-mini-game-btn or mini-game-overlay not found');
   }
-
-  /* ─────────────────────────────────────────────────────────────
-   *  2. INITIATE PORTAL JUMP — hero + nav buttons
-   * ───────────────────────────────────────────────────────────── */
-  document
-    .querySelectorAll('#portal-jump-btn, #navWarpButton, [data-action="portal"]')
-    .forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('[script.js] Portal Jump clicked');
-        try {
-          if (typeof initiatePortalJump === 'function') {
-            initiatePortalJump();
-            return;
-          }
-        } catch (err) {
-          console.warn('[script.js] initiatePortalJump() threw:', err);
-        }
-        // Fallback: show portal overlay then swap views
-        _fallbackPortalJump();
-      });
-    });
-  console.log('[script.js] ✓ Portal buttons wired:',
-    document.querySelectorAll('#portal-jump-btn, #navWarpButton, [data-action="portal"]').length);
 
   /* ─────────────────────────────────────────────────────────────
    *  3. PASSPORT — nav + section buttons
    * ───────────────────────────────────────────────────────────── */
-  document
-    .querySelectorAll('#passport-btn, #main-passport-btn, [data-action="passport"]')
-    .forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('[script.js] Passport clicked');
-        try {
-          if (typeof toggleTimePassport === 'function') {
-            toggleTimePassport(true);
-            return;
-          }
-        } catch (err) {
-          console.warn('[script.js] toggleTimePassport() threw:', err);
-        }
-        // Fallback: show directly
-        const passportModal = document.getElementById('passport-modal');
-        if (passportModal) {
-          passportModal.classList.add('open');
-          passportModal.classList.remove('hidden');
-          passportModal.style.display = 'flex';
-        }
-      });
+  document.querySelectorAll(
+    '#passport-btn, #main-passport-btn, [data-action="passport"]'
+  ).forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('[script.js] Passport clicked');
+      try {
+        if (typeof toggleTimePassport === 'function') { toggleTimePassport(true); return; }
+      } catch (err) {
+        console.warn('[script.js] toggleTimePassport() threw:', err);
+      }
+      const pm = document.getElementById('passport-modal');
+      if (pm) { pm.classList.add('open'); pm.classList.remove('hidden'); pm.style.display = 'flex'; }
     });
+  });
   console.log('[script.js] ✓ Passport buttons wired:',
     document.querySelectorAll('#passport-btn, #main-passport-btn, [data-action="passport"]').length);
 
   /* ─────────────────────────────────────────────────────────────
-   *  4. CLOSE BUTTONS & BACKDROP DISMISS
+   *  4. BACK TO HOME button
    * ───────────────────────────────────────────────────────────── */
-
-  // Mini-game overlay close
-  if (gameModal) {
-    // Click on dark backdrop (not the content) closes the overlay
-    gameModal.addEventListener('click', (e) => {
-      if (e.target === gameModal) _closeModal(gameModal);
-    });
-    // Any button in the header that closes the modal
-    const closeHeaderBtns = gameModal.querySelectorAll('header button');
-    closeHeaderBtns.forEach(btn => {
-      if (btn.textContent.includes('✕') || btn.textContent.includes('×') ||
-          btn.textContent.includes('Close') || btn.textContent.includes('Back') ||
-          btn.getAttribute('onclick')) {
-        // Don't override — these already have onclick handlers in HTML
-        // But add a safety listener so the hidden class is definitely removed
-        btn.addEventListener('click', () => {
-          setTimeout(() => {
-            if (gameModal && !gameModal.classList.contains('hidden')) {
-              // only close if the inline handler didn't already close it
-            }
-          }, 50);
-        });
+  const backBtn = document.getElementById('back-to-home-btn');
+  if (backBtn) {
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('[script.js] Back to Home clicked');
+      try {
+        if (typeof showHomepage === 'function') { showHomepage(); return; }
+      } catch (err) {
+        console.warn('[script.js] showHomepage() threw:', err);
       }
+      _showHomepage();
     });
   }
 
-  // Passport close — buttons with toggleTimePassport(false) onclick
+  /* ─────────────────────────────────────────────────────────────
+   *  5. CLOSE BUTTONS
+   * ───────────────────────────────────────────────────────────── */
+  // Passport close
   document.querySelectorAll('[onclick*="toggleTimePassport(false)"]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const passportModal = document.getElementById('passport-modal');
-      if (passportModal) {
-        try { toggleTimePassport(false); } catch (_) {}
-        _closeModal(passportModal);
+      try { toggleTimePassport(false); } catch (_) {}
+      const pm = document.getElementById('passport-modal');
+      if (pm) _closeModal(pm);
+    });
+  });
+  // Mini-game close
+  if (gameOverlay) {
+    gameOverlay.addEventListener('click', (e) => {
+      if (e.target === gameOverlay) _closeModal(gameOverlay);
+    });
+  }
+  // Generic .close-btn
+  document.querySelectorAll('.close-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const m = btn.closest('[id$="-modal"], [id$="-overlay"]');
+      if (m) _closeModal(m);
+    });
+  });
+  // Native <dialog> backdrop
+  document.querySelectorAll('dialog').forEach(dlg => {
+    dlg.addEventListener('click', (e) => {
+      const r = dlg.getBoundingClientRect();
+      if (!(r.top <= e.clientY && e.clientY <= r.bottom && r.left <= e.clientX && e.clientX <= r.right)) {
+        dlg.close();
       }
     });
   });
 
-  // Generic .close-btn elements
-  document.querySelectorAll('.close-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const modal = btn.closest('[id$="-modal"], [id$="-overlay"]');
-      if (modal) _closeModal(modal);
-    });
-  });
-
-  // Native <dialog> backdrop click
-  document.querySelectorAll('dialog').forEach(dlg => {
-    dlg.addEventListener('click', (e) => {
-      const r = dlg.getBoundingClientRect();
-      const inside = r.top <= e.clientY && e.clientY <= r.bottom
-                  && r.left <= e.clientX && e.clientX <= r.right;
-      if (!inside) dlg.close();
-    });
-  });
-
-  console.log('[script.js] ✓ All handlers attached successfully');
+  console.log('[script.js] ✓ All DOMContentLoaded handlers attached');
 });
 
-/* ─── HELPERS ─────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+ *  PORTAL JUMP — Full sequence with canvas/scene initialization
+ * ═══════════════════════════════════════════════════════════════ */
+function _launchPortalJump() {
+  const portalModal = document.getElementById('portal-warp-modal');
+  const homepage    = document.getElementById('homepage-container');
+  const main        = document.getElementById('main-container');
+
+  // --- Step 1: Show the portal warp overlay ---
+  if (portalModal) {
+    portalModal.classList.add('active');
+    portalModal.style.opacity = '1';
+    portalModal.style.visibility = 'visible';
+    portalModal.style.pointerEvents = 'auto';
+  }
+
+  // --- Step 2: Try the inline portal animation engine ---
+  let inlineWorked = false;
+  try {
+    if (typeof startPortalWarpAnimation === 'function') {
+      startPortalWarpAnimation(() => {
+        _revealMainView(portalModal, homepage, main);
+      });
+      inlineWorked = true;
+    }
+  } catch (err) {
+    console.warn('[script.js] startPortalWarpAnimation() threw:', err);
+  }
+
+  // --- Step 3: Fallback — time-based transition if inline engine failed ---
+  if (!inlineWorked) {
+    setTimeout(() => {
+      _revealMainView(portalModal, homepage, main);
+    }, 1200);
+  }
+
+  // --- Step 4: Safety net — always reveal main after 2.5s max ---
+  setTimeout(() => {
+    if (main && main.classList.contains('hidden')) {
+      console.warn('[script.js] Safety timeout: forcing main-container visible');
+      _revealMainView(portalModal, homepage, main);
+    }
+  }, 2500);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ *  REVEAL MAIN VIEW — hides homepage, shows Chronicle view,
+ *  then BOOTS Three.js particle system + TemporalEngine
+ * ═══════════════════════════════════════════════════════════════ */
+function _revealMainView(portalModal, homepage, main) {
+  // Hide portal overlay
+  if (portalModal) {
+    portalModal.classList.remove('active');
+    portalModal.style.opacity   = '';
+    portalModal.style.visibility = '';
+    portalModal.style.pointerEvents = '';
+  }
+
+  // Swap views
+  if (homepage) homepage.classList.add('hidden');
+  if (main) {
+    main.classList.remove('hidden');
+    main.style.display = '';
+
+    // Force a resize event so Three.js can measure the canvas correctly
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  // --- Boot Three.js particle system (only once) ---
+  _bootThreeJS();
+
+  // --- Boot TemporalEngine (only once) ---
+  _bootTemporalEngine();
+
+  // --- Swap location content safely ---
+  try {
+    if (typeof places !== 'undefined' && places && places.length) {
+      const idx = typeof selectedPlaceIndex !== 'undefined' ? selectedPlaceIndex : 0;
+      const place = places[idx] || places[0];
+      if (typeof swapLocationContent === 'function') swapLocationContent(place);
+      if (typeof recordVisit === 'function') recordVisit(place.id, typeof currentEra !== 'undefined' ? currentEra : '2024');
+    }
+  } catch (err) {
+    console.warn('[script.js] swapLocationContent threw (non-fatal):', err);
+  }
+
+  console.log('[script.js] ✓ Main Chronicle view revealed');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ *  THREE.JS BOOT — initializes particle background (was never called)
+ * ═══════════════════════════════════════════════════════════════ */
+let _threeJSBooted = false;
+function _bootThreeJS() {
+  if (_threeJSBooted) {
+    // Already running — just trigger a resize to ensure correct dimensions
+    window.dispatchEvent(new Event('resize'));
+    return;
+  }
+  try {
+    if (typeof initThreeJS === 'function') {
+      initThreeJS();
+      _threeJSBooted = true;
+      console.log('[script.js] ✓ Three.js particle system initialized');
+    } else {
+      console.warn('[script.js] initThreeJS not defined — particle background unavailable');
+    }
+  } catch (err) {
+    console.warn('[script.js] initThreeJS() threw:', err);
+    // Render a CSS fallback background so the screen isn't black
+    _applyFallbackBackground();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ *  TEMPORAL ENGINE BOOT — sets up era column interactivity
+ * ═══════════════════════════════════════════════════════════════ */
+let _engineBooted = false;
+function _bootTemporalEngine() {
+  if (_engineBooted) return;
+  try {
+    if (typeof TemporalEngine === 'function' && !window.chronicle) {
+      window.chronicle = new TemporalEngine();
+      _engineBooted = true;
+      console.log('[script.js] ✓ TemporalEngine instantiated');
+    } else if (window.chronicle) {
+      _engineBooted = true;
+      console.log('[script.js] ✓ TemporalEngine already exists');
+    } else {
+      console.warn('[script.js] TemporalEngine class not found');
+    }
+  } catch (err) {
+    console.warn('[script.js] TemporalEngine() threw:', err);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ *  FALLBACK BACKGROUND — CSS gradient so screen is never pure black
+ * ═══════════════════════════════════════════════════════════════ */
+function _applyFallbackBackground() {
+  const container = document.getElementById('threejs-container-ANIMATION_50');
+  if (container) {
+    container.style.background =
+      'radial-gradient(ellipse at center, #0a1628 0%, #090b0e 60%, #000 100%)';
+    container.style.zIndex = '-1';
+  }
+  document.body.style.background = '#090b0e';
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ *  HELPERS
+ * ═══════════════════════════════════════════════════════════════ */
+function _showHomepage() {
+  const homepage = document.getElementById('homepage-container');
+  const main     = document.getElementById('main-container');
+  if (homepage) { homepage.classList.remove('hidden'); homepage.style.display = ''; homepage.scrollTop = 0; }
+  if (main)     { main.classList.add('hidden'); }
+  try { if (typeof updateProgressUI === 'function') updateProgressUI(); } catch (_) {}
+  try { if (typeof updateHomepageBadges === 'function') updateHomepageBadges(); } catch (_) {}
+}
 
 function _closeModal(modal) {
   if (!modal) return;
   modal.classList.add('hidden');
   modal.classList.remove('open', 'active');
   modal.style.display = 'none';
-}
-
-function _fallbackPortalJump() {
-  const portalOverlay = document.getElementById('portal-modal');
-  const homepage      = document.getElementById('homepage-container');
-  const main          = document.getElementById('main-container');
-
-  if (portalOverlay) {
-    portalOverlay.classList.add('active');
-    portalOverlay.style.opacity = '1';
-    portalOverlay.style.visibility = 'visible';
-    portalOverlay.style.pointerEvents = 'auto';
-  }
-  setTimeout(() => {
-    if (portalOverlay) {
-      portalOverlay.classList.remove('active');
-      portalOverlay.style.opacity = '';
-      portalOverlay.style.visibility = '';
-      portalOverlay.style.pointerEvents = '';
-    }
-    if (homepage) homepage.classList.add('hidden');
-    if (main) {
-      main.classList.remove('hidden');
-      window.dispatchEvent(new Event('resize'));
-    }
-  }, 1200);
 }
