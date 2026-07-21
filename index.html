@@ -4366,33 +4366,28 @@
       }
 
       initLunaSprites() {
-        this.lunaFrames = {
-          idle: [],
-          run: [],
-          jump: [],
-          fall: [],
-          land: [],
-          slide: [],
-          collect: [],
-          victory: []
-        };
+        this.productionSheet = new Image();
+        this.productionSheet.src = 'assets/sprites/luna_production_spritesheet.png';
 
-        const loadCleanSeq = (key, count) => {
-          for (let i = 0; i < count; i++) {
-            const img = new Image();
-            img.src = `assets/sprites/clean/${key}_${i}.png`;
-            this.lunaFrames[key].push(img);
-          }
+        // Uniform 100x100 Grid Cell Row Map
+        // Row 0: Idle (4 frames)
+        // Row 1: Run (8 frames)
+        // Row 2: Jump (4 frames)
+        // Row 3: Fall (4 frames)
+        // Row 4: Land (4 frames)
+        // Row 5: Slide (4 frames)
+        // Row 6: Collect (4 frames)
+        // Row 7: Victory (4 frames)
+        this.gridAnimMap = {
+          idle: { row: 0, count: 4 },
+          run: { row: 1, count: 8 },
+          jump: { row: 2, count: 4 },
+          fall: { row: 3, count: 4 },
+          land: { row: 4, count: 4 },
+          slide: { row: 5, count: 4 },
+          collect: { row: 6, count: 4 },
+          victory: { row: 7, count: 4 }
         };
-
-        loadCleanSeq('idle', 4);
-        loadCleanSeq('run', 8);
-        loadCleanSeq('jump', 4);
-        loadCleanSeq('fall', 4);
-        loadCleanSeq('land', 4);
-        loadCleanSeq('slide', 4);
-        loadCleanSeq('collect', 4);
-        loadCleanSeq('victory', 4);
       }
 
       bindEvents() {
@@ -4992,16 +4987,22 @@
           animFrameIndex = Math.floor(p.frameCount * 0.25) % 8;
         }
 
-        const frameSeq = this.lunaFrames ? this.lunaFrames[animKey] : null;
-        const currentFrameImg = frameSeq && frameSeq[animFrameIndex % frameSeq.length];
+        const animDef = (this.gridAnimMap && this.gridAnimMap[animKey]) || { row: 1, count: 8 };
+        const col = animFrameIndex % animDef.count;
+        const row = animDef.row;
 
-        if (currentFrameImg && currentFrameImg.complete && currentFrameImg.naturalWidth > 0) {
+        if (this.productionSheet && this.productionSheet.complete && this.productionSheet.naturalWidth > 0) {
+          // Slice uniform 100x100 grid cell from production sprite sheet
+          const cellWidth = 100;
+          const cellHeight = 100;
+          const sx = col * cellWidth;
+          const sy = row * cellHeight;
+
           const renderWidth = 72;
           const renderHeight = 72;
           const drawY = p.isSliding ? this.groundY - renderHeight + 6 : p.y + p.height - renderHeight;
 
-          // Render isolated 100x100 clean frame - ZERO possibility of neighboring frame bleed!
-          this.ctx.drawImage(currentFrameImg, p.x, drawY, renderWidth, renderHeight);
+          this.ctx.drawImage(this.productionSheet, sx, sy, cellWidth, cellHeight, p.x, drawY, renderWidth, renderHeight);
         }
 
         this.ctx.restore();
