@@ -74,16 +74,19 @@
 
     <!-- Level Selector Screen (Shown before playing) -->
     <div id="runner-level-select-screen" class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full flex flex-col gap-6">
-      <div class="glassmorphic p-6 border border-white/10 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-purple-950/30 to-amber-950/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <h2 class="font-display-present text-2xl font-bold text-white mb-1">SELECT TIME ERA RUNNER LEVEL</h2>
-          <p class="text-white/60 text-xs font-mono">Visit landmarks on the main website to unlock new historical runner levels!</p>
+        <div class="glassmorphic p-6 border border-white/10 rounded-2xl bg-gradient-to-r from-amber-950/40 via-cyan-950/30 to-purple-950/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <img src="assets/sprites/luna_portrait.png" alt="Time Explorer Luna" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(245,158,11,0.4)]" />
+            <div>
+              <h2 class="font-display-present text-2xl font-bold text-white mb-1">SELECT TIME ERA RUNNER LEVEL</h2>
+              <p class="text-white/70 text-xs font-mono">Guide <span class="text-amber-300 font-bold">Time Explorer Luna</span> through historical eras to recover lost artifacts!</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 font-mono text-xs">
+            <span class="px-3 py-1.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold" id="runner-total-coins-badge">🪙 0 Coins</span>
+            <span class="px-3 py-1.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold" id="runner-highscore-badge">🏆 Best: 0m</span>
+          </div>
         </div>
-        <div class="flex items-center gap-4 font-mono text-xs">
-          <span class="px-3 py-1.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold" id="runner-total-coins-badge">🪙 0 Coins</span>
-          <span class="px-3 py-1.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold" id="runner-highscore-badge">🏆 Best: 0m</span>
-        </div>
-      </div>
 
       <!-- Grid of Landmark Runner Levels -->
       <div id="runner-levels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -4355,8 +4358,43 @@
         this.isGameOver = false;
         this.animationFrameId = null;
 
+        // Preload Official Luna Sprite Sheet Frames
+        this.initLunaSprites();
+
         // Input Bindings
         this.bindEvents();
+      }
+
+      initLunaSprites() {
+        this.lunaSprites = {
+          idle: [],
+          run: [],
+          jump: [],
+          fall: [],
+          land: [],
+          slide: [],
+          collect: [],
+          victory: [],
+          gameover: []
+        };
+
+        const loadSeq = (key, count) => {
+          for (let i = 0; i < count; i++) {
+            const img = new Image();
+            img.src = `assets/sprites/${key}_${i}.png`;
+            this.lunaSprites[key].push(img);
+          }
+        };
+
+        loadSeq('idle', 4);
+        loadSeq('run', 8);
+        loadSeq('jump', 4);
+        loadSeq('fall', 3);
+        loadSeq('land', 4);
+        loadSeq('slide', 3);
+        loadSeq('collect', 4);
+        loadSeq('victory', 1);
+        loadSeq('gameover', 4);
       }
 
       bindEvents() {
@@ -4933,275 +4971,39 @@
           this.ctx.fill();
         }
 
-        // Animation Metrics for Luna
-        const hairWave = Math.sin(p.frameCount * 0.35) * 5;
-        const stride = Math.sin(p.frameCount * 0.38) * 12;
-        const armSwing = Math.cos(p.frameCount * 0.38) * 8;
+        // Determine current Luna Sprite Animation Sequence
+        let animKey = 'run';
+        let animFrameIndex = 0;
 
-        if (p.isSliding) {
-          // ==================== LUNA SLIDING ANIMATION STANCE ====================
-          // Dark Wavy Ponytail Trailing Left
-          this.ctx.fillStyle = '#3d2314';
-          this.ctx.beginPath();
-          this.ctx.ellipse(p.x - 10, p.y + 16, 15, 9, -0.3, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Leather Backpack
-          this.ctx.fillStyle = '#6e3d1b';
-          this.ctx.beginPath();
-          if (this.ctx.roundRect) this.ctx.roundRect(p.x - 6, p.y + 10, 12, 18, 4);
-          else this.ctx.fillRect(p.x - 6, p.y + 10, 12, 18);
-          this.ctx.fill();
-
-          // Sliding Torso, Khaki Safari Jacket & Red Bandana
-          this.ctx.fillStyle = '#b89772'; // Khaki safari jacket
-          this.ctx.beginPath();
-          if (this.ctx.roundRect) this.ctx.roundRect(p.x + 4, p.y + 12, 28, 18, 6);
-          else this.ctx.fillRect(p.x + 4, p.y + 12, 28, 18);
-          this.ctx.fill();
-
-          // Red Bandana
-          this.ctx.fillStyle = '#b91c1c';
-          this.ctx.fillRect(p.x + 20, p.y + 12, 8, 5);
-
-          // Head & Face Profile
-          this.ctx.fillStyle = '#fed7aa';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 28, p.y + 14, 12, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Eye & Smile
-          this.ctx.fillStyle = '#3d2314';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 32, p.y + 12, 3.5, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.fillStyle = '#ffffff';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 33, p.y + 11, 1.2, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Slouch Hat with Double Brass Goggles
-          this.ctx.fillStyle = '#786048';
-          this.ctx.beginPath();
-          this.ctx.ellipse(p.x + 28, p.y + 4, 17, 5, 0, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 28, p.y + 4, 10, Math.PI, 0);
-          this.ctx.fill();
-
-          // Double Brass Goggles Glint
-          this.ctx.fillStyle = '#00f0ff';
-          this.ctx.shadowBlur = 6;
-          this.ctx.shadowColor = '#00f0ff';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 30, p.y + 4, 3, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.shadowBlur = 0;
-        } else {
-          // ==================== LUNA RUNNING / JUMPING ANIMATION STANCE ====================
-
-          // 1. Leather Backpack (#6e3d1b) with Parchment Scroll Roll on Top
-          this.ctx.fillStyle = '#6e3d1b';
-          this.ctx.beginPath();
-          if (this.ctx.roundRect) this.ctx.roundRect(p.x - 9, p.y + 18, 14, 22, 5);
-          else this.ctx.fillRect(p.x - 9, p.y + 18, 14, 22);
-          this.ctx.fill();
-
-          // Parchment Scroll Roll on Top of Backpack
-          this.ctx.fillStyle = '#e2e8f0';
-          this.ctx.beginPath();
-          if (this.ctx.roundRect) this.ctx.roundRect(p.x - 11, p.y + 13, 16, 7, 3);
-          else this.ctx.fillRect(p.x - 11, p.y + 13, 16, 7);
-          this.ctx.fill();
-
-          // 2. Dark Wavy Ponytail (#3d2314) Flowing Backward Left
-          this.ctx.fillStyle = '#3d2314';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 9, p.y + 20 + hairWave, 13, 0, Math.PI * 2);
-          this.ctx.arc(p.x + 3, p.y + 27 + hairWave, 11, 0, Math.PI * 2);
-          this.ctx.arc(p.x - 3, p.y + 33 + hairWave * 1.2, 8, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Ponytail Hair Highlights
-          this.ctx.fillStyle = '#5c3722';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 7, p.y + 18 + hairWave, 8, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // 3. Khaki Safari Jacket (#b89772) over White Inner Shirt
-          this.ctx.fillStyle = '#f8fafc'; // White inner shirt
-          this.ctx.beginPath();
-          if (this.ctx.roundRect) this.ctx.roundRect(p.x + 8, p.y + 16, 22, 24, 4);
-          else this.ctx.fillRect(p.x + 8, p.y + 16, 22, 24);
-          this.ctx.fill();
-
-          this.ctx.fillStyle = '#b89772'; // Khaki safari jacket vest
-          this.ctx.beginPath();
-          if (this.ctx.roundRect) this.ctx.roundRect(p.x + 6, p.y + 16, 26, 25, 6);
-          else this.ctx.fillRect(p.x + 6, p.y + 16, 26, 25);
-          this.ctx.fill();
-
-          // 4. Crimson Red Neckerchief / Bandana (#b91c1c)
-          this.ctx.fillStyle = '#b91c1c';
-          this.ctx.beginPath();
-          this.ctx.moveTo(p.x + 18, p.y + 16);
-          this.ctx.lineTo(p.x + 28, p.y + 16);
-          this.ctx.lineTo(p.x + 23, p.y + 23);
-          this.ctx.closePath();
-          this.ctx.fill();
-
-          // 5. Olive Shorts (#54462e) & Brown Leather Belt
-          this.ctx.fillStyle = '#54462e'; // Olive shorts
-          this.ctx.beginPath();
-          if (this.ctx.roundRect) this.ctx.roundRect(p.x + 8, p.y + 38, 22, 9, 3);
-          else this.ctx.fillRect(p.x + 8, p.y + 38, 22, 9);
-          this.ctx.fill();
-
-          // Dark Brown Leather Belt & Gold Buckle
-          this.ctx.fillStyle = '#3d2314';
-          this.ctx.fillRect(p.x + 8, p.y + 37, 22, 3);
-          this.ctx.fillStyle = '#f59e0b';
-          this.ctx.fillRect(p.x + 18, p.y + 36.5, 4, 4);
-
-          // Brass Pocket Watch Hanging on Chain (Right Hip)
-          this.ctx.strokeStyle = '#f59e0b';
-          this.ctx.lineWidth = 1.8;
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 13, p.y + 38, 4, 0, Math.PI);
-          this.ctx.stroke();
-
-          // White Clock Face Pocket Watch
-          this.ctx.fillStyle = '#ffffff';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 12, p.y + 43, 3.5, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.strokeStyle = '#3d2314';
-          this.ctx.lineWidth = 1;
-          this.ctx.stroke();
-
-          // 6. Glowing Cyan Wrist Time Device (#00f0ff) on Right Arm
-          this.ctx.fillStyle = '#00f0ff';
-          this.ctx.shadowBlur = 12;
-          this.ctx.shadowColor = '#00f0ff';
-          this.ctx.beginPath();
-          if (this.ctx.roundRect) this.ctx.roundRect(p.x + 24 + armSwing, p.y + 28, 9, 7, 3);
-          else this.ctx.fillRect(p.x + 24 + armSwing, p.y + 28, 9, 7);
-          this.ctx.fill();
-          this.ctx.shadowBlur = 0;
-
-          // Dark Fingerless Leather Glove
-          this.ctx.fillStyle = '#452109';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 29 + armSwing, p.y + 33, 4, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // 7. Cute Head & Expressive Facial Features for Luna
-          this.ctx.fillStyle = '#fed7aa'; // Soft warm skin tone
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 12, 14, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Side-Swept Bangs Hair Detail
-          this.ctx.fillStyle = '#3d2314';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 17, p.y + 6, 8, 0, Math.PI * 1.2);
-          this.ctx.fill();
-
-          // Rosy Cheeks
-          this.ctx.fillStyle = 'rgba(244, 114, 182, 0.5)';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 26, p.y + 16, 4, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Warm Brown Expressive Eye Facing Right
-          this.ctx.fillStyle = '#3d2314'; // Warm brown iris
-          this.ctx.beginPath();
-          this.ctx.ellipse(p.x + 26, p.y + 11, 4.2, 5.2, 0, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Eye Dual Specular Highlights
-          this.ctx.fillStyle = '#ffffff';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 27.5, p.y + 9.5, 1.5, 0, Math.PI * 2);
-          this.ctx.arc(p.x + 25.2, p.y + 12.5, 0.8, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Eyelash & Eyebrow Curve
-          this.ctx.strokeStyle = '#28150a';
-          this.ctx.lineWidth = 1.5;
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 26, p.y + 10, 4.8, Math.PI * 1.1, Math.PI * 1.8);
-          this.ctx.stroke();
-
-          // Cheerful Smile Curve
-          this.ctx.fillStyle = '#be123c';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 25, p.y + 16, 4, 0, Math.PI);
-          this.ctx.fill();
-
-          // 8. Slouch Hat (#786048) & Double Brass Goggles
-          this.ctx.fillStyle = '#786048'; // Slouch hat brim
-          this.ctx.beginPath();
-          this.ctx.ellipse(p.x + 22, p.y + 6, 18, 4.8, 0, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 4, 12, Math.PI, 0);
-          this.ctx.fill();
-
-          // Dark Leather Hatband
-          this.ctx.fillStyle = '#3d2314';
-          this.ctx.fillRect(p.x + 10, p.y + 3.5, 24, 3);
-
-          // Double Metallic Brass Goggles resting on brim
-          this.ctx.fillStyle = '#d97706'; // Metallic brass rim
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 4, 5, 0, Math.PI * 2);
-          this.ctx.arc(p.x + 29, p.y + 4, 5, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          this.ctx.fillStyle = '#00f0ff'; // Cyan glass lens glare
-          this.ctx.shadowBlur = 8;
-          this.ctx.shadowColor = '#00f0ff';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 4, 3.2, 0, Math.PI * 2);
-          this.ctx.arc(p.x + 29, p.y + 4, 3.2, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.shadowBlur = 0;
-
-          // 9. Slouchy White Wool Socks (#e2e8f0) & Leather Boots (#4b2810)
-          if (!p.isGrounded) {
-            // Tucked Jump Pose
-            this.ctx.strokeStyle = '#4b2810';
-            this.ctx.lineWidth = 6.5;
-            this.ctx.lineCap = 'round';
-            this.ctx.beginPath();
-            this.ctx.moveTo(p.x + 14, p.y + 44);
-            this.ctx.lineTo(p.x + 22, p.y + 54);
-            this.ctx.moveTo(p.x + 24, p.y + 44);
-            this.ctx.lineTo(p.x + 32, p.y + 52);
-            this.ctx.stroke();
-
-            // Scrunched White Wool Socks
-            this.ctx.fillStyle = '#e2e8f0';
-            this.ctx.fillRect(p.x + 18, p.y + 50, 7, 4);
-            this.ctx.fillRect(p.x + 28, p.y + 48, 7, 4);
+        if (this.isGameOver) {
+          animKey = 'gameover';
+          animFrameIndex = Math.floor(p.frameCount * 0.1) % 4;
+        } else if (p.isSliding) {
+          animKey = 'slide';
+          animFrameIndex = Math.floor(p.frameCount * 0.2) % 3;
+        } else if (!p.isGrounded) {
+          if (p.velocityY < 0) {
+            animKey = 'jump';
+            animFrameIndex = Math.min(3, Math.floor(Math.abs(p.velocityY) * 0.2));
           } else {
-            // Running Leg Stride Cycle
-            this.ctx.strokeStyle = '#4b2810';
-            this.ctx.lineWidth = 6.5;
-            this.ctx.lineCap = 'round';
-            this.ctx.beginPath();
-            this.ctx.moveTo(p.x + 14, p.y + 44);
-            this.ctx.lineTo(p.x + 14 + stride, p.y + 60);
-            this.ctx.moveTo(p.x + 26, p.y + 44);
-            this.ctx.lineTo(p.x + 26 - stride, p.y + 60);
-            this.ctx.stroke();
-
-            // Scrunched Slouchy White Wool Socks above Boots
-            this.ctx.fillStyle = '#e2e8f0';
-            this.ctx.fillRect(p.x + 10 + stride, p.y + 53, 7, 4);
-            this.ctx.fillRect(p.x + 22 - stride, p.y + 53, 7, 4);
+            animKey = 'fall';
+            animFrameIndex = Math.min(2, Math.floor(p.velocityY * 0.2));
           }
+        } else {
+          animKey = 'run';
+          animFrameIndex = Math.floor(p.frameCount * 0.25) % 8;
+        }
+
+        const frames = this.lunaSprites ? this.lunaSprites[animKey] : null;
+        const currentSprite = frames && frames[animFrameIndex];
+
+        if (currentSprite && currentSprite.complete && currentSprite.naturalWidth > 0) {
+          const renderHeight = 72;
+          const aspectRatio = currentSprite.naturalWidth / currentSprite.naturalHeight;
+          const renderWidth = renderHeight * aspectRatio;
+          const drawY = p.isSliding ? this.groundY - renderHeight + 8 : p.y + p.height - renderHeight;
+          
+          this.ctx.drawImage(currentSprite, p.x, drawY, renderWidth, renderHeight);
         }
 
         this.ctx.restore();
