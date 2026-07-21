@@ -4366,35 +4366,28 @@
       }
 
       initLunaSprites() {
-        this.lunaSprites = {
-          idle: [],
-          run: [],
-          jump: [],
-          fall: [],
-          land: [],
-          slide: [],
-          collect: [],
-          victory: [],
-          gameover: []
-        };
+        this.productionSheet = new Image();
+        this.productionSheet.src = 'assets/sprites/luna_production_spritesheet.png';
 
-        const loadSeq = (key, count) => {
-          for (let i = 0; i < count; i++) {
-            const img = new Image();
-            img.src = `assets/sprites/${key}_${i}.png`;
-            this.lunaSprites[key].push(img);
-          }
+        // Uniform 100x100 Grid Cell Row Map
+        // Row 0: Idle (4 frames)
+        // Row 1: Run (8 frames)
+        // Row 2: Jump (4 frames)
+        // Row 3: Fall (4 frames)
+        // Row 4: Land (4 frames)
+        // Row 5: Slide (4 frames)
+        // Row 6: Collect (4 frames)
+        // Row 7: Victory (4 frames)
+        this.gridAnimMap = {
+          idle: { row: 0, count: 4 },
+          run: { row: 1, count: 8 },
+          jump: { row: 2, count: 4 },
+          fall: { row: 3, count: 4 },
+          land: { row: 4, count: 4 },
+          slide: { row: 5, count: 4 },
+          collect: { row: 6, count: 4 },
+          victory: { row: 7, count: 4 }
         };
-
-        loadSeq('idle', 4);
-        loadSeq('run', 8);
-        loadSeq('jump', 4);
-        loadSeq('fall', 3);
-        loadSeq('land', 4);
-        loadSeq('slide', 3);
-        loadSeq('collect', 4);
-        loadSeq('victory', 1);
-        loadSeq('gameover', 4);
       }
 
       bindEvents() {
@@ -4976,34 +4969,40 @@
         let animFrameIndex = 0;
 
         if (this.isGameOver) {
-          animKey = 'gameover';
+          animKey = 'idle';
           animFrameIndex = Math.floor(p.frameCount * 0.1) % 4;
         } else if (p.isSliding) {
           animKey = 'slide';
-          animFrameIndex = Math.floor(p.frameCount * 0.2) % 3;
+          animFrameIndex = Math.floor(p.frameCount * 0.2) % 4;
         } else if (!p.isGrounded) {
           if (p.velocityY < 0) {
             animKey = 'jump';
             animFrameIndex = Math.min(3, Math.floor(Math.abs(p.velocityY) * 0.2));
           } else {
             animKey = 'fall';
-            animFrameIndex = Math.min(2, Math.floor(p.velocityY * 0.2));
+            animFrameIndex = Math.min(3, Math.floor(p.velocityY * 0.2));
           }
         } else {
           animKey = 'run';
           animFrameIndex = Math.floor(p.frameCount * 0.25) % 8;
         }
 
-        const frames = this.lunaSprites ? this.lunaSprites[animKey] : null;
-        const currentSprite = frames && frames[animFrameIndex];
+        const animDef = (this.gridAnimMap && this.gridAnimMap[animKey]) || { row: 1, count: 8 };
+        const col = animFrameIndex % animDef.count;
+        const row = animDef.row;
 
-        if (currentSprite && currentSprite.complete && currentSprite.naturalWidth > 0) {
+        if (this.productionSheet && this.productionSheet.complete && this.productionSheet.naturalWidth > 0) {
+          // Slice uniform 100x100 grid cell from production sprite sheet
+          const cellWidth = 100;
+          const cellHeight = 100;
+          const sx = col * cellWidth;
+          const sy = row * cellHeight;
+
+          const renderWidth = 72;
           const renderHeight = 72;
-          const aspectRatio = currentSprite.naturalWidth / currentSprite.naturalHeight;
-          const renderWidth = renderHeight * aspectRatio;
-          const drawY = p.isSliding ? this.groundY - renderHeight + 8 : p.y + p.height - renderHeight;
-          
-          this.ctx.drawImage(currentSprite, p.x, drawY, renderWidth, renderHeight);
+          const drawY = p.isSliding ? this.groundY - renderHeight + 6 : p.y + p.height - renderHeight;
+
+          this.ctx.drawImage(this.productionSheet, sx, sy, cellWidth, cellHeight, p.x, drawY, renderWidth, renderHeight);
         }
 
         this.ctx.restore();
