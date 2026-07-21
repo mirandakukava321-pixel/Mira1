@@ -681,3 +681,28 @@ dialog[open] {
     }
 }
 
+/* ==================== FULL-SCREEN IMAGE INSPECTION MODAL ==================== */
+
+#anomaly-inspection-modal {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+}
+
+#anomaly-inspection-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
+
+#inspection-viewport {
+    touch-action: none;
+    user-select: none;
+}
+
+#inspection-img-wrapper {
+    will-change: transform;
+    transform-origin: center center;
+}
+
