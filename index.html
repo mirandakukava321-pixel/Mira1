@@ -66,11 +66,11 @@
         <a href="#destinations-gallery" class="text-white/60 hover:text-white transition">Featured Destinations</a>
         <a href="#how-it-works" class="text-white/60 hover:text-white transition">How It Works</a>
       </div>
-      <div class="flex items-center gap-3">
-        <button id="passportButton" onclick="openPassport()" class="font-label-tech text-xs px-3.5 py-2 border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 rounded flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,175,85,0.15)] transition duration-300 cursor-pointer relative z-20">
+      <div class="flex items-center gap-3" style="position:relative;z-index:100">
+        <button id="passportButton" data-action="passport" class="font-label-tech text-xs px-3.5 py-2 border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 rounded flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,175,85,0.15)] transition duration-300 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
           <span>📜</span> PASSPORT
         </button>
-        <button id="navWarpButton" onclick="initiatePortalJump()" class="font-label-tech text-xs px-4 py-2 border border-primary/45 text-primary hover:bg-primary/10 hover:border-primary rounded shadow-[0_0_15px_rgba(0,240,255,0.15)] transition duration-300 cursor-pointer relative z-20">
+        <button id="navWarpButton" data-action="portal" class="font-label-tech text-xs px-4 py-2 border border-primary/45 text-primary hover:bg-primary/10 hover:border-primary rounded shadow-[0_0_15px_rgba(0,240,255,0.15)] transition duration-300 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
           INITIATE WARP
         </button>
       </div>
@@ -82,13 +82,13 @@
       <div class="absolute w-[500px] h-[500px] rounded-full bg-primary/5 blur-[150px] -z-10 pointer-events-none"></div>
       <div class="absolute w-[400px] h-[400px] rounded-full bg-purple-500/5 blur-[150px] -z-10 pointer-events-none translate-y-32"></div>
 
-      <!-- Sci-fi Time portal outline -->
-      <div class="relative w-72 h-72 rounded-full border border-primary/15 flex items-center justify-center mb-8 animate-[spin_60s_linear_infinite]">
-        <div class="absolute w-64 h-64 rounded-full border border-dashed border-primary/20"></div>
-        <div class="absolute w-56 h-56 rounded-full border border-purple-500/30"></div>
-        <div class="absolute w-48 h-48 rounded-full border border-primary/40 animate-[spin_20s_linear_infinite_reverse]"></div>
+      <!-- Sci-fi Time portal outline (pointer-events:none so buttons underneath remain clickable) -->
+      <div class="relative w-72 h-72 rounded-full border border-primary/15 flex items-center justify-center mb-8 animate-[spin_60s_linear_infinite] pointer-events-none">
+        <div class="absolute w-64 h-64 rounded-full border border-dashed border-primary/20 pointer-events-none"></div>
+        <div class="absolute w-56 h-56 rounded-full border border-purple-500/30 pointer-events-none"></div>
+        <div class="absolute w-48 h-48 rounded-full border border-primary/40 animate-[spin_20s_linear_infinite_reverse] pointer-events-none"></div>
         <!-- Portal Core Pulsing Light -->
-        <div class="w-12 h-12 rounded-full bg-primary/20 shadow-[0_0_40px_rgba(0,240,255,0.6)] animate-pulse"></div>
+        <div class="w-12 h-12 rounded-full bg-primary/20 shadow-[0_0_40px_rgba(0,240,255,0.6)] animate-pulse pointer-events-none"></div>
       </div>
 
       <!-- Hero Header -->
@@ -99,11 +99,11 @@
         Explore the past. Experience the present. Discover the future.
       </p>
 
-      <div class="flex flex-col sm:flex-row items-center gap-4 justify-center relative z-20">
-        <button id="portalJumpButton" onclick="initiatePortalJump()" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_45px_rgba(0,240,255,0.55)] transform hover:-translate-y-0.5 transition duration-300 uppercase cursor-pointer relative z-20">
+      <div class="flex flex-col sm:flex-row items-center gap-4 justify-center" style="position:relative;z-index:100">
+        <button id="portalJumpButton" data-action="portal" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_45px_rgba(0,240,255,0.55)] transform hover:-translate-y-0.5 transition duration-300 uppercase cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
           Initiate Portal Jump
         </button>
-        <button id="playMiniGameButton" onclick="openMiniGame()" class="font-label-tech text-sm px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_45px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5 transition duration-300 uppercase flex items-center gap-2 cursor-pointer relative z-20">
+        <button id="playMiniGameButton" data-action="mini-game" class="font-label-tech text-sm px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_45px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5 transition duration-300 uppercase flex items-center gap-2 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
           <span>🎮</span>
           <span>Play Mini Game</span>
         </button>
@@ -2823,7 +2823,9 @@
     let portalParticles = [];
 
     function initPortalCanvas() {
+      if (portalCanvas) return; // already initialized
       portalCanvas = document.getElementById('portal-canvas');
+      if (!portalCanvas) return;
       portalCtx = portalCanvas.getContext('2d');
       resizePortalCanvas();
       window.addEventListener('resize', resizePortalCanvas);
@@ -2837,6 +2839,20 @@
     }
 
     function startPortalWarpAnimation(onComplete) {
+      // Ensure canvas is initialized before animating
+      initPortalCanvas();
+
+      // If canvas still unavailable, skip animation and go straight to callback
+      if (!portalCanvas || !portalCtx) {
+        const loaderEl = document.getElementById('portal-loader');
+        if (loaderEl) loaderEl.classList.add('active');
+        setTimeout(() => {
+          if (loaderEl) loaderEl.classList.remove('active');
+          if (onComplete) onComplete();
+        }, 800);
+        return;
+      }
+
       portalActive = true;
       portalProgress = 0;
       portalParticles = [];
@@ -2852,7 +2868,8 @@
         });
       }
 
-      document.getElementById('portal-loader').classList.add('active');
+      const loaderEl = document.getElementById('portal-loader');
+      if (loaderEl) loaderEl.classList.add('active');
       playPortalWarpSound();
       animatePortalWarp(onComplete);
     }
@@ -3034,24 +3051,49 @@
       initiatePortalJump(url);
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const playButton = document.getElementById("playMiniGameButton");
-      const portalButton = document.getElementById("portalJumpButton");
-      const passportButton = document.getElementById("passportButton");
+    // ==================== CENTRALIZED BUTTON WIRING ====================
+    // Uses data-action attributes so ALL matching buttons are wired at once,
+    // regardless of how many exist in the HTML. Runs after DOM is ready.
+    function _wireButtons() {
+      // Wire every [data-action="portal"] button
+      document.querySelectorAll('[data-action="portal"]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          console.log('[Chronicle] Portal Jump triggered');
+          initiatePortalJump();
+        });
+      });
 
-      playButton?.addEventListener("click", (e) => {
-        e.preventDefault();
-        openMiniGame();
+      // Wire every [data-action="mini-game"] button
+      document.querySelectorAll('[data-action="mini-game"]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          console.log('[Chronicle] Mini-game triggered');
+          openMiniGame();
+        });
       });
-      portalButton?.addEventListener("click", (e) => {
-        e.preventDefault();
-        initiatePortalJump();
+
+      // Wire every [data-action="passport"] button
+      document.querySelectorAll('[data-action="passport"]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          console.log('[Chronicle] Passport triggered');
+          openPassport();
+        });
       });
-      passportButton?.addEventListener("click", (e) => {
-        e.preventDefault();
-        openPassport();
-      });
-    });
+
+      console.log('Button handlers initialized');
+      console.log('Portal buttons:', document.querySelectorAll('[data-action="portal"]').length);
+      console.log('Mini-game buttons:', document.querySelectorAll('[data-action="mini-game"]').length);
+      console.log('Passport buttons:', document.querySelectorAll('[data-action="passport"]').length);
+    }
+
+    // Run immediately if DOM already loaded, otherwise wait
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', _wireButtons);
+    } else {
+      _wireButtons();
+    }
 
     function showHomepage(event) {
       if (event) event.preventDefault();

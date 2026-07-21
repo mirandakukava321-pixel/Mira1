@@ -719,4 +719,31 @@ dialog[open] {
     user-select: none;
 }
 
+/* ==================== BUTTON CLICK FIX: DECORATIVE LAYERS MUST NOT BLOCK CLICKS ==================== */
+
+/* All decorative / animated elements are non-interactive */
+.pointer-events-none,
+[class*="blur-"],
+canvas:not(#runner-canvas),
+#threejs-container-ANIMATION_50,
+#confetti-canvas {
+  pointer-events: none !important;
+}
+
+/* Buttons and nav always receive clicks at highest priority */
+button,
+nav,
+[data-action] {
+  position: relative;
+  z-index: 100;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+/* Spinning portal ring in hero — must never intercept clicks */
+#homepage-hero .animate-\[spin_60s_linear_infinite\],
+#homepage-hero .animate-\[spin_20s_linear_infinite_reverse\],
+#homepage-hero .animate-pulse {
+  pointer-events: none !important;
+}
 
