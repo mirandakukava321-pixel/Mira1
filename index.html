@@ -3260,7 +3260,7 @@
       const place = places[selectedPlaceIndex];
       if (!place) return;
 
-      // Clean up previous overlays across all era sections
+      // Ensure NO anomaly overlays exist on the main page
       document.querySelectorAll('.anomaly-search-overlay').forEach(el => el.remove());
 
       const activeEra = currentEra || "1890";
@@ -3268,7 +3268,7 @@
       const isSolved = isAnomalySolved(place.id, activeEra);
       const solvedList = getSolvedAnomalies();
 
-      // Update HUD text & status
+      // Update HUD text & status metrics only
       const hudName = document.getElementById('hud-anomaly-name');
       const hudHint = document.getElementById('hud-hint-text');
       const hudIcon = document.getElementById('hud-mission-icon');
@@ -3309,59 +3309,23 @@
           hudTitle.className = "font-label-tech text-[10px] text-primary tracking-wider uppercase font-bold";
         }
         if (hudName) hudName.innerText = `Search for: ${anomalyInfo.name}`;
-        if (hudHint) hudHint.innerText = `Hint: Something from another era has appeared in ${activeEra}. Click on the image layer to locate it!`;
+        if (hudHint) hudHint.innerText = `Click on the image to launch Full-Screen Inspection Mode and search for the ${anomalyInfo.name}!`;
         if (hintBtn) hintBtn.style.display = 'inline-flex';
         if (hintLvlText) hintLvlText.innerText = "LVL 1";
       }
 
-      // Target section matching active era
-      const targetSectionId = activeEra === "1890" ? "era-1890" : activeEra === "2024" ? "era-2024" : "era-2200";
-      const eraSection = document.getElementById(targetSectionId);
-      if (!eraSection) return;
-
-      // Create dedicated search overlay at higher z-index (z-25) inside era section
-      const overlay = document.createElement('div');
-      overlay.className = 'anomaly-search-overlay absolute inset-0 z-25 pointer-events-auto cursor-crosshair overflow-hidden rounded-lg';
-      eraSection.appendChild(overlay);
-
-      // Create Target Node
-      const node = document.createElement('div');
-      node.id = 'anomaly-target-node';
-      node.className = `anomaly-target-node ${isSolved ? 'solved' : ''}`;
-      node.style.left = `${anomalyInfo.coords.x}%`;
-      node.style.top = `${anomalyInfo.coords.y}%`;
-      node.innerHTML = anomalyInfo.svgGraphic || `<span class="text-3xl">${anomalyInfo.icon}</span>`;
-      node.title = isSolved ? `Restored: ${anomalyInfo.name}` : `Click to Restore ${anomalyInfo.name}`;
-
-      const triggerSolve = (e) => {
-        if (e) {
-          e.stopPropagation();
-          e.preventDefault();
+      // Main page image sections click handler to open inspection viewer
+      ['era-1890', 'era-2024', 'era-2200'].forEach(eraId => {
+        const sec = document.getElementById(eraId);
+        if (sec) {
+          sec.style.cursor = 'pointer';
+          sec.onclick = (e) => {
+            if (e.target.closest('button, a, .glassmorphic-card, #anomaly-mission-hud')) return;
+            const era = eraId.replace('era-', '');
+            openImageInspectionModal(era);
+          };
         }
-        const clientX = (e && e.touches && e.touches[0]) ? e.touches[0].clientX : (e ? e.clientX : window.innerWidth / 2);
-        const clientY = (e && e.touches && e.touches[0]) ? e.touches[0].clientY : (e ? e.clientY : window.innerHeight / 2);
-
-        if (!isSolved) {
-          solveAnomaly(place.id, activeEra, clientX, clientY);
-        } else {
-          showToast("Timeline Stable", `You have already restored the ${anomalyInfo.name} (+50 XP)!`, "info");
-        }
-      };
-
-      node.addEventListener('click', triggerSolve);
-      node.addEventListener('touchstart', triggerSolve, { passive: false });
-
-      overlay.appendChild(node);
-
-      // Attach miss-click handler or inspect trigger to overlay background
-      const handleOverlayClick = (e) => {
-        const target = e.target;
-        if (target !== node && !node.contains(target)) {
-          openImageInspectionModal(activeEra);
-        }
-      };
-
-      overlay.addEventListener('click', handleOverlayClick);
+      });
     }
 
     function spawnMissClickX(clientX, clientY, container) {
@@ -3469,6 +3433,10 @@
 
     function closeImageInspectionModal() {
       const modal = document.getElementById('anomaly-inspection-modal');
+      const container = document.getElementById('inspection-anomaly-container');
+      // Completely remove anomaly overlay from DOM when closing inspection view
+      if (container) container.innerHTML = '';
+
       if (modal) {
         modal.classList.remove('open');
         resetInspectionTransform();
