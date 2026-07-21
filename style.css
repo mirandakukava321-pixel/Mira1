@@ -493,3 +493,86 @@ dialog[open] {
     background: rgba(0, 240, 255, 0.4);
 }
 
+/* ==================== TIME PASSPORT & PROGRESS STYLES ==================== */
+
+/* Toast Notification System */
+.toast-item {
+    pointer-events: auto;
+    animation: toast-slide-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes toast-slide-in {
+    0% {
+        transform: translateX(100%) scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Time Passport Modal Overlay */
+#time-passport-modal.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+#time-passport-modal {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.passport-modal-content {
+    background: radial-gradient(circle at center, #1b1612 0%, #0d0a08 100%);
+    border: 2px solid rgba(212, 175, 85, 0.4);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(212, 175, 85, 0.15), inset 0 0 30px rgba(212, 175, 85, 0.05);
+}
+
+/* Vintage Travel Journal Stamp Cards */
+.stamp-card {
+    background: linear-gradient(135deg, rgba(32, 25, 18, 0.9) 0%, rgba(18, 14, 10, 0.95) 100%);
+    border: 2px dashed rgba(212, 175, 85, 0.35);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.stamp-card:hover {
+    border-color: rgba(0, 240, 255, 0.6);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 240, 255, 0.15);
+}
+
+.stamp-seal {
+    border: 2px solid rgba(212, 175, 85, 0.6);
+    color: #d4af37;
+    border-radius: 50%;
+    transform: rotate(-12deg);
+    box-shadow: 0 0 12px rgba(212, 175, 85, 0.2);
+    background: rgba(212, 175, 85, 0.08);
+}
+
+.stamp-card:nth-child(even) .stamp-seal {
+    transform: rotate(8deg);
+    border-color: rgba(0, 240, 255, 0.6);
+    color: #00f0ff;
+    background: rgba(0, 240, 255, 0.08);
+}
+
+/* Visited Badge Pulsing Effect */
+.visited-badge {
+    animation: visited-pulse 2s infinite ease-in-out;
+}
+
+@keyframes visited-pulse {
+    0%, 100% {
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
+    }
+}
+

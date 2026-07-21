@@ -47,6 +47,9 @@
     <span class="font-label-tech text-red-500 tracking-widest" id="warp-banner-text">TEMPORAL WARP DETECTED</span>
   </div>
 
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-20 right-6 z-[100] flex flex-col gap-3 pointer-events-none max-w-sm w-full"></div>
+
   <!-- Cinematic Homepage Container -->
   <div id="homepage-container" class="absolute inset-0 w-full h-full overflow-y-auto scroll-smooth z-40 bg-[#090b0e]/95 text-white flex flex-col">
     
@@ -58,11 +61,15 @@
       </div>
       <div class="hidden md:flex items-center gap-8 font-label-tech text-xs tracking-wider">
         <a href="#homepage-hero" class="text-white/60 hover:text-white transition">Home</a>
+        <a href="#explorer-progress-section" class="text-white/60 hover:text-white transition">Explorer Progress</a>
         <a href="#era-preview" class="text-white/60 hover:text-white transition">Timeline Previews</a>
         <a href="#destinations-gallery" class="text-white/60 hover:text-white transition">Featured Destinations</a>
         <a href="#how-it-works" class="text-white/60 hover:text-white transition">How It Works</a>
       </div>
-      <div>
+      <div class="flex items-center gap-3">
+        <button onclick="toggleTimePassport(true)" class="font-label-tech text-xs px-3.5 py-2 border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 rounded flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,175,85,0.15)] transition duration-300">
+          <span>📜</span> PASSPORT
+        </button>
         <button onclick="triggerDefaultWarp()" class="font-label-tech text-xs px-4 py-2 border border-primary/45 text-primary hover:bg-primary/10 hover:border-primary rounded shadow-[0_0_15px_rgba(0,240,255,0.15)] transition duration-300">
           INITIATE WARP
         </button>
@@ -142,8 +149,48 @@
       </div>
     </section>
 
+    <!-- 2.5 EXPLORER PROGRESS SECTION -->
+    <section id="explorer-progress-section" class="py-6 px-6 max-w-7xl mx-auto w-full">
+      <div class="glassmorphic p-6 md:p-8 border border-white/10 rounded-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_0_40px_rgba(0,240,255,0.05)]">
+        <!-- Ambient Background Glow -->
+        <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -top-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex-1 w-full">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🧭</span>
+              <div>
+                <h3 class="font-display-present text-xl font-bold text-white tracking-wider">EXPLORER PROGRESS</h3>
+                <p class="font-label-tech text-[10px] text-white/50 tracking-widest uppercase">TEMPORAL RECONNAISSANCE METRICS</p>
+              </div>
+            </div>
+            <span id="progress-text" class="font-mono text-sm font-bold text-primary">0 / 11 Landmarks Explored (0%)</span>
+          </div>
+
+          <!-- Outer Progress Bar -->
+          <div class="w-full bg-white/5 h-3.5 rounded-full overflow-hidden border border-white/10 p-0.5 mb-4">
+            <!-- Inner Animated Fill -->
+            <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-primary via-purple-500 to-amber-400 rounded-full transition-all duration-700 w-0 shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
+          </div>
+
+          <!-- Achievements Status Strip -->
+          <div id="achievements-mini-bar" class="flex flex-wrap gap-2 items-center">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Passport Button in Progress Card -->
+        <div class="flex items-center gap-4 shrink-0 w-full md:w-auto">
+          <button onclick="toggleTimePassport(true)" class="w-full md:w-auto font-label-tech text-xs px-6 py-3.5 bg-gradient-to-r from-amber-500/20 to-primary/20 hover:from-amber-500/40 hover:to-primary/40 text-amber-300 border border-amber-500/40 hover:border-amber-400 rounded-lg font-bold tracking-widest flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(212,175,85,0.15)] transition duration-300 transform hover:-translate-y-0.5">
+            <span class="text-lg">📜</span> TIME PASSPORT
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- 3. FEATURED DESTINATIONS -->
-    <section id="destinations-gallery" class="py-24 px-6 max-w-7xl mx-auto w-full flex flex-col gap-12">
+    <section id="destinations-gallery" class="py-16 px-6 max-w-7xl mx-auto w-full flex flex-col gap-12">
       <div class="text-center">
         <h2 class="font-display-present text-4xl font-bold mb-3 tracking-wider text-white">CHRONOLOGICAL EXHIBITS</h2>
         <p class="font-label-tech text-white/40 text-xs tracking-widest">TEMPORAL LOG ENTRIES PRE-REGISTERED</p>
@@ -152,7 +199,7 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- BIG BEN -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="big-ben" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/big_ben_present.jpg')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -170,7 +217,7 @@
         </div>
 
         <!-- EIFFEL TOWER -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="eiffel-tower" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/eiffel_tower_present.jpg')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -188,7 +235,7 @@
         </div>
 
         <!-- COLOSSEUM -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="colosseum" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/colosseum_present.jpg')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -206,7 +253,7 @@
         </div>
 
         <!-- STATUE OF LIBERTY -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="statue-of-liberty" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/statue_of_liberty_present.png')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -224,7 +271,7 @@
         </div>
 
         <!-- TBILISI -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="tbilisi" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/tbilisi_present.png')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -242,7 +289,7 @@
         </div>
 
         <!-- PYRAMIDS OF GIZA -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="pyramids-of-giza" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/pyramids_present.png')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -260,7 +307,7 @@
         </div>
 
         <!-- SYDNEY OPERA HOUSE -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="sydney-opera-house" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/sydney_opera_house_present.jpg')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -278,7 +325,7 @@
         </div>
 
         <!-- TAJ MAHAL -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="taj-mahal" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/taj_mahal_present.jpg')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -296,7 +343,7 @@
         </div>
 
         <!-- GREAT WALL OF CHINA -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="great-wall" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/great_wall_present.jpg')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -314,7 +361,7 @@
         </div>
 
         <!-- BURJ KHALIFA -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="burj-khalifa" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/burj_khalifa_present.png')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -332,7 +379,7 @@
         </div>
 
         <!-- TOKYO TOWER -->
-        <div class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group">
+        <div data-place-id="tokyo-tower" class="glassmorphic border border-white/5 overflow-hidden flex flex-col hover:border-white/20 transition duration-300 group relative">
           <div class="relative h-48 overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-110" style="background-image: url('assets/tokyo_tower_present.jpg')"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#090b0e] to-transparent"></div>
@@ -436,8 +483,13 @@
         <a href="#archive" class="text-white/60 hover:text-white transition" onclick="openModal('archive-modal')">Archive</a>
       </nav>
 
-      <!-- Utility Actions (Audio, Location Portal & Time Jump) -->
-      <div class="flex items-center gap-4">
+      <!-- Utility Actions (Audio, Location Portal, Passport & Time Jump) -->
+      <div class="flex items-center gap-3 md:gap-4">
+        <!-- Time Passport Trigger -->
+        <button id="main-passport-btn" class="font-label-tech text-[10px] px-3 py-2 border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 rounded transition duration-300 flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,175,85,0.15)]" onclick="toggleTimePassport(true)">
+          <span>📜</span> PASSPORT
+        </button>
+
         <!-- Location Portal Trigger -->
         <button id="geographic-portal-btn" class="font-label-tech text-[10px] px-3.5 py-2 border border-white/10 hover:border-white/30 text-white rounded transition duration-300 flex items-center gap-1.5" onclick="toggleGeographicPortal(true)">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-[#00f0ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -915,6 +967,77 @@
     </div>
   </div>
 
+  <!-- TIME PASSPORT & ACHIEVEMENTS MODAL -->
+  <div id="time-passport-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-md">
+    <div class="passport-modal-content w-full max-w-4xl max-h-[90vh] rounded-2xl flex flex-col overflow-hidden relative border border-amber-500/40">
+      
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-amber-500/20 flex items-center justify-between bg-black/40">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">📜</span>
+          <div>
+            <h3 class="font-display-past text-2xl font-bold text-amber-300 tracking-wider">TIME PASSPORT</h3>
+            <p class="font-label-tech text-[10px] text-amber-500/70 tracking-widest uppercase">OFFICIAL TEMPORAL RECONNAISSANCE JOURNAL</p>
+          </div>
+        </div>
+        <button onclick="toggleTimePassport(false)" class="text-amber-500/60 hover:text-amber-300 transition text-2xl p-2 font-mono leading-none">
+          &times;
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-6 overflow-y-auto flex-1 flex flex-col gap-6 custom-scrollbar">
+        
+        <!-- Progress Overview Card inside Modal -->
+        <div class="bg-amber-950/20 border border-amber-500/30 p-5 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <span class="font-label-tech text-[10px] text-amber-400/80 tracking-widest block mb-1">VOYAGER STATUS</span>
+            <h4 id="passport-rank-title" class="font-display-present text-lg font-bold text-white">Uninitiated Voyager</h4>
+            <p id="passport-stats-detail" class="font-mono text-xs text-white/60 mt-1">0 / 11 Destinations Stamped</p>
+          </div>
+          <div class="w-full sm:w-64 bg-black/40 p-3 rounded-lg border border-amber-500/20">
+            <div class="flex justify-between text-[11px] font-mono text-amber-300 mb-1">
+              <span>Completion</span>
+              <span id="passport-percent-text">0%</span>
+            </div>
+            <div class="w-full bg-white/5 h-2.5 rounded-full overflow-hidden border border-amber-500/20">
+              <div id="passport-bar-fill" class="h-full bg-gradient-to-r from-amber-500 to-cyan-400 rounded-full transition-all duration-500 w-0"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex border-b border-amber-500/20 gap-6">
+          <button id="passport-tab-stamps-btn" onclick="switchPassportTab('stamps')" class="pb-2 font-label-tech text-xs tracking-wider text-amber-300 border-b-2 border-amber-400 font-bold flex items-center gap-2">
+            <span>🏷️</span> STAMPED LANDMARKS (<span id="stamps-count-badge">0</span>)
+          </button>
+          <button id="passport-tab-achievements-btn" onclick="switchPassportTab('achievements')" class="pb-2 font-label-tech text-xs tracking-wider text-white/50 hover:text-white border-b-2 border-transparent transition flex items-center gap-2">
+            <span>🏆</span> ACHIEVEMENTS (<span id="achievements-count-badge">0/4</span>)
+          </button>
+        </div>
+
+        <!-- TAB 1: Stamps Grid -->
+        <div id="passport-tab-stamps" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- TAB 2: Achievements Grid -->
+        <div id="passport-tab-achievements" class="grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
+          <!-- Rendered dynamically -->
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-amber-500/20 bg-black/40 flex items-center justify-between text-[10px] font-mono text-white/40">
+        <span>TEMPORAL REGISTRY VERSION 2.4</span>
+        <button onclick="toggleTimePassport(false)" class="px-4 py-1.5 border border-amber-500/30 text-amber-300 hover:bg-amber-500/10 rounded font-mono text-xs">
+          CLOSE JOURNAL
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 7. PORTAL TIME WORMHOLE LOADER -->
   <div id="portal-loader">
     <canvas id="portal-canvas" class="absolute inset-0 w-full h-full"></canvas>
@@ -949,6 +1072,7 @@
         id: "big-ben",
         name: "Big Ben & Palace of Westminster",
         city: "London",
+        country: "United Kingdom",
         lat: 51.5007,
         lng: -0.1246,
         fact: "The landmark clock tower stands as a symbol of the UK, completing its current restoration and structural stabilization in 2022.",
@@ -982,6 +1106,7 @@
         id: "eiffel-tower",
         name: "Eiffel Tower",
         city: "Paris",
+        country: "France",
         lat: 48.8584,
         lng: 2.2945,
         fact: "Inaugurated for the 1889 World's Fair, the tower showcases the summit of 19th-century mechanical rivet engineering.",
@@ -1015,6 +1140,7 @@
         id: "colosseum",
         name: "Colosseum",
         city: "Rome",
+        country: "Italy",
         lat: 41.8902,
         lng: 12.4922,
         fact: "Completed in 80 AD, the Flavian Amphitheatre hosted gladiatorial spectacles for over four centuries.",
@@ -1048,6 +1174,7 @@
         id: "statue-of-liberty",
         name: "Statue of Liberty",
         city: "New York",
+        country: "United States",
         lat: 40.6892,
         lng: -74.0445,
         fact: "A gift from France to the United States, Liberty Enlightening the World was dedicated in October 1886.",
@@ -1081,6 +1208,7 @@
         id: "pyramids-of-giza",
         name: "Pyramids of Giza",
         city: "Cairo",
+        country: "Egypt",
         lat: 29.9792,
         lng: 31.1342,
         fact: "The Great Pyramid is the oldest of the Seven Wonders of the Ancient World, standing since roughly 2560 BC.",
@@ -1114,6 +1242,7 @@
         id: "sydney-opera-house",
         name: "Sydney Opera House",
         city: "Sydney",
+        country: "Australia",
         lat: -33.8568,
         lng: 151.2153,
         fact: "Designed by Jørn Utzon, this architectural masterpiece was opened in October 1973.",
@@ -1147,6 +1276,7 @@
         id: "taj-mahal",
         name: "Taj Mahal",
         city: "Agra",
+        country: "India",
         lat: 27.1751,
         lng: 78.0421,
         fact: "Commissioned in 1632 by Shah Jahan to house the tomb of his favorite wife, Mumtaz Mahal.",
@@ -1180,6 +1310,7 @@
         id: "great-wall",
         name: "Great Wall of China",
         city: "Beijing",
+        country: "China",
         lat: 40.4319,
         lng: 116.5704,
         fact: "Constructed across historic northern borders to protect Chinese empires, extending over 21,000 kilometers.",
@@ -1213,6 +1344,7 @@
         id: "burj-khalifa",
         name: "Burj Khalifa",
         city: "Dubai",
+        country: "United Arab Emirates",
         lat: 25.1972,
         lng: 55.2744,
         fact: "Reaching a peak of 828 meters, it has held the title of the tallest building in the world since its completion in 2009.",
@@ -1246,6 +1378,7 @@
         id: "tokyo-tower",
         name: "Tokyo Tower",
         city: "Tokyo",
+        country: "Japan",
         lat: 35.6586,
         lng: 139.7454,
         fact: "Standing 332.9 meters tall, the steel structure is inspired by the Eiffel Tower and serves as a major broadcast node.",
@@ -1279,6 +1412,7 @@
         id: "tbilisi",
         name: "Narikala Fortress & Old Tbilisi",
         city: "Tbilisi",
+        country: "Georgia",
         lat: 41.6879,
         lng: 44.8087,
         fact: "Founded in the 4th century, Tbilisi is famous for its sulfur baths, dramatic Narikala fortress, and winding Old Town streets.",
@@ -2592,6 +2726,9 @@
         // Teleportation Complete callback: Update main DOM content
         swapLocationContent(place);
 
+        // Record landmark visit in Time Passport & LocalStorage
+        recordVisit(place.id, currentEra);
+
         // Ensure homepage container is hidden after warp jump completes
         const homepage = document.getElementById('homepage-container');
         if (homepage) {
@@ -2621,6 +2758,8 @@
         homepage.classList.remove('hidden');
         mainContainer.classList.add('hidden');
         homepage.scrollTop = 0;
+        updateProgressUI();
+        updateHomepageBadges();
       }
     }
 
@@ -2632,6 +2771,339 @@
       }
     }
 
+    // ==================== EXPLORER PROGRESS & TIME PASSPORT SYSTEM ====================
+    const VISITED_KEY = "chronicle_visited_landmarks";
+    const ACHIEVEMENTS_KEY = "chronicle_unlocked_achievements";
+
+    const ACHIEVEMENTS_DEF = [
+      {
+        id: "first_journey",
+        title: "First Journey",
+        reqCount: 1,
+        desc: "Initiated your first temporal jump to a historic landmark.",
+        icon: "🧭"
+      },
+      {
+        id: "explorer",
+        title: "Explorer",
+        reqCount: 5,
+        desc: "Visited 5 historic landmarks across space and time.",
+        icon: "🗺️"
+      },
+      {
+        id: "historian",
+        title: "Historian",
+        reqCount: 10,
+        desc: "Uncovered 10 temporal anomalies across human history.",
+        icon: "📜"
+      },
+      {
+        id: "master_time_traveler",
+        title: "Master Time Traveler",
+        reqCount: "ALL",
+        desc: "Explored every destination in the temporal database.",
+        icon: "⏳"
+      }
+    ];
+
+    function getVisitedLandmarks() {
+      const stored = localStorage.getItem(VISITED_KEY);
+      if (!stored) return [];
+      try { return JSON.parse(stored); } catch (e) { return []; }
+    }
+
+    function saveVisitedLandmarks(visited) {
+      localStorage.setItem(VISITED_KEY, JSON.stringify(visited));
+    }
+
+    function getUnlockedAchievements() {
+      const stored = localStorage.getItem(ACHIEVEMENTS_KEY);
+      if (!stored) return [];
+      try { return JSON.parse(stored); } catch (e) { return []; }
+    }
+
+    function saveUnlockedAchievements(achievements) {
+      localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(achievements));
+    }
+
+    function showToast(title, text, type = "info") {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `toast-item glassmorphic border p-4 rounded-xl shadow-2xl flex items-start gap-3 transition-all duration-500 transform translate-x-full ${
+        type === 'discovery' 
+          ? 'border-emerald-500/50 bg-emerald-950/90 text-emerald-300 shadow-[0_0_25px_rgba(16,185,129,0.25)]' 
+          : type === 'achievement'
+          ? 'border-amber-500/50 bg-amber-950/90 text-amber-300 shadow-[0_0_25px_rgba(212,175,85,0.25)]'
+          : 'border-cyan-500/50 bg-cyan-950/90 text-cyan-300 shadow-[0_0_25px_rgba(0,240,255,0.25)]'
+      }`;
+
+      toast.innerHTML = `
+        <div class="text-2xl">${type === 'discovery' ? '🎉' : type === 'achievement' ? '🏆' : '⚡'}</div>
+        <div>
+          <h5 class="font-bold text-xs tracking-wider font-mono uppercase">${title}</h5>
+          <p class="text-xs opacity-90 font-mono mt-0.5 leading-snug">${text}</p>
+        </div>
+      `;
+
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-x-full');
+        toast.classList.add('translate-x-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.remove('translate-x-0');
+        toast.classList.add('translate-x-full', 'opacity-0');
+        setTimeout(() => toast.remove(), 500);
+      }, 4500);
+    }
+
+    function recordVisit(placeId, eraYear) {
+      const place = places.find(p => p.id === placeId);
+      if (!place) return;
+
+      const visited = getVisitedLandmarks();
+      const existingIndex = visited.findIndex(v => v.id === placeId);
+
+      if (existingIndex === -1) {
+        // First time visiting this landmark!
+        const newEntry = {
+          id: place.id,
+          name: place.name,
+          city: place.city,
+          country: place.country || place.city,
+          year: eraYear || currentEra,
+          timestamp: Date.now()
+        };
+        visited.push(newEntry);
+        saveVisitedLandmarks(visited);
+
+        // Toast notification
+        showToast("🎉 New Landmark Discovered!", `${place.name} (${newEntry.country})`, "discovery");
+
+        // Update UI
+        updateProgressUI();
+        updateHomepageBadges();
+        checkAchievements();
+      }
+    }
+
+    function checkAchievements() {
+      const visited = getVisitedLandmarks();
+      const unlocked = getUnlockedAchievements();
+      const totalCount = places.length;
+      const visitedCount = visited.length;
+
+      ACHIEVEMENTS_DEF.forEach(ach => {
+        if (unlocked.includes(ach.id)) return;
+
+        const target = ach.reqCount === "ALL" ? totalCount : ach.reqCount;
+        if (visitedCount >= target && target > 0) {
+          unlocked.push(ach.id);
+          saveUnlockedAchievements(unlocked);
+          showToast(`🏆 Achievement Unlocked: ${ach.title}!`, ach.desc, "achievement");
+        }
+      });
+
+      updateProgressUI();
+    }
+
+    function updateProgressUI() {
+      const visited = getVisitedLandmarks();
+      const unlocked = getUnlockedAchievements();
+      const total = places.length || 11;
+      const count = visited.length;
+      const percent = Math.round((count / total) * 100);
+
+      // Homepage Progress Bar & Text
+      const progText = document.getElementById('progress-text');
+      const progFill = document.getElementById('progress-bar-fill');
+      if (progText) progText.innerText = `${count} / ${total} Landmarks Explored (${percent}%)`;
+      if (progFill) progFill.style.width = `${percent}%`;
+
+      // Achievements Mini Bar on Homepage
+      const miniBar = document.getElementById('achievements-mini-bar');
+      if (miniBar) {
+        miniBar.innerHTML = '';
+        ACHIEVEMENTS_DEF.forEach(ach => {
+          const isUnlocked = unlocked.includes(ach.id);
+          const badge = document.createElement('span');
+          badge.className = `text-[10px] font-mono px-2.5 py-1 rounded-full border transition flex items-center gap-1 ${
+            isUnlocked 
+              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[0_0_10px_rgba(212,175,85,0.2)]' 
+              : 'bg-white/5 text-white/30 border-white/10'
+          }`;
+          badge.innerHTML = `<span>${ach.icon}</span> ${ach.title} ${isUnlocked ? '✓' : ''}`;
+          miniBar.appendChild(badge);
+        });
+      }
+
+      // Modal Stats
+      const modalRank = document.getElementById('passport-rank-title');
+      const modalStats = document.getElementById('passport-stats-detail');
+      const modalPercent = document.getElementById('passport-percent-text');
+      const modalFill = document.getElementById('passport-bar-fill');
+      const stampsBadge = document.getElementById('stamps-count-badge');
+      const achBadge = document.getElementById('achievements-count-badge');
+
+      if (modalRank) {
+        if (count >= total && total > 0) modalRank.innerText = "Master Time Traveler ⏳";
+        else if (count >= 10) modalRank.innerText = "Historian 📜";
+        else if (count >= 5) modalRank.innerText = "Explorer 🗺️";
+        else if (count >= 1) modalRank.innerText = "Novice Voyager 🧭";
+        else modalRank.innerText = "Uninitiated Voyager";
+      }
+      if (modalStats) modalStats.innerText = `${count} / ${total} Destinations Stamped`;
+      if (modalPercent) modalPercent.innerText = `${percent}%`;
+      if (modalFill) modalFill.style.width = `${percent}%`;
+      if (stampsBadge) stampsBadge.innerText = `${count}`;
+      if (achBadge) achBadge.innerText = `${unlocked.length}/${ACHIEVEMENTS_DEF.length}`;
+    }
+
+    function updateHomepageBadges() {
+      const visited = getVisitedLandmarks();
+      const visitedIds = new Set(visited.map(v => v.id));
+
+      document.querySelectorAll('#destinations-gallery [data-place-id]').forEach(card => {
+        const placeId = card.getAttribute('data-place-id');
+        let badgeContainer = card.querySelector('.badge-container');
+        if (!badgeContainer) {
+          badgeContainer = document.createElement('div');
+          badgeContainer.className = 'badge-container absolute top-3 right-3 z-10';
+          card.style.position = 'relative';
+          card.appendChild(badgeContainer);
+        }
+
+        if (visitedIds.has(placeId)) {
+          badgeContainer.innerHTML = `<span class="visited-badge bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-mono font-bold px-2.5 py-1 rounded-full shadow-[0_0_12px_rgba(16,185,129,0.35)] flex items-center gap-1 backdrop-blur-md">✓ Visited</span>`;
+        } else {
+          badgeContainer.innerHTML = '';
+        }
+      });
+    }
+
+    function toggleTimePassport(open) {
+      const modal = document.getElementById('time-passport-modal');
+      if (!modal) return;
+
+      if (open) {
+        updateProgressUI();
+        renderPassportStamps();
+        renderPassportAchievements();
+        modal.classList.add('open');
+      } else {
+        modal.classList.remove('open');
+      }
+    }
+
+    function switchPassportTab(tabName) {
+      const stampsTab = document.getElementById('passport-tab-stamps');
+      const achTab = document.getElementById('passport-tab-achievements');
+      const stampsBtn = document.getElementById('passport-tab-stamps-btn');
+      const achBtn = document.getElementById('passport-tab-achievements-btn');
+
+      if (tabName === 'stamps') {
+        if (stampsTab) stampsTab.classList.remove('hidden');
+        if (achTab) achTab.classList.add('hidden');
+        if (stampsBtn) {
+          stampsBtn.className = "pb-2 font-label-tech text-xs tracking-wider text-amber-300 border-b-2 border-amber-400 font-bold flex items-center gap-2";
+        }
+        if (achBtn) {
+          achBtn.className = "pb-2 font-label-tech text-xs tracking-wider text-white/50 hover:text-white border-b-2 border-transparent transition flex items-center gap-2";
+        }
+      } else {
+        if (stampsTab) stampsTab.classList.add('hidden');
+        if (achTab) achTab.classList.remove('hidden');
+        if (achBtn) {
+          achBtn.className = "pb-2 font-label-tech text-xs tracking-wider text-amber-300 border-b-2 border-amber-400 font-bold flex items-center gap-2";
+        }
+        if (stampsBtn) {
+          stampsBtn.className = "pb-2 font-label-tech text-xs tracking-wider text-white/50 hover:text-white border-b-2 border-transparent transition flex items-center gap-2";
+        }
+      }
+    }
+
+    function renderPassportStamps() {
+      const container = document.getElementById('passport-tab-stamps');
+      if (!container) return;
+
+      const visited = getVisitedLandmarks();
+      container.innerHTML = '';
+
+      if (visited.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-amber-500/50 font-mono text-sm border border-dashed border-amber-500/20 rounded-xl p-8 bg-black/20">
+            <span class="text-4xl block mb-3 opacity-60">📜</span>
+            <p class="font-bold text-amber-300 mb-1">Your Time Passport is currently empty!</p>
+            <p class="text-xs text-white/40">Initiate a temporal warp jump to visit your first landmark and record your stamp.</p>
+          </div>
+        `;
+        return;
+      }
+
+      visited.forEach(v => {
+        const stampDate = new Date(v.timestamp).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        const card = document.createElement('div');
+        card.className = 'stamp-card p-5 rounded-xl flex flex-col justify-between overflow-hidden';
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between mb-4 gap-2">
+            <div>
+              <span class="font-mono text-[9px] text-amber-400/80 tracking-widest uppercase block">${v.country}</span>
+              <h4 class="font-display-present text-base font-bold text-white leading-tight mt-0.5">${v.name}</h4>
+            </div>
+            <div class="stamp-seal w-12 h-12 flex flex-col items-center justify-center text-[8px] font-bold shrink-0">
+              <span>STAMPED</span>
+              <span class="text-[7px]">${v.year}</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-amber-500/10 flex items-center justify-between text-[10px] font-mono text-white/40">
+            <span>LOCATION: ${v.city.toUpperCase()}</span>
+            <span>DATE: ${stampDate}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderPassportAchievements() {
+      const container = document.getElementById('passport-tab-achievements');
+      if (!container) return;
+
+      const unlocked = getUnlockedAchievements();
+      const visitedCount = getVisitedLandmarks().length;
+      const totalCount = places.length;
+
+      container.innerHTML = '';
+
+      ACHIEVEMENTS_DEF.forEach(ach => {
+        const isUnlocked = unlocked.includes(ach.id);
+        const target = ach.reqCount === "ALL" ? totalCount : ach.reqCount;
+        const card = document.createElement('div');
+        card.className = `p-5 rounded-xl border flex items-start gap-4 transition ${
+          isUnlocked 
+            ? 'bg-amber-950/30 border-amber-500/40 shadow-[0_0_20px_rgba(212,175,85,0.1)]' 
+            : 'bg-black/30 border-white/10 opacity-60'
+        }`;
+
+        card.innerHTML = `
+          <div class="text-3xl p-2 rounded-lg ${isUnlocked ? 'bg-amber-500/20 text-amber-300' : 'bg-white/5 text-white/30'}">${ach.icon}</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <h4 class="font-display-present text-sm font-bold ${isUnlocked ? 'text-amber-300' : 'text-white/60'}">${ach.title}</h4>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded ${isUnlocked ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-white/5 text-white/40'}">
+                ${isUnlocked ? 'UNLOCKED ✓' : `${Math.min(visitedCount, target)}/${target}`}
+              </span>
+            </div>
+            <p class="font-mono text-xs text-white/60 mt-1 leading-snug">${ach.desc}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
 
     // --- 9. DOM Load initialization ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -2640,6 +3112,11 @@
       loadCustomPlaces();
       window.chronicle = new TemporalEngine();
       swapLocationContent(places[0]);
+
+      // Initialize Progress & Badges from LocalStorage
+      updateProgressUI();
+      updateHomepageBadges();
+      checkAchievements();
     });
   </script>
 </body>
