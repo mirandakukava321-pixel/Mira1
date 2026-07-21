@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Time Explorer Adventure — Chronovoyage</title>
+  <title>Time Explorer Adventure — World Tour — Chronovoyage</title>
   
   <!-- Google Fonts & Tailwind CDN for UI styling -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,123 +20,208 @@
   <header class="fixed top-0 left-0 right-0 z-40 bg-black/60 backdrop-blur-md border-b border-white/10 px-6 py-4 flex items-center justify-between">
     <div class="flex items-center gap-3">
       <span class="font-display text-xl font-bold tracking-wider text-white">CHRONOVOYAGE</span>
-      <span class="text-xs font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">MINI-GAME</span>
+      <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">WORLD TOUR</span>
     </div>
     
-    <div class="flex items-center gap-4">
-      <a href="./index.html" class="px-4 py-2 text-xs font-mono uppercase tracking-widest text-cyan-400 border border-cyan-500/40 rounded-lg hover:bg-cyan-500/10 hover:border-cyan-400 transition flex items-center gap-2">
+    <div class="flex items-center gap-3">
+      <!-- Backpack status badge -->
+      <div id="header-bag-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 font-mono text-xs cursor-pointer hover:bg-amber-500/20 transition" id="open-level-select-btn">
+        <span id="header-bag-icon" class="text-base">🎒</span>
+        <span id="header-bag-label" class="font-bold">Small Pouch</span>
+        <span id="header-bag-count" class="text-white/60 text-[11px]">(0/12 Artifacts)</span>
+      </div>
+
+      <button id="nav-level-select-btn" class="px-3.5 py-2 text-xs font-mono uppercase tracking-widest text-amber-300 border border-amber-500/40 rounded-lg hover:bg-amber-500/10 hover:border-amber-400 transition flex items-center gap-1.5">
+        <span>🗺️</span>
+        <span>Destinations</span>
+      </button>
+
+      <a href="./index.html" class="px-3.5 py-2 text-xs font-mono uppercase tracking-widest text-cyan-400 border border-cyan-500/40 rounded-lg hover:bg-cyan-500/10 hover:border-cyan-400 transition flex items-center gap-1.5">
         <span>←</span>
-        <span>Return to Home</span>
+        <span class="hidden md:inline">Return to Home</span>
       </a>
     </div>
   </header>
 
   <!-- Game Main Container -->
   <main class="w-full h-screen relative flex items-center justify-center pt-16">
-    <!-- Canvas Element -->
+    <!-- Canvas Container -->
     <div class="relative w-full h-full max-w-[1280px] max-h-[720px] aspect-video bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,240,255,0.15)] border border-white/10">
       
       <canvas id="game-canvas" class="w-full h-full block cursor-pointer"></canvas>
 
       <!-- HUD Overlay (Visible during gameplay) -->
       <div id="game-hud" class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none hidden">
-        <div class="flex items-center gap-4">
-          <!-- Score -->
-          <div class="bg-black/60 backdrop-blur-md border border-white/15 px-4 py-2 rounded-xl flex items-center gap-2">
-            <span class="text-xs font-mono text-white/50 uppercase">Score</span>
-            <span id="hud-score" class="font-mono font-bold text-lg text-cyan-300">0</span>
+        <div class="flex items-center gap-3">
+          <!-- Level Name Badge -->
+          <div class="bg-black/70 backdrop-blur-md border border-cyan-500/30 px-3.5 py-1.5 rounded-xl flex items-center gap-2">
+            <span id="hud-level-icon" class="text-lg">🏜️</span>
+            <span id="hud-level-name" class="font-mono font-bold text-xs text-cyan-300 uppercase tracking-wider">Egypt — Pyramids</span>
           </div>
+
+          <!-- Score -->
+          <div class="bg-black/70 backdrop-blur-md border border-white/15 px-3.5 py-1.5 rounded-xl flex items-center gap-2">
+            <span class="text-[10px] font-mono text-white/50 uppercase">Score</span>
+            <span id="hud-score" class="font-mono font-bold text-sm text-cyan-300">0</span>
+          </div>
+
           <!-- Coins -->
-          <div class="bg-black/60 backdrop-blur-md border border-amber-500/30 px-4 py-2 rounded-xl flex items-center gap-2">
-            <span class="text-lg">🪙</span>
-            <span id="hud-coins" class="font-mono font-bold text-lg text-amber-300">0</span>
+          <div class="bg-black/70 backdrop-blur-md border border-amber-500/30 px-3.5 py-1.5 rounded-xl flex items-center gap-2">
+            <span class="text-base">🪙</span>
+            <span id="hud-coins" class="font-mono font-bold text-sm text-amber-300">0</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-4">
-          <!-- Artifacts Progress -->
-          <div class="bg-black/60 backdrop-blur-md border border-purple-500/30 px-4 py-2 rounded-xl flex items-center gap-2">
-            <span class="text-lg">🏺</span>
-            <span class="text-xs font-mono text-white/50 uppercase">Artifacts:</span>
-            <span id="hud-artifacts" class="font-mono font-bold text-lg text-purple-300">0 / 3</span>
+        <div class="flex items-center gap-3">
+          <!-- Level Artifact Tracker -->
+          <div class="bg-black/70 backdrop-blur-md border border-purple-500/30 px-3.5 py-1.5 rounded-xl flex items-center gap-2">
+            <span id="hud-artifact-icon" class="text-base">🪲</span>
+            <span id="hud-artifact-name" class="text-[11px] font-mono text-white/70 font-bold hidden md:inline">Golden Scarab</span>
+            <span id="hud-artifact-status" class="font-mono font-bold text-xs text-purple-300">[0/1]</span>
           </div>
+
+          <!-- Bag Status -->
+          <div class="bg-black/70 backdrop-blur-md border border-amber-500/30 px-3.5 py-1.5 rounded-xl flex items-center gap-1.5">
+            <span id="hud-bag-icon" class="text-base">🎒</span>
+            <span id="hud-bag-label" class="font-mono text-xs font-bold text-amber-300 hidden lg:inline">Small Pouch</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Level Select Modal Overlay -->
+      <div id="level-select-screen" class="absolute inset-0 z-30 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-start p-6 text-center overflow-y-auto">
+        <div class="max-w-4xl w-full flex flex-col gap-6 my-auto pt-4">
+          
+          <div class="flex flex-col md:flex-row items-center justify-between border-b border-white/10 pb-4 gap-4 text-left">
+            <div>
+              <h2 class="font-display text-2xl font-bold tracking-wider text-amber-300">WORLD TOUR DESTINATIONS</h2>
+              <p class="text-xs text-white/60 font-sans mt-0.5">Explore 12 historical eras across the globe, discover unique artifacts, and expand your adventure bag!</p>
+            </div>
+
+            <!-- Backpack Level Summary Card -->
+            <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-2.5 flex items-center gap-3">
+              <span id="select-bag-icon" class="text-3xl">🎒</span>
+              <div>
+                <div class="text-[10px] font-mono text-amber-400 uppercase font-bold tracking-wider">ADVENTURE BAG STAGE</div>
+                <div id="select-bag-title" class="font-mono text-sm font-bold text-white">Small Pouch</div>
+                <div id="select-bag-progress" class="text-[11px] font-mono text-white/60">0 of 12 Artifacts Discovered</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grid of 12 Level Cards -->
+          <div id="levels-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-left">
+            <!-- Dynamically populated by mini-game.js -->
+          </div>
+
+          <div class="flex justify-center pt-2">
+            <a href="./index.html" class="px-6 py-2.5 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-mono text-xs uppercase tracking-wider rounded-xl border border-white/10 transition">
+              Return to Main Homepage
+            </a>
+          </div>
+
         </div>
       </div>
 
       <!-- Start Screen Modal Overlay -->
-      <div id="start-screen" class="absolute inset-0 z-30 bg-black/80 backdrop-blur-lg flex flex-col items-center justify-center p-6 text-center">
-        <div class="max-w-md w-full bg-[#111622]/90 border border-cyan-500/30 rounded-2xl p-8 shadow-[0_0_50px_rgba(0,240,255,0.2)] flex flex-col items-center gap-6">
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-cyan-400 flex items-center justify-center text-3xl shadow-lg">
-            🏃
+      <div id="start-screen" class="absolute inset-0 z-30 bg-black/85 backdrop-blur-lg flex flex-col items-center justify-center p-6 text-center hidden">
+        <div class="max-w-md w-full bg-[#111622]/95 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(0,240,255,0.2)] flex flex-col items-center gap-5">
+          <div id="start-level-badge" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-cyan-400 flex items-center justify-center text-3xl shadow-lg border border-white/20">
+            🏜️
           </div>
           
           <div>
-            <h1 class="font-display text-2xl font-bold tracking-wider text-white mb-2">TIME EXPLORER ADVENTURE</h1>
-            <p class="text-xs text-white/60 leading-relaxed font-sans">
-              Sprint across ancient temporal landscapes! Jump over obstacles, collect golden coins, and recover 3 lost historical artifacts.
+            <div id="start-level-num" class="text-xs font-mono text-cyan-400 font-bold uppercase tracking-widest mb-1">LEVEL 1 // EGYPT</div>
+            <h1 id="start-level-title" class="font-display text-2xl font-bold tracking-wider text-white mb-2">Pyramids of Giza</h1>
+            <p id="start-level-desc" class="text-xs text-white/60 leading-relaxed font-sans">
+              Sprint through the desert sands! Avoid ancient temporal spikes, collect golden coins, and recover the 🪲 Golden Scarab!
             </p>
           </div>
 
+          <!-- Artifact Target Preview -->
+          <div class="w-full bg-purple-500/10 border border-purple-500/30 rounded-xl p-3 flex items-center justify-between text-xs">
+            <span class="text-white/60 font-mono">Level Artifact Target:</span>
+            <div class="flex items-center gap-1.5 font-bold text-purple-300">
+              <span id="start-artifact-icon" class="text-base">🪲</span>
+              <span id="start-artifact-name" class="font-mono">Golden Scarab</span>
+            </div>
+          </div>
+
           <!-- Controls guide -->
-          <div class="w-full bg-white/5 rounded-xl p-4 border border-white/10 text-xs text-white/80 space-y-2">
+          <div class="w-full bg-white/5 rounded-xl p-3 border border-white/10 text-xs text-white/80 space-y-1.5">
             <div class="flex items-center justify-between">
               <span class="text-white/50">Desktop Controls:</span>
-              <span class="font-mono bg-white/10 px-2 py-1 rounded text-cyan-300 border border-white/15">SPACE / UP ARROW</span>
+              <span class="font-mono bg-white/10 px-2 py-0.5 rounded text-cyan-300 border border-white/15 text-[11px]">SPACE / UP ARROW</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-white/50">Mobile Controls:</span>
-              <span class="font-mono bg-white/10 px-2 py-1 rounded text-cyan-300 border border-white/15">TAP SCREEN TO JUMP</span>
+              <span class="font-mono bg-white/10 px-2 py-0.5 rounded text-cyan-300 border border-white/15 text-[11px]">TAP SCREEN TO JUMP</span>
             </div>
           </div>
 
           <!-- Actions -->
-          <div class="flex flex-col w-full gap-3">
+          <div class="flex flex-col w-full gap-2.5">
             <button id="start-btn" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold tracking-widest uppercase rounded-xl shadow-[0_0_20px_rgba(0,240,255,0.4)] transition transform hover:-translate-y-0.5">
-              Start Adventure
+              Start Level
             </button>
-            <a href="./index.html" class="w-full py-3 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-mono text-xs uppercase tracking-wider rounded-xl border border-white/10 transition text-center">
-              Return to Home
-            </a>
+            <button id="start-select-btn" class="w-full py-2.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-mono text-xs uppercase tracking-wider rounded-xl border border-amber-500/30 transition">
+              🗺️ Destination Select
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- Game Over / Victory Modal Overlay -->
+      <!-- Game Over / Level Complete Modal Overlay -->
       <div id="gameover-screen" class="absolute inset-0 z-30 bg-black/85 backdrop-blur-lg flex flex-col items-center justify-center p-6 text-center hidden">
-        <div class="max-w-md w-full bg-[#111622]/90 border border-amber-500/30 rounded-2xl p-8 shadow-[0_0_50px_rgba(245,158,11,0.2)] flex flex-col items-center gap-6">
-          <div id="gameover-icon" class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-3xl">
+        <div class="max-w-md w-full bg-[#111622]/95 border border-amber-500/30 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(245,158,11,0.2)] flex flex-col items-center gap-5">
+          <div id="gameover-icon" class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-3xl shadow-lg">
             🏆
           </div>
           
           <div>
-            <h2 id="gameover-title" class="font-display text-2xl font-bold tracking-wider text-amber-300 mb-1">MISSION COMPLETE</h2>
-            <p id="gameover-subtitle" class="text-xs text-white/60 font-sans">You successfully navigated the temporal path!</p>
+            <h2 id="gameover-title" class="font-display text-2xl font-bold tracking-wider text-amber-300 mb-1">DESTINATION COMPLETED!</h2>
+            <p id="gameover-subtitle" class="text-xs text-white/60 font-sans">You successfully reached the finish portal!</p>
           </div>
 
-          <!-- Final Stats -->
-          <div class="grid grid-cols-3 gap-3 w-full">
-            <div class="bg-white/5 border border-white/10 p-3 rounded-xl flex flex-col items-center">
+          <!-- Final Level Stats -->
+          <div class="grid grid-cols-3 gap-2.5 w-full">
+            <div class="bg-white/5 border border-white/10 p-2.5 rounded-xl flex flex-col items-center">
               <span class="text-[10px] font-mono text-white/50 uppercase">Score</span>
-              <span id="final-score" class="font-mono font-bold text-base text-cyan-300">0</span>
+              <span id="final-score" class="font-mono font-bold text-sm text-cyan-300">0</span>
             </div>
-            <div class="bg-white/5 border border-white/10 p-3 rounded-xl flex flex-col items-center">
+            <div class="bg-white/5 border border-white/10 p-2.5 rounded-xl flex flex-col items-center">
               <span class="text-[10px] font-mono text-white/50 uppercase">Coins</span>
-              <span id="final-coins" class="font-mono font-bold text-base text-amber-300">0</span>
+              <span id="final-coins" class="font-mono font-bold text-sm text-amber-300">0</span>
             </div>
-            <div class="bg-white/5 border border-white/10 p-3 rounded-xl flex flex-col items-center">
-              <span class="text-[10px] font-mono text-white/50 uppercase">Artifacts</span>
-              <span id="final-artifacts" class="font-mono font-bold text-base text-purple-300">0 / 3</span>
+            <div class="bg-white/5 border border-white/10 p-2.5 rounded-xl flex flex-col items-center">
+              <span class="text-[10px] font-mono text-white/50 uppercase">Artifact</span>
+              <span id="final-artifact-status" class="font-mono font-bold text-xs text-purple-300">Discovered!</span>
             </div>
+          </div>
+
+          <!-- Backpack Stage Notice -->
+          <div class="w-full bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span id="final-bag-icon" class="text-xl">🎒</span>
+              <div class="text-left">
+                <div class="text-[10px] font-mono text-amber-400 font-bold uppercase">ADVENTURE BAG STAGE</div>
+                <div id="final-bag-title" class="font-mono font-bold text-white text-xs">Explorer Bag</div>
+              </div>
+            </div>
+            <span id="final-total-artifacts" class="font-mono text-amber-300 text-xs font-bold">(1/12 Total)</span>
           </div>
 
           <!-- Actions -->
-          <div class="flex flex-col w-full gap-3">
-            <button id="restart-btn" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-bold tracking-widest uppercase rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition transform hover:-translate-y-0.5">
-              Play Again
+          <div class="flex flex-col w-full gap-2.5">
+            <button id="next-level-btn" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-bold tracking-widest uppercase rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition transform hover:-translate-y-0.5">
+              Next Destination →
             </button>
-            <a href="./index.html" class="w-full py-3 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-mono text-xs uppercase tracking-wider rounded-xl border border-white/10 transition text-center">
-              Return to Home
-            </a>
+            <button id="replay-btn" class="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white font-mono text-xs uppercase tracking-wider rounded-xl border border-white/15 transition">
+              Replay Level
+            </button>
+            <button id="gameover-select-btn" class="w-full py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-mono text-xs uppercase tracking-wider rounded-xl border border-amber-500/30 transition">
+              🗺️ Level Select
+            </button>
           </div>
         </div>
       </div>
