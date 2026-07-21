@@ -74,16 +74,19 @@
 
     <!-- Level Selector Screen (Shown before playing) -->
     <div id="runner-level-select-screen" class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full flex flex-col gap-6">
-      <div class="glassmorphic p-6 border border-white/10 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-purple-950/30 to-amber-950/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <h2 class="font-display-present text-2xl font-bold text-white mb-1">SELECT TIME ERA RUNNER LEVEL</h2>
-          <p class="text-white/60 text-xs font-mono">Visit landmarks on the main website to unlock new historical runner levels!</p>
+        <div class="glassmorphic p-6 border border-white/10 rounded-2xl bg-gradient-to-r from-amber-950/40 via-cyan-950/30 to-purple-950/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <img src="assets/sprites/luna_portrait.png" alt="Time Explorer Luna" class="h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(245,158,11,0.4)]" />
+            <div>
+              <h2 class="font-display-present text-2xl font-bold text-white mb-1">SELECT TIME ERA RUNNER LEVEL</h2>
+              <p class="text-white/70 text-xs font-mono">Guide <span class="text-amber-300 font-bold">Time Explorer Luna</span> through historical eras to recover lost artifacts!</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 font-mono text-xs">
+            <span class="px-3 py-1.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold" id="runner-total-coins-badge">🪙 0 Coins</span>
+            <span class="px-3 py-1.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold" id="runner-highscore-badge">🏆 Best: 0m</span>
+          </div>
         </div>
-        <div class="flex items-center gap-4 font-mono text-xs">
-          <span class="px-3 py-1.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold" id="runner-total-coins-badge">🪙 0 Coins</span>
-          <span class="px-3 py-1.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold" id="runner-highscore-badge">🏆 Best: 0m</span>
-        </div>
-      </div>
 
       <!-- Grid of Landmark Runner Levels -->
       <div id="runner-levels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -4355,8 +4358,48 @@
         this.isGameOver = false;
         this.animationFrameId = null;
 
+        // Preload Official Luna Sprite Sheet Frames
+        this.initLunaSprites();
+
         // Input Bindings
         this.bindEvents();
+      }
+
+      initLunaSprites() {
+        this.lunaFrames = {
+          idle: [],
+          run: [],
+          jump: [],
+          fall: [],
+          land: [],
+          slide: [],
+          collect: [],
+          victory: []
+        };
+
+        const loadCleanSeq = (key, count) => {
+          for (let i = 0; i < count; i++) {
+            const img = new Image();
+            img.src = `assets/sprites/clean/${key}_${i}.png`;
+            this.lunaFrames[key].push(img);
+          }
+        };
+
+        loadCleanSeq('idle', 4);
+        
+        // Load 2 Separate Running Pose PNGs: run_pose_a.png (Left Pose) & run_pose_b.png (Right Pose)
+        const runA = new Image();
+        runA.src = 'assets/sprites/run_pose_a.png';
+        const runB = new Image();
+        runB.src = 'assets/sprites/run_pose_b.png';
+        this.lunaFrames.run = [runA, runB];
+
+        loadCleanSeq('jump', 4);
+        loadCleanSeq('fall', 4);
+        loadCleanSeq('land', 4);
+        loadCleanSeq('slide', 4);
+        loadCleanSeq('collect', 4);
+        loadCleanSeq('victory', 4);
       }
 
       bindEvents() {
@@ -4933,92 +4976,39 @@
           this.ctx.fill();
         }
 
-        if (p.isSliding) {
-          // Sliding Low Stance
-          this.ctx.fillStyle = '#ea580c'; // Jacket
-          this.ctx.fillRect(p.x, p.y + 12, p.width, p.height - 12);
-          // Head & Hat
-          this.ctx.fillStyle = '#fed7aa';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + p.width - 6, p.y + 14, 11, 0, Math.PI * 2);
-          this.ctx.fill();
-          // Hat
-          this.ctx.fillStyle = '#78350f';
-          this.ctx.fillRect(p.x + p.width - 16, p.y + 2, 22, 6);
+        // Determine current Luna Sprite Animation Sequence
+        let animKey = 'run';
+        let animFrameIndex = 0;
+
+        if (this.isGameOver) {
+          animKey = 'idle';
+          animFrameIndex = Math.floor(p.frameCount * 0.1) % 4;
+        } else if (p.isSliding) {
+          animKey = 'slide';
+          animFrameIndex = Math.floor(p.frameCount * 0.2) % 4;
+        } else if (!p.isGrounded) {
+          if (p.velocityY < 0) {
+            animKey = 'jump';
+            animFrameIndex = Math.min(3, Math.floor(Math.abs(p.velocityY) * 0.2));
+          } else {
+            animKey = 'fall';
+            animFrameIndex = Math.min(3, Math.floor(p.velocityY * 0.2));
+          }
         } else {
-          // Standing / Running Stance
-          // Backpack
-          this.ctx.fillStyle = '#92400e';
-          this.ctx.fillRect(p.x - 7, p.y + 18, 14, 24);
+          animKey = 'run';
+          animFrameIndex = Math.floor(p.frameCount * 0.15) % 2;
+        }
 
-          // Body Explorer Jacket
-          this.ctx.fillStyle = '#ea580c';
-          this.ctx.fillRect(p.x + 6, p.y + 16, 30, 26);
+        const frameSeq = this.lunaFrames ? this.lunaFrames[animKey] : null;
+        const currentFrameImg = frameSeq && frameSeq[animFrameIndex % frameSeq.length];
 
-          // Belt Pocket Watch Chain (Gold)
-          this.ctx.strokeStyle = '#f59e0b';
-          this.ctx.lineWidth = 2;
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 12, p.y + 36, 4, 0, Math.PI);
-          this.ctx.stroke();
+        if (currentFrameImg && currentFrameImg.complete && currentFrameImg.naturalWidth > 0) {
+          const renderWidth = 72;
+          const renderHeight = 72;
+          const drawY = p.isSliding ? this.groundY - renderHeight + 6 : p.y + p.height - renderHeight;
 
-          // Wrist Time Device (Glowing Cyan)
-          this.ctx.fillStyle = '#00f0ff';
-          this.ctx.shadowBlur = 10;
-          this.ctx.shadowColor = '#00f0ff';
-          this.ctx.fillRect(p.x + 24, p.y + 34, 8, 6);
-          this.ctx.shadowBlur = 0;
-
-          // Head & Expressive Face
-          this.ctx.fillStyle = '#fed7aa';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 12, 13, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Large Expressive Eye
-          this.ctx.fillStyle = '#1e293b';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 25, p.y + 10, 3.5, 0, Math.PI * 2);
-          this.ctx.fill();
-          // Eye Specular Highlight
-          this.ctx.fillStyle = '#ffffff';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 26, p.y + 9, 1.2, 0, Math.PI * 2);
-          this.ctx.fill();
-
-          // Friendly Smile
-          this.ctx.strokeStyle = '#9a3412';
-          this.ctx.lineWidth = 1.8;
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 24, p.y + 15, 4, 0, Math.PI * 0.85);
-          this.ctx.stroke();
-
-          // Explorer Fedora Hat
-          this.ctx.fillStyle = '#78350f';
-          this.ctx.fillRect(p.x + 6, p.y + 1, 32, 6);
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 22, p.y + 2, 12, Math.PI, 0);
-          this.ctx.fill();
-
-          // Brass Goggles Lens Glare
-          this.ctx.fillStyle = '#00f0ff';
-          this.ctx.shadowBlur = 6;
-          this.ctx.shadowColor = '#00f0ff';
-          this.ctx.beginPath();
-          this.ctx.arc(p.x + 20, p.y + 5, 3.5, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.shadowBlur = 0;
-
-          // Explorer Leather Boots & Legs
-          const stride = Math.sin(p.frameCount * 0.38) * 11;
-          this.ctx.strokeStyle = '#451a03';
-          this.ctx.lineWidth = 6;
-          this.ctx.beginPath();
-          this.ctx.moveTo(p.x + 14, p.y + 42);
-          this.ctx.lineTo(p.x + 14 + stride, p.y + 60);
-          this.ctx.moveTo(p.x + 28, p.y + 42);
-          this.ctx.lineTo(p.x + 28 - stride, p.y + 60);
-          this.ctx.stroke();
+          // Render isolated 100x100 clean frame - ZERO possibility of neighboring frame bleed!
+          this.ctx.drawImage(currentFrameImg, p.x, drawY, renderWidth, renderHeight);
         }
 
         this.ctx.restore();
