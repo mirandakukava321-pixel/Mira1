@@ -1185,266 +1185,326 @@
       this.ctx.save();
 
       if (theme === 'egypt') {
-        // EGYPT: Great Pyramids & Khafre Capstone + Great Sphinx
+        // EGYPT: Great Pyramids (Giza, Khafre, Menkaure) + Sphinx
         this.ctx.fillStyle = '#2d180d';
 
         // Khafre Pyramid (Center)
         this.ctx.beginPath();
         this.ctx.moveTo(x, y);
-        this.ctx.lineTo(x + 160, y - 260);
-        this.ctx.lineTo(x + 320, y);
+        this.ctx.lineTo(x + 170, y - 270);
+        this.ctx.lineTo(x + 340, y);
         this.ctx.fill();
 
-        // Capstone highlight
-        this.ctx.fillStyle = '#d97706';
+        // Khafre Capstone Casing
+        this.ctx.fillStyle = '#f59e0b';
         this.ctx.beginPath();
-        this.ctx.moveTo(x + 140, y - 227);
-        this.ctx.lineTo(x + 160, y - 260);
-        this.ctx.lineTo(x + 180, y - 227);
+        this.ctx.moveTo(x + 148, y - 235);
+        this.ctx.lineTo(x + 170, y - 270);
+        this.ctx.lineTo(x + 192, y - 235);
         this.ctx.fill();
 
-        // Great Pyramid (Right)
-        this.ctx.fillStyle = '#26130a';
+        // Great Pyramid of Khufu (Right)
+        this.ctx.fillStyle = '#24130a';
         this.ctx.beginPath();
-        this.ctx.moveTo(x + 220, y);
-        this.ctx.lineTo(x + 360, y - 290);
-        this.ctx.lineTo(x + 500, y);
+        this.ctx.moveTo(x + 230, y);
+        this.ctx.lineTo(x + 380, y - 300);
+        this.ctx.lineTo(x + 530, y);
         this.ctx.fill();
 
-        // Great Sphinx Silhouette (Left)
+        // Menkaure Pyramid (Left)
         this.ctx.fillStyle = '#3a1f11';
-        this.ctx.fillRect(x - 90, y - 40, 110, 40); // Body
-        this.ctx.fillRect(x - 50, y - 75, 45, 40);  // Head & Nemes
+        this.ctx.beginPath();
+        this.ctx.moveTo(x - 120, y);
+        this.ctx.lineTo(x - 30, y - 160);
+        this.ctx.lineTo(x + 60, y);
+        this.ctx.fill();
+
+        // Great Sphinx Silhouette (Foreground of Pyramids)
+        this.ctx.fillStyle = '#472514';
+        this.ctx.fillRect(x - 80, y - 45, 120, 45); // Body
+        this.ctx.fillRect(x - 40, y - 85, 45, 45);  // Head & Nemes
+        this.ctx.fillRect(x - 100, y - 20, 30, 20); // Paws
       } else if (theme === 'paris') {
-        // PARIS: Eiffel Tower (3 Tiers, Arched Base, Spire & Glowing Beacon)
+        // PARIS: Eiffel Tower (3 Lattice Tiers, Arched Base, Spire & Sweeping Beacon)
         this.ctx.fillStyle = '#17233c';
         this.ctx.strokeStyle = '#38bdf8';
         this.ctx.lineWidth = 2;
 
-        // Base Legs & Arch
-        this.ctx.fillRect(x, y - 60, 25, 60);
-        this.ctx.fillRect(x + 95, y - 60, 25, 60);
+        // Base Legs & Grand Arch
+        this.ctx.fillRect(x, y - 65, 28, 65);
+        this.ctx.fillRect(x + 102, y - 65, 28, 65);
         this.ctx.beginPath();
-        this.ctx.arc(x + 60, y - 30, 40, Math.PI, 0);
+        this.ctx.arc(x + 65, y - 32, 44, Math.PI, 0);
         this.ctx.stroke();
 
-        // Platform 1 & 2
-        this.ctx.fillRect(x - 10, y - 75, 140, 15);
-        this.ctx.fillRect(x + 15, y - 160, 90, 12);
+        // Platforms 1 & 2
+        this.ctx.fillRect(x - 12, y - 80, 154, 16);
+        this.ctx.fillRect(x + 16, y - 170, 98, 14);
 
-        // Tower Taper to Spire
+        // Tower Tapering Shaft
         this.ctx.beginPath();
-        this.ctx.moveTo(x + 20, y - 75);
-        this.ctx.lineTo(x + 45, y - 310);
-        this.ctx.lineTo(x + 75, y - 310);
-        this.ctx.lineTo(x + 100, y - 75);
+        this.ctx.moveTo(x + 22, y - 80);
+        this.ctx.lineTo(x + 50, y - 320);
+        this.ctx.lineTo(x + 80, y - 320);
+        this.ctx.lineTo(x + 108, y - 80);
         this.ctx.fill();
 
-        // Top Spire & Beacon Light
-        this.ctx.fillRect(x + 57, y - 360, 6, 50);
-
-        this.ctx.fillStyle = 'rgba(56, 189, 248, 0.25)';
+        // Lattice Cross Bracing Details
+        this.ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
         this.ctx.beginPath();
-        this.ctx.moveTo(x + 60, y - 360);
-        this.ctx.lineTo(x - 200, y - 460);
-        this.ctx.lineTo(x - 160, y - 260);
+        this.ctx.moveTo(x + 25, y - 80);
+        this.ctx.lineTo(x + 105, y - 170);
+        this.ctx.moveTo(x + 105, y - 80);
+        this.ctx.lineTo(x + 25, y - 170);
+        this.ctx.stroke();
+
+        // Top Spire & Sweeping Beacon Light Ray
+        this.ctx.fillStyle = '#38bdf8';
+        this.ctx.fillRect(x + 62, y - 370, 6, 50);
+
+        this.ctx.fillStyle = 'rgba(56, 189, 248, 0.22)';
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + 65, y - 370);
+        this.ctx.lineTo(x - 240, y - 480);
+        this.ctx.lineTo(x - 180, y - 280);
         this.ctx.fill();
       } else if (theme === 'georgia') {
-        // GEORGIA: Sameba Cathedral (Gold/Purple Dome & Cross) + Narikala Fortress
+        // GEORGIA: Sameba Cathedral (Gold Dome & Cross) + Narikala Fortress
         this.ctx.fillStyle = '#241d47';
         this.ctx.strokeStyle = '#a855f7';
         this.ctx.lineWidth = 2;
 
-        // Cathedral Base
-        this.ctx.fillRect(x, y - 150, 160, 150);
+        // Cathedral Main Base & Multi-tiered Facade
+        this.ctx.fillRect(x, y - 160, 170, 160);
+        this.ctx.fillRect(x + 20, y - 200, 130, 40);
 
-        // Tier 2 & Octagonal Drum
-        this.ctx.fillRect(x + 30, y - 220, 100, 70);
+        // Octagonal Drum & Arched Windows
+        this.ctx.fillRect(x + 35, y - 240, 100, 40);
 
-        // Golden Conical Dome
+        // Golden Conical Roof & Dome
         this.ctx.fillStyle = '#f59e0b';
         this.ctx.beginPath();
-        this.ctx.moveTo(x + 30, y - 220);
-        this.ctx.lineTo(x + 80, y - 285);
-        this.ctx.lineTo(x + 130, y - 220);
+        this.ctx.moveTo(x + 30, y - 240);
+        this.ctx.lineTo(x + 85, y - 310);
+        this.ctx.lineTo(x + 140, y - 240);
         this.ctx.fill();
 
-        // Orthodox Cross Spire
-        this.ctx.fillRect(x + 77, y - 310, 6, 25);
-        this.ctx.fillRect(x + 70, y - 302, 20, 5);
+        // Georgian Orthodox Cross
+        this.ctx.fillRect(x + 82, y - 335, 6, 25);
+        this.ctx.fillRect(x + 74, y - 327, 22, 5);
 
-        // Narikala Fortress Cliff Wall (Right)
+        // Narikala Fortress Cliff Wall & Towers (Right)
         this.ctx.fillStyle = '#1a1438';
-        this.ctx.fillRect(x + 220, y - 110, 140, 110);
-        for (let b = 0; b < 5; b++) {
-          this.ctx.fillRect(x + 220 + b * 28, y - 130, 14, 20); // Battlements
+        this.ctx.fillRect(x + 230, y - 120, 160, 120);
+        for (let b = 0; b < 6; b++) {
+          this.ctx.fillRect(x + 230 + b * 26, y - 142, 14, 22);
         }
       } else if (theme === 'india') {
-        // INDIA: Taj Mahal (Grand Central Onion Dome, Minarets & Arches)
+        // INDIA: Taj Mahal (Grand Central Onion Dome, 4 Minarets, Marble Facade)
         this.ctx.fillStyle = '#33123d';
 
         // Main Marble Tomb Structure
-        this.ctx.fillRect(x + 40, y - 160, 180, 160);
+        this.ctx.fillRect(x + 45, y - 170, 190, 170);
 
-        // Central Arch Cutout
+        // Central Grand Arch
         this.ctx.fillStyle = '#1e0a26';
-        this.ctx.fillRect(x + 95, y - 110, 70, 110);
+        this.ctx.fillRect(x + 100, y - 120, 80, 120);
         this.ctx.beginPath();
-        this.ctx.arc(x + 130, y - 110, 35, Math.PI, 0);
+        this.ctx.arc(x + 140, y - 120, 40, Math.PI, 0);
         this.ctx.fill();
 
-        // Central Onion Dome
-        this.ctx.fillStyle = '#4a1b59';
+        // Main Central Onion Dome
+        this.ctx.fillStyle = '#ec4899';
+        this.ctx.shadowColor = '#ec4899';
+        this.ctx.shadowBlur = 20;
         this.ctx.beginPath();
-        this.ctx.arc(x + 130, y - 220, 50, 0, Math.PI * 2);
+        this.ctx.arc(x + 140, y - 235, 55, 0, Math.PI * 2);
         this.ctx.fill();
-        this.ctx.fillRect(x + 127, y - 290, 6, 25); // Finial
+        this.ctx.fillRect(x + 137, y - 310, 6, 25); // Brass Finial
+        this.ctx.shadowBlur = 0;
 
-        // 4 Minaret Towers
-        this.ctx.fillStyle = '#260c2e';
-        this.ctx.fillRect(x - 20, y - 220, 20, 220);
-        this.ctx.fillRect(x + 260, y - 220, 20, 220);
-        this.ctx.fillRect(x - 24, y - 240, 28, 20);
-        this.ctx.fillRect(x + 256, y - 240, 28, 20);
+        // Side Cupolas (Chhatris)
+        this.ctx.fillRect(x + 65, y - 200, 24, 30);
+        this.ctx.fillRect(x + 191, y - 200, 24, 30);
+
+        // 4 Corner Minaret Towers
+        this.ctx.fillStyle = '#240a2c';
+        this.ctx.fillRect(x - 20, y - 230, 20, 230);
+        this.ctx.fillRect(x + 280, y - 230, 20, 230);
+        this.ctx.fillRect(x - 24, y - 250, 28, 20);
+        this.ctx.fillRect(x + 276, y - 250, 28, 20);
       } else if (theme === 'sydney') {
         // SYDNEY: Opera House Shell Sails & Harbour Bridge Arch
         this.ctx.fillStyle = '#102c4f';
+        this.ctx.strokeStyle = '#06b6d4';
+        this.ctx.lineWidth = 2;
 
-        // Opera House Overlapping Shell Sails
+        // Opera House Shell Sails
         this.ctx.beginPath();
-        this.ctx.arc(x + 60, y - 40, 75, Math.PI * 1.25, Math.PI * 1.85);
-        this.ctx.arc(x + 130, y - 40, 60, Math.PI * 1.25, Math.PI * 1.85);
-        this.ctx.arc(x + 190, y - 40, 45, Math.PI * 1.25, Math.PI * 1.85);
-        this.ctx.lineTo(x + 260, y);
+        this.ctx.arc(x + 60, y - 45, 80, Math.PI * 1.25, Math.PI * 1.85);
+        this.ctx.arc(x + 135, y - 45, 65, Math.PI * 1.25, Math.PI * 1.85);
+        this.ctx.arc(x + 200, y - 45, 50, Math.PI * 1.25, Math.PI * 1.85);
+        this.ctx.lineTo(x + 270, y);
         this.ctx.lineTo(x, y);
         this.ctx.fill();
-
-        // Sydney Harbour Bridge Arch (Right)
-        this.ctx.strokeStyle = '#06b6d4';
-        this.ctx.lineWidth = 3;
-        this.ctx.beginPath();
-        this.ctx.arc(x + 400, y, 160, Math.PI, 0);
         this.ctx.stroke();
+
+        // Sydney Harbour Bridge Steel Arch (Right)
+        this.ctx.strokeStyle = '#06b6d4';
+        this.ctx.lineWidth = 4;
+        this.ctx.beginPath();
+        this.ctx.arc(x + 420, y, 170, Math.PI, 0);
+        this.ctx.stroke();
+
+        // Bridge Pylons
+        this.ctx.fillStyle = '#0a1a30';
+        this.ctx.fillRect(x + 240, y - 110, 30, 110);
+        this.ctx.fillRect(x + 570, y - 110, 30, 110);
       } else if (theme === 'rome') {
-        // ROME: The Colosseum Tiered Arches
+        // ROME: The Colosseum 3-Tier Arcades
         this.ctx.fillStyle = '#361a0b';
         this.ctx.strokeStyle = '#eab308';
         this.ctx.lineWidth = 1.5;
 
-        this.ctx.fillRect(x, y - 180, 280, 180);
+        this.ctx.fillRect(x, y - 190, 300, 190);
 
         // Arched Arcade Windows
         this.ctx.fillStyle = '#1f0d06';
         for (let row = 0; row < 3; row++) {
-          for (let col = 0; col < 7; col++) {
-            const ax = x + 15 + col * 36;
-            const ay = y - 45 - row * 52;
-            this.ctx.fillRect(ax, ay, 20, 32);
+          for (let col = 0; col < 8; col++) {
+            const ax = x + 15 + col * 35;
+            const ay = y - 45 - row * 54;
+            this.ctx.fillRect(ax, ay, 20, 34);
             this.ctx.beginPath();
             this.ctx.arc(ax + 10, ay, 10, Math.PI, 0);
             this.ctx.fill();
           }
         }
       } else if (theme === 'japan') {
-        // JAPAN: 5-Story Pagoda & Mt Fuji Peak
+        // JAPAN: 5-Story Pagoda & Mt Fuji Cone Peak
         this.ctx.fillStyle = '#361138';
 
-        // Pagoda Tiered Roofs
+        // Pagoda Tiered Eaves
         for (let tier = 0; tier < 5; tier++) {
-          const tw = 120 - tier * 18;
-          const ty = y - 60 - tier * 42;
-          this.ctx.fillRect(x + 60 - tw / 2, ty, tw, 10);
-          this.ctx.fillRect(x + 60 - (tw - 20) / 2, ty - 32, tw - 20, 32);
+          const tw = 130 - tier * 18;
+          const ty = y - 60 - tier * 44;
+          this.ctx.fillStyle = '#f43f5e';
+          this.ctx.fillRect(x + 60 - tw / 2, ty, tw, 10); // Red roof edge
+          this.ctx.fillStyle = '#260a28';
+          this.ctx.fillRect(x + 60 - (tw - 20) / 2, ty - 34, tw - 20, 34);
         }
-        this.ctx.fillRect(x + 57, y - 290, 6, 30); // Finial
+        // Spire Finial
+        this.ctx.fillStyle = '#f59e0b';
+        this.ctx.fillRect(x + 57, y - 300, 6, 35);
       } else if (theme === 'london') {
         // LONDON: Big Ben Elizabeth Clock Tower & Palace of Westminster
         this.ctx.fillStyle = '#18263d';
 
-        // Tower Body
-        this.ctx.fillRect(x + 40, y - 280, 55, 280);
+        // Clock Tower Body
+        this.ctx.fillRect(x + 40, y - 290, 60, 290);
 
-        // Clock Face (Glowing Yellow)
+        // Clock Face (Glowing Gold)
         this.ctx.fillStyle = '#fbbf24';
+        this.ctx.shadowColor = '#fbbf24';
+        this.ctx.shadowBlur = 15;
         this.ctx.beginPath();
-        this.ctx.arc(x + 67, y - 220, 18, 0, Math.PI * 2);
+        this.ctx.arc(x + 70, y - 230, 20, 0, Math.PI * 2);
         this.ctx.fill();
+        this.ctx.shadowBlur = 0;
 
-        // Spire Top
+        // Spire & Bicker Top
         this.ctx.fillStyle = '#18263d';
         this.ctx.beginPath();
-        this.ctx.moveTo(x + 35, y - 280);
-        this.ctx.lineTo(x + 67, y - 350);
-        this.ctx.lineTo(x + 99, y - 280);
+        this.ctx.moveTo(x + 35, y - 290);
+        this.ctx.lineTo(x + 70, y - 365);
+        this.ctx.lineTo(x + 105, y - 290);
         this.ctx.fill();
+
+        // Palace Roofs
+        this.ctx.fillRect(x + 100, y - 140, 180, 140);
       } else if (theme === 'newyork') {
-        // NEW YORK: Statue of Liberty & Manhattan Skyline
+        // NEW YORK: Statue of Liberty & One World Trade Center / Manhattan Skyline
         this.ctx.fillStyle = '#11333a';
 
-        // Statue Pedestal & Robe
-        this.ctx.fillRect(x + 60, y - 80, 50, 80);
-        this.ctx.fillRect(x + 70, y - 180, 30, 100);
+        // Pedestal & Draped Robe Statue
+        this.ctx.fillRect(x + 60, y - 85, 55, 85);
+        this.ctx.fillRect(x + 72, y - 190, 32, 105);
 
-        // Crown Spikes
+        // 7 Crown Spikes
+        this.ctx.fillStyle = '#10b981';
         for (let s = -3; s <= 3; s++) {
-          this.ctx.fillRect(x + 85 + s * 5, y - 198 - Math.abs(s) * 2, 3, 15);
+          this.ctx.fillRect(x + 88 + s * 5, y - 208 - Math.abs(s) * 2, 3, 16);
         }
 
         // Glowing Torch Flame
-        this.ctx.fillStyle = '#10b981';
         this.ctx.shadowColor = '#10b981';
-        this.ctx.shadowBlur = 15;
+        this.ctx.shadowBlur = 20;
         this.ctx.beginPath();
-        this.ctx.arc(x + 115, y - 210, 12, 0, Math.PI * 2);
+        this.ctx.arc(x + 120, y - 220, 14, 0, Math.PI * 2);
         this.ctx.fill();
+        this.ctx.shadowBlur = 0;
+
+        // One World Trade Center Spire (Right)
+        this.ctx.fillStyle = '#0b2328';
+        this.ctx.fillRect(x + 220, y - 280, 45, 280);
+        this.ctx.fillRect(x + 240, y - 350, 4, 70); // Spire
       } else if (theme === 'china') {
-        // CHINA: Great Wall Stone Watchtowers & Wall Profile
+        // CHINA: Great Wall Stone Watchtowers & Wall Rampart
         this.ctx.fillStyle = '#381414';
 
         // Watchtower 1 & Wall
-        this.ctx.fillRect(x, y - 130, 75, 130);
-        this.ctx.fillRect(x - 20, y - 70, 320, 70); // Wall rampart
-        this.ctx.fillRect(x + 200, y - 150, 80, 150);
+        this.ctx.fillRect(x, y - 140, 80, 140);
+        this.ctx.fillRect(x - 20, y - 75, 340, 75); // Wall rampart
+        this.ctx.fillRect(x + 220, y - 160, 85, 160);
 
         // Crenellations
+        this.ctx.fillStyle = '#1a0909';
         for (let c = 0; c < 4; c++) {
-          this.ctx.fillRect(x + c * 18, y - 148, 10, 18);
-          this.ctx.fillRect(x + 200 + c * 20, y - 168, 10, 18);
+          this.ctx.fillRect(x + c * 20, y - 158, 10, 18);
+          this.ctx.fillRect(x + 220 + c * 20, y - 178, 10, 18);
         }
       } else if (theme === 'greece') {
-        // GREECE: The Parthenon Temple (White Marble Columns & Pediment)
+        // GREECE: The Parthenon Temple (Marble Fluted Columns & Pediment)
         this.ctx.fillStyle = '#163152';
         this.ctx.strokeStyle = '#84cc16';
         this.ctx.lineWidth = 1.5;
 
-        // Base & Fluted Columns
-        this.ctx.fillRect(x, y - 20, 240, 20);
+        // Base Steps & Columns
+        this.ctx.fillRect(x, y - 25, 260, 25);
         for (let col = 0; col < 8; col++) {
-          this.ctx.fillRect(x + 12 + col * 30, y - 140, 16, 120);
+          this.ctx.fillRect(x + 12 + col * 32, y - 150, 18, 125);
         }
         // Architrave & Triangular Pediment
-        this.ctx.fillRect(x - 5, y - 160, 250, 20);
+        this.ctx.fillRect(x - 5, y - 170, 270, 20);
         this.ctx.beginPath();
-        this.ctx.moveTo(x - 10, y - 160);
-        this.ctx.lineTo(x + 120, y - 215);
-        this.ctx.lineTo(x + 250, y - 160);
+        this.ctx.moveTo(x - 10, y - 170);
+        this.ctx.lineTo(x + 130, y - 230);
+        this.ctx.lineTo(x + 270, y - 170);
         this.ctx.fill();
+        this.ctx.stroke();
       } else if (theme === 'peru') {
-        // PERU: Machu Picchu Citadel Terraces & Huayna Picchu Peak
+        // PERU: Machu Picchu Huayna Picchu Peak & Inca Terraced Citadel
         this.ctx.fillStyle = '#381909';
 
-        // Mountain Peak
+        // Huayna Picchu Mountain Peak
         this.ctx.beginPath();
-        this.ctx.moveTo(x + 40, y);
-        this.ctx.lineTo(x + 200, y - 310);
-        this.ctx.lineTo(x + 360, y);
+        this.ctx.moveTo(x + 30, y);
+        this.ctx.lineTo(x + 220, y - 330);
+        this.ctx.lineTo(x + 400, y);
         this.ctx.fill();
 
         // Inca Terraced Stone Walls
-        this.ctx.fillStyle = '#261105';
+        this.ctx.fillStyle = '#241005';
         for (let t = 0; t < 5; t++) {
-          this.ctx.fillRect(x + t * 40, y - 30 - t * 25, 220, 25);
+          this.ctx.fillRect(x + t * 45, y - 35 - t * 28, 240, 28);
         }
+
+        // Llama Silhouette on Terrace
+        this.ctx.fillStyle = '#5c2d13';
+        this.ctx.fillRect(x + 110, y - 120, 24, 15); // Llama body
+        this.ctx.fillRect(x + 128, y - 140, 6, 20);  // Neck/head
+        this.ctx.fillRect(x + 112, y - 105, 4, 12);  // Legs
+        this.ctx.fillRect(x + 126, y - 105, 4, 12);
       }
 
       this.ctx.restore();
@@ -1452,7 +1512,6 @@
 
     renderMiddleground(lvl) {
       this.ctx.save();
-      this.ctx.fillStyle = lvl.treeColor;
       const offset = this.parallaxTrees;
 
       for (let i = 0; i < 5; i++) {
@@ -1460,40 +1519,104 @@
         const mx = x < -100 ? x + this.width + 350 : x;
         const my = this.groundY;
 
-        if (lvl.theme === 'paris') {
-          // Haussmann Rooftops & Streetlamps
-          this.ctx.fillRect(mx, my - 70, 90, 70);
-          this.ctx.fillRect(mx + 120, my - 90, 2, 90); // Vintage lamp post
+        if (lvl.theme === 'georgia') {
+          // GEORGIA: Bridge of Peace Glass Canopy Curve & Old Tbilisi Balconies
+          // River Mtkvari Water Band
+          this.ctx.fillStyle = '#1a1638';
+          this.ctx.fillRect(0, my - 20, this.width, 20);
+
+          // Bridge of Peace Glass Canopy Curve
+          this.ctx.strokeStyle = '#00f0ff';
+          this.ctx.lineWidth = 3;
+          this.ctx.beginPath();
+          this.ctx.arc(mx + 80, my - 10, 90, Math.PI * 1.1, Math.PI * 1.9);
+          this.ctx.stroke();
+
+          // Old Tbilisi Carved Wooden Balconies
+          this.ctx.fillStyle = '#241d47';
+          this.ctx.fillRect(mx + 200, my - 90, 80, 90);
           this.ctx.fillStyle = '#f59e0b';
+          this.ctx.fillRect(mx + 190, my - 70, 100, 14); // Carved wooden balcony
+        } else if (lvl.theme === 'paris') {
+          // PARIS: River Seine Water, Bridges & Streetlamps
+          this.ctx.fillStyle = '#101e38';
+          this.ctx.fillRect(0, my - 25, this.width, 25);
+
+          // Seine Bridge Arch
+          this.ctx.fillStyle = '#17233c';
           this.ctx.beginPath();
-          this.ctx.arc(mx + 121, my - 90, 6, 0, Math.PI * 2);
+          this.ctx.arc(mx + 100, my, 70, Math.PI, 0);
           this.ctx.fill();
-          this.ctx.fillStyle = lvl.treeColor;
-        } else if (lvl.theme === 'georgia') {
-          // Tbilisi Balconies & Stone Streets
-          this.ctx.fillRect(mx, my - 80, 70, 80);
-          this.ctx.fillRect(mx - 10, my - 60, 90, 12); // Wooden balcony
+
+          // Haussmann Rooftops & Vintage Streetlamps
+          this.ctx.fillRect(mx + 200, my - 80, 90, 80);
+          this.ctx.fillRect(mx + 310, my - 95, 3, 95); // Streetlamp
+          this.ctx.fillStyle = '#f59e0b';
+          this.ctx.shadowColor = '#f59e0b';
+          this.ctx.shadowBlur = 10;
+          this.ctx.beginPath();
+          this.ctx.arc(mx + 311.5, my - 95, 7, 0, Math.PI * 2);
+          this.ctx.fill();
+          this.ctx.shadowBlur = 0;
+        } else if (lvl.theme === 'india') {
+          // INDIA: Mughal Reflecting Pool & Cypress Trees
+          this.ctx.fillStyle = '#2b1033';
+          this.ctx.fillRect(0, my - 20, this.width, 20);
+
+          // Columnar Cypress Trees
+          this.ctx.fillStyle = '#182d21';
+          this.ctx.beginPath();
+          this.ctx.ellipse(mx + 60, my - 80, 16, 60, 0, 0, Math.PI * 2);
+          this.ctx.ellipse(mx + 240, my - 80, 16, 60, 0, 0, Math.PI * 2);
+          this.ctx.fill();
+        } else if (lvl.theme === 'sydney') {
+          // SYDNEY: Harbour Water & Ferryboat
+          this.ctx.fillStyle = '#0b223d';
+          this.ctx.fillRect(0, my - 30, this.width, 30);
+
+          // Ferryboat Silhouette
+          this.ctx.fillStyle = '#06b6d4';
+          this.ctx.fillRect(mx + 100, my - 35, 60, 15);
+          this.ctx.fillRect(mx + 115, my - 45, 30, 10);
         } else if (lvl.theme === 'japan') {
-          // Red Torii Gate
+          // JAPAN: Red Torii Gate & Blooming Sakura Trees
           this.ctx.fillStyle = '#f43f5e';
-          this.ctx.fillRect(mx, my - 110, 10, 110);
-          this.ctx.fillRect(mx + 70, my - 110, 10, 110);
-          this.ctx.fillRect(mx - 15, my - 110, 110, 14);
-          this.ctx.fillRect(mx - 5, my - 95, 90, 10);
-          this.ctx.fillStyle = lvl.treeColor;
-        } else if (lvl.theme === 'desert') {
-          // Palm Trees & Sand Dunes
-          this.ctx.fillRect(mx + 15, my - 85, 8, 85);
+          this.ctx.fillRect(mx, my - 120, 12, 120);
+          this.ctx.fillRect(mx + 80, my - 120, 12, 120);
+          this.ctx.fillRect(mx - 15, my - 120, 122, 16);
+          this.ctx.fillRect(mx - 5, my - 102, 102, 12);
+
+          // Cherry Blossom Canopy
+          this.ctx.fillStyle = 'rgba(244, 63, 94, 0.4)';
           this.ctx.beginPath();
-          this.ctx.arc(mx + 19, my - 85, 32, 0, Math.PI * 2);
+          this.ctx.arc(mx + 220, my - 90, 45, 0, Math.PI * 2);
           this.ctx.fill();
+        } else if (lvl.theme === 'london') {
+          // LONDON: River Thames & Red Bus Silhouette
+          this.ctx.fillStyle = '#101726';
+          this.ctx.fillRect(0, my - 25, this.width, 25);
+
+          // Red Double-Decker Bus
+          this.ctx.fillStyle = '#ef4444';
+          this.ctx.fillRect(mx + 140, my - 45, 55, 30);
+          this.ctx.fillStyle = '#fbbf24';
+          this.ctx.fillRect(mx + 145, my - 38, 45, 6); // Windows
+        } else if (lvl.theme === 'newyork') {
+          // NEW YORK: Hudson River Water & Yellow Taxi Silhouette
+          this.ctx.fillStyle = '#0e262a';
+          this.ctx.fillRect(0, my - 25, this.width, 25);
+
+          // Yellow Taxi
+          this.ctx.fillStyle = '#f59e0b';
+          this.ctx.fillRect(mx + 160, my - 32, 45, 18);
         } else {
-          // Standard Foliage Trees
+          // Standard Trees / Vegetation
+          this.ctx.fillStyle = lvl.treeColor;
           this.ctx.beginPath();
-          this.ctx.arc(mx, my - 75, 30, 0, Math.PI * 2);
-          this.ctx.arc(mx + 22, my - 90, 25, 0, Math.PI * 2);
+          this.ctx.arc(mx, my - 80, 32, 0, Math.PI * 2);
+          this.ctx.arc(mx + 25, my - 95, 26, 0, Math.PI * 2);
           this.ctx.fill();
-          this.ctx.fillRect(mx + 8, my - 45, 10, 45);
+          this.ctx.fillRect(mx + 8, my - 45, 12, 45);
         }
       }
 
