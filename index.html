@@ -517,8 +517,36 @@
       </div>
     </header>
 
+    <!-- Confetti Particles Canvas Overlay -->
+    <canvas id="confetti-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-[90]"></canvas>
+
+    <!-- ANOMALY MISSION HUD OVERLAY -->
+    <div id="anomaly-mission-hud" class="fixed top-20 right-6 z-40 glassmorphic border border-primary/30 p-4 rounded-xl shadow-2xl max-w-xs w-full flex flex-col gap-2.5 transition-all duration-300 backdrop-blur-xl">
+      <div class="flex items-center justify-between border-b border-white/10 pb-2">
+        <div class="flex items-center gap-2">
+          <span id="hud-mission-icon" class="text-base animate-pulse">⚠️</span>
+          <span id="hud-mission-title" class="font-label-tech text-[10px] text-primary tracking-wider uppercase font-bold">MISSION: FIND ANOMALY</span>
+        </div>
+        <span id="hud-xp-badge" class="font-mono text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold shadow-[0_0_10px_rgba(212,175,85,0.2)]">
+          ⚡ 0 XP
+        </span>
+      </div>
+
+      <div>
+        <h5 id="hud-anomaly-name" class="font-display-present text-sm text-white font-bold mb-0.5">Time Anomaly Detected</h5>
+        <p id="hud-hint-text" class="font-mono text-[11px] text-white/60 leading-snug">Something from another era has appeared in this timeline. Click on the image to locate the misplaced object!</p>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-white/10 text-[10px] font-mono">
+        <span id="hud-progress-count" class="text-white/50">0/11 Anomalies Restored</span>
+        <button id="hud-hint-btn" onclick="useAnomalyHint()" class="px-3 py-1 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/40 rounded font-label-tech tracking-wider transition flex items-center gap-1">
+          <span>💡</span> HINT (<span id="hint-level-text">LVL 1</span>)
+        </button>
+      </div>
+    </div>
+
     <!-- MAIN ERA ACCORDION CONTAINER -->
-    <main class="flex flex-1 w-full max-w-[1440px] mx-auto px-4 md:px-6 my-6 overflow-hidden gap-4 h-[calc(100vh-210px)]">
+    <main class="flex flex-1 w-full max-w-[1440px] mx-auto px-4 md:px-6 my-6 overflow-hidden gap-4 h-[calc(100vh-210px)] relative">
       
       <!-- COLUMN 1890: THE PAST -->
       <section id="era-1890" class="era-col inactive flex-1 rounded-lg">
@@ -2771,14 +2799,120 @@
       }
     }
 
-    // ==================== EXPLORER PROGRESS & TIME PASSPORT SYSTEM ====================
+    // ==================== EXPLORER PROGRESS & SPOT THE TIME ANOMALY SYSTEM ====================
     const VISITED_KEY = "chronicle_visited_landmarks";
     const ACHIEVEMENTS_KEY = "chronicle_unlocked_achievements";
+    const ANOMALIES_SOLVED_KEY = "chronicle_anomalies_found";
+    const USER_XP_KEY = "chronicle_user_xp";
+
+    // 11 Unique Anomalies for each landmark
+    const ANOMALIES_DATA = {
+      "big-ben": {
+        name: "Modern Smartphone",
+        icon: "📱",
+        era: "1890",
+        coords: { x: 26, y: 78 },
+        hint1: "Look near the lower left cobblestones in 1890 London.",
+        hint2Region: { left: "16%", top: "68%", width: "140px", height: "140px" },
+        desc: "A glowing futuristic smartphone lying on 19th-century Victorian cobblestone."
+      },
+      "eiffel-tower": {
+        name: "Drone Hexacopter",
+        icon: "🚁",
+        era: "1890",
+        coords: { x: 74, y: 22 },
+        hint1: "Look high near the sky above the Seine river.",
+        hint2Region: { left: "64%", top: "12%", width: "140px", height: "140px" },
+        desc: "An autonomous camera drone hovering above 1889 Paris."
+      },
+      "colosseum": {
+        name: "VR Headset",
+        icon: "🥽",
+        era: "1890",
+        coords: { x: 42, y: 68 },
+        hint1: "Search near the arches on the ground level of the amphitheatre.",
+        hint2Region: { left: "32%", top: "58%", width: "140px", height: "140px" },
+        desc: "A sleek virtual reality headset resting on ancient Roman travertine stone."
+      },
+      "statue-of-liberty": {
+        name: "Electric Scooter",
+        icon: "🛴",
+        era: "1890",
+        coords: { x: 78, y: 76 },
+        hint1: "Look near the harbor pier at the bottom right.",
+        hint2Region: { left: "68%", top: "66%", width: "140px", height: "140px" },
+        desc: "A modern electric dockless scooter parked at 1890 New York Harbor."
+      },
+      "pyramids-of-giza": {
+        name: "Plastic Water Bottle",
+        icon: "🍾",
+        era: "1890",
+        coords: { x: 22, y: 74 },
+        hint1: "Look down near the desert sand dunes on the left.",
+        hint2Region: { left: "12%", top: "64%", width: "140px", height: "140px" },
+        desc: "A single-use plastic water bottle discarded in the Giza desert."
+      },
+      "sydney-opera-house": {
+        name: "Wireless Headphones",
+        icon: "🎧",
+        era: "1890",
+        coords: { x: 36, y: 80 },
+        hint1: "Examine the wooden harbor dock planks at Bennelong Point.",
+        hint2Region: { left: "26%", top: "70%", width: "140px", height: "140px" },
+        desc: "Noise-canceling Bluetooth headphones lying on a colonial wharf."
+      },
+      "taj-mahal": {
+        name: "Modern Laptop",
+        icon: "💻",
+        era: "1890",
+        coords: { x: 62, y: 72 },
+        hint1: "Check near the edge of the royal garden reflecting pool.",
+        hint2Region: { left: "52%", top: "62%", width: "140px", height: "140px" },
+        desc: "A sleek metallic laptop sitting near the Mughal court gardens."
+      },
+      "great-wall": {
+        name: "Digital SLR Camera",
+        icon: "📷",
+        era: "1890",
+        coords: { x: 72, y: 48 },
+        hint1: "Look along the stone watchtower ledge in the mountains.",
+        hint2Region: { left: "62%", top: "38%", width: "140px", height: "140px" },
+        desc: "A modern DSLR camera with telephoto lens resting on Ming garrison stones."
+      },
+      "burj-khalifa": {
+        name: "Traffic Light Signal",
+        icon: "🚥",
+        era: "1890",
+        coords: { x: 30, y: 65 },
+        hint1: "Look near the desert settlement shore path.",
+        hint2Region: { left: "20%", top: "55%", width: "140px", height: "140px" },
+        desc: "An LED traffic signal post standing out in open desert sand."
+      },
+      "tokyo-tower": {
+        name: "Smart Watch",
+        icon: "⌚",
+        era: "1890",
+        coords: { x: 54, y: 72 },
+        hint1: "Look near the wooden temple courtyard steps.",
+        hint2Region: { left: "44%", top: "62%", width: "140px", height: "140px" },
+        desc: "A modern touchscreen smartwatch resting in Edo era temple grounds."
+      },
+      "tbilisi": {
+        name: "Solar Charging Bank",
+        icon: "🔋",
+        era: "1890",
+        coords: { x: 66, y: 58 },
+        hint1: "Check near the Narikala fortress brick ruins.",
+        hint2Region: { left: "56%", top: "48%", width: "140px", height: "140px" },
+        desc: "A portable solar battery bank resting on historic Tbilisi brickwork."
+      }
+    };
 
     const ACHIEVEMENTS_DEF = [
       {
         id: "first_journey",
         title: "First Journey",
+        reqType: "landmarks",
         reqCount: 1,
         desc: "Initiated your first temporal jump to a historic landmark.",
         icon: "🧭"
@@ -2786,6 +2920,7 @@
       {
         id: "explorer",
         title: "Explorer",
+        reqType: "landmarks",
         reqCount: 5,
         desc: "Visited 5 historic landmarks across space and time.",
         icon: "🗺️"
@@ -2793,19 +2928,54 @@
       {
         id: "historian",
         title: "Historian",
+        reqType: "landmarks",
         reqCount: 10,
-        desc: "Uncovered 10 temporal anomalies across human history.",
+        desc: "Uncovered 10 temporal landmarks across human history.",
         icon: "📜"
       },
       {
         id: "master_time_traveler",
         title: "Master Time Traveler",
+        reqType: "landmarks",
         reqCount: "ALL",
         desc: "Explored every destination in the temporal database.",
         icon: "⏳"
+      },
+      {
+        id: "first_anomaly",
+        title: "First Anomaly",
+        reqType: "anomalies",
+        reqCount: 1,
+        desc: "Discovered and restored your first temporal anomaly.",
+        icon: "🕵️"
+      },
+      {
+        id: "time_detective",
+        title: "Time Detective",
+        reqType: "anomalies",
+        reqCount: 3,
+        desc: "Fixed 3 timeline anomalies (+150 XP).",
+        icon: "🔍"
+      },
+      {
+        id: "timeline_guardian",
+        title: "Timeline Guardian",
+        reqType: "anomalies",
+        reqCount: 7,
+        desc: "Restored 7 misplaced objects across history.",
+        icon: "🛡️"
+      },
+      {
+        id: "master_of_time",
+        title: "Master of Time",
+        reqType: "anomalies",
+        reqCount: "ALL",
+        desc: "Fixed all temporal anomalies! Master of the Continuum.",
+        icon: "⌛"
       }
     ];
 
+    // LocalStorage Helper Functions
     function getVisitedLandmarks() {
       const stored = localStorage.getItem(VISITED_KEY);
       if (!stored) return [];
@@ -2826,6 +2996,32 @@
       localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(achievements));
     }
 
+    function getSolvedAnomalies() {
+      const stored = localStorage.getItem(ANOMALIES_SOLVED_KEY);
+      if (!stored) return [];
+      try { return JSON.parse(stored); } catch (e) { return []; }
+    }
+
+    function saveSolvedAnomalies(solved) {
+      localStorage.setItem(ANOMALIES_SOLVED_KEY, JSON.stringify(solved));
+    }
+
+    function getUserXP() {
+      const stored = localStorage.getItem(USER_XP_KEY);
+      return stored ? parseInt(stored, 10) || 0 : 0;
+    }
+
+    function addXP(amount) {
+      const current = getUserXP();
+      const next = current + amount;
+      localStorage.setItem(USER_XP_KEY, next.toString());
+      return next;
+    }
+
+    // Current Active Anomaly Hint State per location
+    let currentHintLevel = 1;
+
+    // Toast Notification System
     function showToast(title, text, type = "info") {
       const container = document.getElementById('toast-container');
       if (!container) return;
@@ -2884,7 +3080,7 @@
         // Toast notification
         showToast("🎉 New Landmark Discovered!", `${place.name} (${newEntry.country})`, "discovery");
 
-        // Update UI
+        // Update UI & Achievements
         updateProgressUI();
         updateHomepageBadges();
         checkAchievements();
@@ -2893,15 +3089,28 @@
 
     function checkAchievements() {
       const visited = getVisitedLandmarks();
+      const solvedAnomalies = getSolvedAnomalies();
       const unlocked = getUnlockedAchievements();
-      const totalCount = places.length;
+
+      const totalPlaces = places.length;
       const visitedCount = visited.length;
+      const solvedCount = solvedAnomalies.length;
 
       ACHIEVEMENTS_DEF.forEach(ach => {
         if (unlocked.includes(ach.id)) return;
 
-        const target = ach.reqCount === "ALL" ? totalCount : ach.reqCount;
-        if (visitedCount >= target && target > 0) {
+        let target = ach.reqCount;
+        let currentVal = 0;
+
+        if (ach.reqType === "landmarks") {
+          target = ach.reqCount === "ALL" ? totalPlaces : ach.reqCount;
+          currentVal = visitedCount;
+        } else if (ach.reqType === "anomalies") {
+          target = ach.reqCount === "ALL" ? totalPlaces : ach.reqCount;
+          currentVal = solvedCount;
+        }
+
+        if (currentVal >= target && target > 0) {
           unlocked.push(ach.id);
           saveUnlockedAchievements(unlocked);
           showToast(`🏆 Achievement Unlocked: ${ach.title}!`, ach.desc, "achievement");
@@ -2911,9 +3120,278 @@
       updateProgressUI();
     }
 
+    // ==================== SPOT THE TIME ANOMALY ENGINE ====================
+
+    function renderCurrentLandmarkAnomaly() {
+      const place = places[selectedPlaceIndex];
+      if (!place) return;
+
+      // Reset hint level on destination shift
+      currentHintLevel = 1;
+
+      const solvedList = getSolvedAnomalies();
+      const isSolved = solvedList.includes(place.id);
+      const anomalyInfo = ANOMALIES_DATA[place.id] || {
+        name: "Unknown Anomaly",
+        icon: "❓",
+        era: "1890",
+        coords: { x: 50, y: 50 },
+        hint1: "Look around the scene carefully.",
+        hint2Region: { left: "40%", top: "40%", width: "140px", height: "140px" },
+        desc: "A misplaced object from another time period."
+      };
+
+      // Update HUD text & status
+      const hudName = document.getElementById('hud-anomaly-name');
+      const hudHint = document.getElementById('hud-hint-text');
+      const hudIcon = document.getElementById('hud-mission-icon');
+      const hudTitle = document.getElementById('hud-mission-title');
+      const hudProgress = document.getElementById('hud-progress-count');
+      const hudXpBadge = document.getElementById('hud-xp-badge');
+      const hintBtn = document.getElementById('hud-hint-btn');
+      const hintLvlText = document.getElementById('hint-level-text');
+
+      if (hudXpBadge) hudXpBadge.innerText = `⚡ ${getUserXP()} XP`;
+      if (hudProgress) hudProgress.innerText = `${solvedList.length}/${places.length} Anomalies Restored`;
+
+      if (isSolved) {
+        if (hudIcon) hudIcon.innerText = "✓";
+        if (hudTitle) {
+          hudTitle.innerText = "TIMELINE STABLE";
+          hudTitle.className = "font-label-tech text-[10px] text-emerald-400 tracking-wider uppercase font-bold";
+        }
+        if (hudName) hudName.innerText = `Anomaly Restored (+50 XP)`;
+        if (hudHint) hudHint.innerText = `You successfully restored the ${anomalyInfo.name}! Timeline balance is optimal.`;
+        if (hintBtn) hintBtn.style.display = 'none';
+      } else {
+        if (hudIcon) hudIcon.innerText = "⚠️";
+        if (hudTitle) {
+          hudTitle.innerText = "MISSION: FIND ANOMALY";
+          hudTitle.className = "font-label-tech text-[10px] text-primary tracking-wider uppercase font-bold";
+        }
+        if (hudName) hudName.innerText = `Search for: ${anomalyInfo.name}`;
+        if (hudHint) hudHint.innerText = `Hint: Something from another era has appeared here. Click on the image layer to locate it!`;
+        if (hintBtn) hintBtn.style.display = 'inline-flex';
+        if (hintLvlText) hintLvlText.innerText = "LVL 1";
+      }
+
+      // Attach overlay target to 1890 era image layer (or active layer)
+      const targetContainer = document.getElementById('past-img-layer');
+      if (!targetContainer) return;
+
+      // Remove existing nodes
+      const oldNode = document.getElementById('anomaly-target-node');
+      if (oldNode) oldNode.remove();
+      const oldRadar = document.getElementById('anomaly-radar-region');
+      if (oldRadar) oldRadar.remove();
+
+      // Create Target Node
+      const node = document.createElement('div');
+      node.id = 'anomaly-target-node';
+      node.className = `anomaly-target-node ${isSolved ? 'solved' : ''}`;
+      node.style.left = `${anomalyInfo.coords.x}%`;
+      node.style.top = `${anomalyInfo.coords.y}%`;
+      node.innerHTML = `<span class="text-3xl filter drop-shadow-[0_0_10px_rgba(0,240,255,0.7)]">${anomalyInfo.icon}</span>`;
+      node.title = isSolved ? `Restored: ${anomalyInfo.name}` : `Inspect Anomaly`;
+
+      node.onclick = (e) => {
+        e.stopPropagation();
+        if (!isSolved) {
+          solveAnomaly(place.id, e.clientX, e.clientY);
+        } else {
+          showToast("Timeline Stable", `You have already restored the ${anomalyInfo.name} (+50 XP)!`, "info");
+        }
+      };
+
+      targetContainer.appendChild(node);
+
+      // Attach miss-click handler to container
+      targetContainer.onclick = (e) => {
+        if (!isSolved && e.target !== node && !node.contains(e.target)) {
+          spawnMissClickX(e, targetContainer);
+        }
+      };
+    }
+
+    function spawnMissClickX(e, container) {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const missEl = document.createElement('div');
+      missEl.className = 'miss-click-x';
+      missEl.innerText = '🗙';
+      missEl.style.left = `${x}px`;
+      missEl.style.top = `${y}px`;
+
+      container.appendChild(missEl);
+      setTimeout(() => missEl.remove(), 600);
+    }
+
+    function useAnomalyHint() {
+      const place = places[selectedPlaceIndex];
+      if (!place) return;
+
+      const solvedList = getSolvedAnomalies();
+      if (solvedList.includes(place.id)) return;
+
+      const anomalyInfo = ANOMALIES_DATA[place.id];
+      if (!anomalyInfo) return;
+
+      const hudHint = document.getElementById('hud-hint-text');
+      const hintLvlText = document.getElementById('hint-level-text');
+
+      if (currentHintLevel === 1) {
+        // Level 1: Text Hint
+        currentHintLevel = 2;
+        if (hudHint) hudHint.innerText = `💡 Hint 1: ${anomalyInfo.hint1}`;
+        if (hintLvlText) hintLvlText.innerText = "LVL 2";
+      } else if (currentHintLevel === 2) {
+        // Level 2: Regional Glow Radar
+        currentHintLevel = 3;
+        if (hudHint) hudHint.innerText = `💡 Hint 2: Soft radar scanner highlighted around general sector.`;
+        if (hintLvlText) hintLvlText.innerText = "LVL 3";
+
+        const targetContainer = document.getElementById('past-img-layer');
+        if (targetContainer) {
+          let oldRadar = document.getElementById('anomaly-radar-region');
+          if (!oldRadar) {
+            oldRadar = document.createElement('div');
+            oldRadar.id = 'anomaly-radar-region';
+            oldRadar.className = 'anomaly-radar-region';
+            oldRadar.style.left = anomalyInfo.hint2Region.left;
+            oldRadar.style.top = anomalyInfo.hint2Region.top;
+            oldRadar.style.width = anomalyInfo.hint2Region.width;
+            oldRadar.style.height = anomalyInfo.hint2Region.height;
+            targetContainer.appendChild(oldRadar);
+          }
+        }
+      } else if (currentHintLevel >= 3) {
+        // Level 3: Direct Pulsing Target
+        if (hudHint) hudHint.innerText = `💡 Hint 3: Pulse beam active directly on target object!`;
+        const node = document.getElementById('anomaly-target-node');
+        if (node) {
+          node.classList.add('animate-bounce');
+          setTimeout(() => node.classList.remove('animate-bounce'), 4000);
+        }
+      }
+    }
+
+    function solveAnomaly(placeId, clickX, clickY) {
+      const place = places.find(p => p.id === placeId);
+      const anomalyInfo = ANOMALIES_DATA[placeId];
+
+      const solvedList = getSolvedAnomalies();
+      if (!solvedList.includes(placeId)) {
+        solvedList.push(placeId);
+        saveSolvedAnomalies(solvedList);
+
+        const newTotalXP = addXP(50);
+
+        // Confetti explosion
+        fireConfetti(clickX || window.innerWidth / 2, clickY || window.innerHeight / 2);
+
+        // Audio synthesis chime
+        playSuccessAudio();
+
+        // Toast alert
+        showToast("🎉 Timeline Restored! +50 XP", `You discovered and fixed the ${anomalyInfo ? anomalyInfo.name : 'anomaly'}!`, "discovery");
+
+        // Refresh Anomaly HUD & Progress
+        renderCurrentLandmarkAnomaly();
+        updateProgressUI();
+        checkAchievements();
+      }
+    }
+
+    // Audio Synthesis Success Chime (Web Audio API)
+    function playSuccessAudio() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.3);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + i * 0.1);
+          osc.stop(ctx.currentTime + i * 0.1 + 0.35);
+        });
+      } catch (e) {}
+    }
+
+    // Confetti Particle Explosion Canvas Engine
+    function fireConfetti(originX, originY) {
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#00f0ff', '#ff007f', '#d4af37', '#10b981', '#a855f7', '#ffffff'];
+
+      for (let i = 0; i < 70; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 10 + 4;
+        particles.push({
+          x: originX,
+          y: originY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 2,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.2,
+          life: 1.0
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+
+        particles.forEach(p => {
+          if (p.life > 0) {
+            active = true;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.25; // gravity
+            p.rotation += p.vRot;
+            p.life -= 0.018;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, p.life);
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.5);
+            ctx.restore();
+          }
+        });
+
+        if (active) {
+          requestAnimationFrame(draw);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      draw();
+    }
+
+    // Update Overall Explorer Progress & Time Passport UI
     function updateProgressUI() {
       const visited = getVisitedLandmarks();
       const unlocked = getUnlockedAchievements();
+      const solvedAnomalies = getSolvedAnomalies();
+      const xp = getUserXP();
+
       const total = places.length || 11;
       const count = visited.length;
       const percent = Math.round((count / total) * 100);
@@ -2921,7 +3399,7 @@
       // Homepage Progress Bar & Text
       const progText = document.getElementById('progress-text');
       const progFill = document.getElementById('progress-bar-fill');
-      if (progText) progText.innerText = `${count} / ${total} Landmarks Explored (${percent}%)`;
+      if (progText) progText.innerText = `${count} / ${total} Landmarks Explored (${percent}%) • ⚡ ${xp} XP`;
       if (progFill) progFill.style.width = `${percent}%`;
 
       // Achievements Mini Bar on Homepage
@@ -2941,7 +3419,7 @@
         });
       }
 
-      // Modal Stats
+      // Modal Stats & Level Calculation
       const modalRank = document.getElementById('passport-rank-title');
       const modalStats = document.getElementById('passport-stats-detail');
       const modalPercent = document.getElementById('passport-percent-text');
@@ -2950,17 +3428,26 @@
       const achBadge = document.getElementById('achievements-count-badge');
 
       if (modalRank) {
-        if (count >= total && total > 0) modalRank.innerText = "Master Time Traveler ⏳";
-        else if (count >= 10) modalRank.innerText = "Historian 📜";
-        else if (count >= 5) modalRank.innerText = "Explorer 🗺️";
-        else if (count >= 1) modalRank.innerText = "Novice Voyager 🧭";
-        else modalRank.innerText = "Uninitiated Voyager";
+        if (xp >= 500) modalRank.innerText = "Master Timeline Guardian ⏳⚡";
+        else if (xp >= 300) modalRank.innerText = "Chrono Detective 🔍⚡";
+        else if (xp >= 100) modalRank.innerText = "Temporal Agent 🛡️⚡";
+        else if (xp >= 50) modalRank.innerText = "Novice Tracker 🧭⚡";
+        else modalRank.innerText = "Uninitiated Voyager 🧭";
       }
-      if (modalStats) modalStats.innerText = `${count} / ${total} Destinations Stamped`;
+
+      if (modalStats) {
+        modalStats.innerText = `Destinations Stamped: ${count}/${total} | Anomalies Fixed: ${solvedAnomalies.length}/${total} | XP: ${xp}`;
+      }
       if (modalPercent) modalPercent.innerText = `${percent}%`;
       if (modalFill) modalFill.style.width = `${percent}%`;
       if (stampsBadge) stampsBadge.innerText = `${count}`;
       if (achBadge) achBadge.innerText = `${unlocked.length}/${ACHIEVEMENTS_DEF.length}`;
+
+      // Update HUD metrics if active
+      const hudProgress = document.getElementById('hud-progress-count');
+      const hudXpBadge = document.getElementById('hud-xp-badge');
+      if (hudProgress) hudProgress.innerText = `${solvedAnomalies.length}/${total} Anomalies Restored`;
+      if (hudXpBadge) hudXpBadge.innerText = `⚡ ${xp} XP`;
     }
 
     function updateHomepageBadges() {
@@ -3031,6 +3518,7 @@
       if (!container) return;
 
       const visited = getVisitedLandmarks();
+      const solvedList = getSolvedAnomalies();
       container.innerHTML = '';
 
       if (visited.length === 0) {
@@ -3046,6 +3534,7 @@
 
       visited.forEach(v => {
         const stampDate = new Date(v.timestamp).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        const anomalyFixed = solvedList.includes(v.id);
         const card = document.createElement('div');
         card.className = 'stamp-card p-5 rounded-xl flex flex-col justify-between overflow-hidden';
 
@@ -3054,6 +3543,7 @@
             <div>
               <span class="font-mono text-[9px] text-amber-400/80 tracking-widest uppercase block">${v.country}</span>
               <h4 class="font-display-present text-base font-bold text-white leading-tight mt-0.5">${v.name}</h4>
+              ${anomalyFixed ? '<span class="inline-block mt-1 text-[9px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">✓ ANOMALY FIXED (+50 XP)</span>' : '<span class="inline-block mt-1 text-[9px] font-mono text-amber-400/70">⚠️ ANOMALY UNRESOLVED</span>'}
             </div>
             <div class="stamp-seal w-12 h-12 flex flex-col items-center justify-center text-[8px] font-bold shrink-0">
               <span>STAMPED</span>
@@ -3075,13 +3565,24 @@
 
       const unlocked = getUnlockedAchievements();
       const visitedCount = getVisitedLandmarks().length;
+      const solvedCount = getSolvedAnomalies().length;
       const totalCount = places.length;
 
       container.innerHTML = '';
 
       ACHIEVEMENTS_DEF.forEach(ach => {
         const isUnlocked = unlocked.includes(ach.id);
-        const target = ach.reqCount === "ALL" ? totalCount : ach.reqCount;
+        let target = ach.reqCount;
+        let currentVal = 0;
+
+        if (ach.reqType === "landmarks") {
+          target = ach.reqCount === "ALL" ? totalCount : ach.reqCount;
+          currentVal = visitedCount;
+        } else if (ach.reqType === "anomalies") {
+          target = ach.reqCount === "ALL" ? totalCount : ach.reqCount;
+          currentVal = solvedCount;
+        }
+
         const card = document.createElement('div');
         card.className = `p-5 rounded-xl border flex items-start gap-4 transition ${
           isUnlocked 
@@ -3095,7 +3596,7 @@
             <div class="flex items-center justify-between">
               <h4 class="font-display-present text-sm font-bold ${isUnlocked ? 'text-amber-300' : 'text-white/60'}">${ach.title}</h4>
               <span class="font-mono text-[10px] px-2 py-0.5 rounded ${isUnlocked ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-white/5 text-white/40'}">
-                ${isUnlocked ? 'UNLOCKED ✓' : `${Math.min(visitedCount, target)}/${target}`}
+                ${isUnlocked ? 'UNLOCKED ✓' : `${Math.min(currentVal, target)}/${target}`}
               </span>
             </div>
             <p class="font-mono text-xs text-white/60 mt-1 leading-snug">${ach.desc}</p>
@@ -3105,6 +3606,13 @@
       });
     }
 
+    // Hook Anomaly renderer into location swap
+    const originalSwapLocationContent = swapLocationContent;
+    swapLocationContent = function(place) {
+      originalSwapLocationContent(place);
+      renderCurrentLandmarkAnomaly();
+    };
+
     // --- 9. DOM Load initialization ---
     document.addEventListener('DOMContentLoaded', () => {
       initThreeJS();
@@ -3113,10 +3621,11 @@
       window.chronicle = new TemporalEngine();
       swapLocationContent(places[0]);
 
-      // Initialize Progress & Badges from LocalStorage
+      // Initialize Progress, Badges & Anomalies from LocalStorage
       updateProgressUI();
       updateHomepageBadges();
       checkAchievements();
+      renderCurrentLandmarkAnomaly();
     });
   </script>
 </body>
