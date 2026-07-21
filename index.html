@@ -560,12 +560,22 @@
           </div>
         </div>
 
-        <!-- Center Control Bar: Zoom & Reset -->
-        <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg font-mono text-xs text-white">
-          <button onclick="zoomInspection(-0.25)" class="px-2.5 py-0.5 hover:bg-white/10 rounded font-bold text-cyan-300 transition" title="Zoom Out (-)">−</button>
-          <span id="inspection-zoom-level" class="text-[11px] text-white/80 min-w-[45px] text-center font-bold">100%</span>
-          <button onclick="zoomInspection(0.25)" class="px-2.5 py-0.5 hover:bg-white/10 rounded font-bold text-cyan-300 transition" title="Zoom In (+)">+</button>
-          <button onclick="resetInspectionTransform()" class="px-2.5 py-0.5 ml-1 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 rounded text-[10px] tracking-wider font-label-tech transition">RESET</button>
+        <!-- Center Control Bar: Era Switcher & Zoom Controls -->
+        <div class="flex items-center gap-3">
+          <!-- Timeline Era Switcher -->
+          <div class="flex items-center gap-1 bg-white/5 border border-white/10 p-1 rounded-lg font-mono text-[10px]">
+            <button id="inspect-era-1890-btn" onclick="switchInspectionEra('1890')" class="px-2.5 py-1 rounded transition text-amber-300 font-bold bg-amber-500/20 border border-amber-500/40">1890 PAST</button>
+            <button id="inspect-era-2024-btn" onclick="switchInspectionEra('2024')" class="px-2.5 py-1 rounded transition text-white/60 hover:text-white border border-transparent">2024 PRESENT</button>
+            <button id="inspect-era-2200-btn" onclick="switchInspectionEra('2200')" class="px-2.5 py-1 rounded transition text-white/60 hover:text-white border border-transparent">2200 FUTURE</button>
+          </div>
+
+          <!-- Zoom Controls -->
+          <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg font-mono text-xs text-white">
+            <button onclick="zoomInspection(-0.25)" class="px-2.5 py-0.5 hover:bg-white/10 rounded font-bold text-cyan-300 transition" title="Zoom Out (-)">−</button>
+            <span id="inspection-zoom-level" class="text-[11px] text-white/80 min-w-[45px] text-center font-bold">100%</span>
+            <button onclick="zoomInspection(0.25)" class="px-2.5 py-0.5 hover:bg-white/10 rounded font-bold text-cyan-300 transition" title="Zoom In (+)">+</button>
+            <button onclick="resetInspectionTransform()" class="px-2.5 py-0.5 ml-1 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 rounded text-[10px] tracking-wider font-label-tech transition">RESET</button>
+          </div>
         </div>
 
         <!-- Right HUD & Close -->
@@ -2194,6 +2204,11 @@
         // Update active UI classes
         this.updateUIState(targetEra);
 
+        // Refresh era-specific anomaly target layer
+        if (typeof renderCurrentLandmarkAnomaly === 'function') {
+          renderCurrentLandmarkAnomaly();
+        }
+
         // Wait for CSS column width transitions
         await new Promise(resolve => setTimeout(resolve, 1200));
 
@@ -3178,25 +3193,69 @@
     }
 
     // ==================== SPOT THE TIME ANOMALY ENGINE ====================
+    let currentInspectionEra = "1890";
+
+    function getAnomalyForPlaceAndEra(placeId, era) {
+      const data = ANOMALIES_DATA[placeId];
+      if (!data) return null;
+      // Single era definition check
+      if (data.era && data.era === era) return data;
+      // Multi-era dictionary check
+      if (data[era]) return data[era];
+      return null;
+    }
+
+    function isAnomalySolved(placeId, era) {
+      const solvedList = getSolvedAnomalies();
+      const keyWithEra = `${placeId}_${era}`;
+      return solvedList.includes(keyWithEra) || solvedList.includes(placeId);
+    }
+
+    function solveAnomaly(placeId, era, clickX, clickY) {
+      const place = places.find(p => p.id === placeId);
+      const activeEra = era || currentEra || "1890";
+      const anomalyInfo = getAnomalyForPlaceAndEra(placeId, activeEra);
+      if (!anomalyInfo) return;
+
+      const solvedList = getSolvedAnomalies();
+      const keyWithEra = `${placeId}_${activeEra}`;
+
+      if (!solvedList.includes(keyWithEra) && !solvedList.includes(placeId)) {
+        solvedList.push(keyWithEra);
+        saveSolvedAnomalies(solvedList);
+
+        addXP(50);
+
+        // Confetti explosion
+        fireConfetti(clickX || window.innerWidth / 2, clickY || window.innerHeight / 2);
+
+        // Audio synthesis chime
+        playSuccessAudio();
+
+        // Toast alert
+        showToast("🎉 Timeline Restored! +50 XP", `You discovered and fixed the ${anomalyInfo.name}!`, "discovery");
+
+        // Refresh views
+        renderCurrentLandmarkAnomaly();
+        if (document.getElementById('anomaly-inspection-modal').classList.contains('open')) {
+          renderInspectionAnomalyTarget(placeId, currentInspectionEra);
+        }
+        updateProgressUI();
+        checkAchievements();
+      }
+    }
 
     function renderCurrentLandmarkAnomaly() {
       const place = places[selectedPlaceIndex];
       if (!place) return;
 
-      // Reset hint level on destination shift
-      currentHintLevel = 1;
+      // Clean up previous overlays across all era sections
+      document.querySelectorAll('.anomaly-search-overlay').forEach(el => el.remove());
 
+      const activeEra = currentEra || "1890";
+      const anomalyInfo = getAnomalyForPlaceAndEra(place.id, activeEra);
+      const isSolved = isAnomalySolved(place.id, activeEra);
       const solvedList = getSolvedAnomalies();
-      const isSolved = solvedList.includes(place.id);
-      const anomalyInfo = ANOMALIES_DATA[place.id] || {
-        name: "Unknown Anomaly",
-        icon: "❓",
-        era: "1890",
-        coords: { x: 50, y: 50 },
-        hint1: "Look around the scene carefully.",
-        hint2Region: { left: "40%", top: "40%", width: "140px", height: "140px" },
-        desc: "A misplaced object from another time period."
-      };
 
       // Update HUD text & status
       const hudName = document.getElementById('hud-anomaly-name');
@@ -3210,6 +3269,18 @@
 
       if (hudXpBadge) hudXpBadge.innerText = `⚡ ${getUserXP()} XP`;
       if (hudProgress) hudProgress.innerText = `${solvedList.length}/${places.length} Anomalies Restored`;
+
+      if (!anomalyInfo) {
+        if (hudIcon) hudIcon.innerText = "✓";
+        if (hudTitle) {
+          hudTitle.innerText = "TIMELINE STABLE";
+          hudTitle.className = "font-label-tech text-[10px] text-emerald-400 tracking-wider uppercase font-bold";
+        }
+        if (hudName) hudName.innerText = `Timeline Stable in ${activeEra}`;
+        if (hudHint) hudHint.innerText = `No temporal anomaly detected in the ${activeEra} era for ${place.name}.`;
+        if (hintBtn) hintBtn.style.display = 'none';
+        return;
+      }
 
       if (isSolved) {
         if (hudIcon) hudIcon.innerText = "✓";
@@ -3227,17 +3298,15 @@
           hudTitle.className = "font-label-tech text-[10px] text-primary tracking-wider uppercase font-bold";
         }
         if (hudName) hudName.innerText = `Search for: ${anomalyInfo.name}`;
-        if (hudHint) hudHint.innerText = `Hint: Something from another era has appeared here. Click on the image layer to locate it!`;
+        if (hudHint) hudHint.innerText = `Hint: Something from another era has appeared in ${activeEra}. Click on the image layer to locate it!`;
         if (hintBtn) hintBtn.style.display = 'inline-flex';
         if (hintLvlText) hintLvlText.innerText = "LVL 1";
       }
 
-      // Target active era column (#era-1890 as primary historical view)
-      const eraSection = document.getElementById('era-1890');
+      // Target section matching active era
+      const targetSectionId = activeEra === "1890" ? "era-1890" : activeEra === "2024" ? "era-2024" : "era-2200";
+      const eraSection = document.getElementById(targetSectionId);
       if (!eraSection) return;
-
-      // Clean up previous overlays across all era sections
-      document.querySelectorAll('.anomaly-search-overlay').forEach(el => el.remove());
 
       // Create dedicated search overlay at higher z-index (z-25) inside era section
       const overlay = document.createElement('div');
@@ -3262,7 +3331,7 @@
         const clientY = (e && e.touches && e.touches[0]) ? e.touches[0].clientY : (e ? e.clientY : window.innerHeight / 2);
 
         if (!isSolved) {
-          solveAnomaly(place.id, clientX, clientY);
+          solveAnomaly(place.id, activeEra, clientX, clientY);
         } else {
           showToast("Timeline Stable", `You have already restored the ${anomalyInfo.name} (+50 XP)!`, "info");
         }
@@ -3277,8 +3346,7 @@
       const handleOverlayClick = (e) => {
         const target = e.target;
         if (target !== node && !node.contains(target)) {
-          // Open full-screen inspection mode on image click
-          openImageInspectionModal("1890");
+          openImageInspectionModal(activeEra);
         }
       };
 
@@ -3343,28 +3411,49 @@
       const place = places[selectedPlaceIndex];
       if (!modal || !place) return;
 
-      const targetEra = customEra || currentEra || "1890";
+      currentInspectionEra = customEra || currentEra || "1890";
+      switchInspectionEra(currentInspectionEra);
+
+      const xpEl = document.getElementById('inspection-xp-badge');
+      if (xpEl) xpEl.innerText = `⚡ ${getUserXP()} XP`;
+
+      // Show modal
+      modal.classList.add('open');
+    }
+
+    function switchInspectionEra(newEra) {
+      currentInspectionEra = newEra;
+      const place = places[selectedPlaceIndex];
+      if (!place) return;
+
       const titleEl = document.getElementById('inspection-title');
       const imgEl = document.getElementById('inspection-target-img');
-      const xpEl = document.getElementById('inspection-xp-badge');
 
-      if (titleEl) titleEl.innerText = `${place.name.toUpperCase()} (${targetEra}) — IMAGE INSPECTOR`;
-      if (xpEl) xpEl.innerText = `⚡ ${getUserXP()} XP`;
+      if (titleEl) titleEl.innerText = `${place.name.toUpperCase()} (${newEra}) — IMAGE INSPECTOR`;
 
       // Set high resolution image source for target era
       let imgSrc = place.images.past;
-      if (targetEra === "2024") imgSrc = place.images.present;
-      if (targetEra === "2200") imgSrc = place.images.future;
+      if (newEra === "2024") imgSrc = place.images.present;
+      if (newEra === "2200") imgSrc = place.images.future;
       if (imgEl) imgEl.src = imgSrc;
+
+      // Update Era Switcher button styles
+      ['1890', '2024', '2200'].forEach(e => {
+        const btn = document.getElementById(`inspect-era-${e}-btn`);
+        if (btn) {
+          if (e === newEra) {
+            btn.className = "px-2.5 py-1 rounded transition text-amber-300 font-bold bg-amber-500/20 border border-amber-500/40";
+          } else {
+            btn.className = "px-2.5 py-1 rounded transition text-white/60 hover:text-white border border-transparent";
+          }
+        }
+      });
 
       // Reset transform state
       resetInspectionTransform();
 
-      // Render anomaly inside inspection container
-      renderInspectionAnomalyTarget(place.id);
-
-      // Show modal
-      modal.classList.add('open');
+      // Render era-specific anomaly inside inspection container
+      renderInspectionAnomalyTarget(place.id, newEra);
     }
 
     function closeImageInspectionModal() {
@@ -3375,18 +3464,35 @@
       }
     }
 
-    function renderInspectionAnomalyTarget(placeId) {
+    function renderInspectionAnomalyTarget(placeId, era) {
       const container = document.getElementById('inspection-anomaly-container');
+      const hintBanner = document.getElementById('inspection-hint-banner');
       if (!container) return;
       container.innerHTML = '';
 
-      const solvedList = getSolvedAnomalies();
-      const isSolved = solvedList.includes(placeId);
-      const anomalyInfo = ANOMALIES_DATA[placeId] || {
-        name: "Unknown Anomaly",
-        icon: "❓",
-        coords: { x: 50, y: 50 }
-      };
+      const activeEra = era || currentInspectionEra || "1890";
+      const anomalyInfo = getAnomalyForPlaceAndEra(placeId, activeEra);
+
+      if (!anomalyInfo) {
+        // No anomaly for this era!
+        if (hintBanner) {
+          hintBanner.innerText = `✓ Timeline Stable in ${activeEra}. No anomaly detected in this era.`;
+          hintBanner.className = "text-emerald-400 font-bold hidden md:block font-mono text-[11px]";
+        }
+        return;
+      }
+
+      const isSolved = isAnomalySolved(placeId, activeEra);
+
+      if (hintBanner) {
+        if (isSolved) {
+          hintBanner.innerText = `✓ Timeline Restored! ${anomalyInfo.name} (+50 XP)`;
+          hintBanner.className = "text-emerald-400 font-bold hidden md:block font-mono text-[11px]";
+        } else {
+          hintBanner.innerText = `💡 Anomaly Detected in ${activeEra}: Click the misplaced ${anomalyInfo.name} to restore!`;
+          hintBanner.className = "text-amber-300 font-bold hidden md:block font-mono text-[11px]";
+        }
+      }
 
       const node = document.createElement('div');
       node.id = 'inspection-anomaly-target-node';
@@ -3405,8 +3511,7 @@
         const clientY = (e && e.touches && e.touches[0]) ? e.touches[0].clientY : (e ? e.clientY : window.innerHeight / 2);
 
         if (!isSolved) {
-          solveAnomaly(placeId, clientX, clientY);
-          renderInspectionAnomalyTarget(placeId);
+          solveAnomaly(placeId, activeEra, clientX, clientY);
         } else {
           showToast("Timeline Stable", `You have already restored the ${anomalyInfo.name} (+50 XP)!`, "info");
         }
