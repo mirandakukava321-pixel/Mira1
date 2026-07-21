@@ -1058,40 +1058,44 @@
 
     // --- Rich Vector Parallax Illustration Engine ---
     render() {
-      this.ctx.clearRect(0, 0, this.width, this.height);
+      try {
+        this.ctx.clearRect(0, 0, this.width, this.height);
 
-      const lvl = this.currentLevel;
+        const lvl = this.currentLevel || LEVELS[0];
 
-      // Layer 0: Sky Gradient & Celestial Orbs
-      this.renderSky(lvl);
+        // Layer 0: Sky Gradient & Celestial Orbs
+        this.renderSky(lvl);
 
-      // Layer 1: Distant Mountains / Horizon Silhouette
-      this.renderDistantHorizon(lvl);
+        // Layer 1: Distant Mountains / Horizon Silhouette
+        this.renderDistantHorizon(lvl);
 
-      // Layer 2: Main Recognized Landmark Layer (Pyramids, Eiffel Tower, Sameba, Taj Mahal, Sydney Opera, Colosseum, Mt Fuji, Big Ben, Liberty, Great Wall, Acropolis, Machu Picchu)
-      this.renderMainLandmark(lvl);
+        // Layer 2: Main Recognized Landmark Layer
+        this.renderMainLandmark(lvl);
 
-      // Layer 3: Middleground Architecture & Scenery
-      this.renderMiddleground(lvl);
+        // Layer 3: Middleground Architecture & Scenery
+        this.renderMiddleground(lvl);
 
-      // Layer 4: Foreground Vegetation & Details
-      this.renderForegroundDetails(lvl);
+        // Layer 4: Foreground Vegetation & Details
+        this.renderForegroundDetails(lvl);
 
-      // Layer 5: Collision Ground
-      this.renderGround(lvl);
+        // Layer 5: Collision Ground
+        this.renderGround(lvl);
 
-      // Layer 6: Game Entities
-      if (this.finishPortal && this.finishPortal.spawned) {
-        this.renderFinishPortal();
+        // Layer 6: Game Entities (Rendered on top of background)
+        if (this.finishPortal && this.finishPortal.spawned) {
+          this.renderFinishPortal();
+        }
+
+        this.renderObstacles(lvl);
+        this.renderCoins();
+        this.renderLevelArtifact();
+        this.renderPlayer();
+        this.renderAnimatingArtifacts();
+        this.renderParticles();
+        this.renderPopups();
+      } catch (err) {
+        console.warn('[MiniGame] Render frame exception skipped:', err);
       }
-
-      this.renderObstacles(lvl);
-      this.renderCoins();
-      this.renderLevelArtifact();
-      this.renderPlayer();
-      this.renderAnimatingArtifacts();
-      this.renderParticles();
-      this.renderPopups();
     }
 
     renderSky(lvl) {
@@ -1132,34 +1136,34 @@
     renderDistantHorizon(lvl) {
       this.ctx.save();
       this.ctx.fillStyle = lvl.mountainColor;
-      const offset = this.parallaxMountains;
+      const offset = (this.parallaxMountains % 2400 + 2400) % 2400;
 
       this.ctx.beginPath();
       this.ctx.moveTo(-offset, this.groundY);
 
       if (lvl.theme === 'georgia' || lvl.theme === 'peru') {
         // High Andes / Caucasus Jagged Mountain Range
-        for (let x = -offset; x < this.width + 500; x += 300) {
+        for (let x = -offset; x <= this.width + 600; x += 300) {
           this.ctx.lineTo(x + 100, 240);
           this.ctx.lineTo(x + 180, 340);
           this.ctx.lineTo(x + 300, 210);
         }
       } else if (lvl.theme === 'japan') {
         // Mt Fuji Cone Silhouette in Distance
-        for (let x = -offset; x < this.width + 600; x += 800) {
+        for (let x = -offset; x <= this.width + 800; x += 800) {
           this.ctx.lineTo(x + 200, 460);
           this.ctx.lineTo(x + 450, 210); // Snow cone peak
           this.ctx.lineTo(x + 700, 460);
         }
       } else {
         // Rolling Horizon Dunes / Hills
-        for (let x = -offset; x < this.width + 400; x += 350) {
+        for (let x = -offset; x <= this.width + 600; x += 350) {
           this.ctx.lineTo(x + 150, 320);
           this.ctx.lineTo(x + 350, 420);
         }
       }
 
-      this.ctx.lineTo(this.width + 500, this.groundY);
+      this.ctx.lineTo(this.width + 600, this.groundY);
       this.ctx.closePath();
       this.ctx.fill();
       this.ctx.restore();
@@ -1167,15 +1171,16 @@
 
     renderMainLandmark(lvl) {
       this.ctx.save();
-      const offset = this.parallaxRuins;
+      const loopWidth = 2800;
+      const offset = (this.parallaxRuins % loopWidth + loopWidth) % loopWidth;
 
-      // Draw Main Landmark every 700px loop so it is ALWAYS clearly visible
-      for (let i = 0; i < 3; i++) {
-        const x = (i * 700 - offset) % (this.width + 700);
-        const lx = x < -300 ? x + this.width + 700 : x;
-        const ly = this.groundY;
-
-        this.drawLandmarkByTheme(lvl.theme, lx, ly);
+      // Draw Main Landmark seamlessly across screen width
+      for (let i = 0; i < 5; i++) {
+        let lx = (i * 700 - offset);
+        if (lx < -500) lx += loopWidth;
+        if (lx <= this.width + 500) {
+          this.drawLandmarkByTheme(lvl.theme, lx, this.groundY);
+        }
       }
 
       this.ctx.restore();
@@ -1512,111 +1517,114 @@
 
     renderMiddleground(lvl) {
       this.ctx.save();
-      const offset = this.parallaxTrees;
+      const loopWidth = 1750;
+      const offset = (this.parallaxTrees % loopWidth + loopWidth) % loopWidth;
 
-      for (let i = 0; i < 5; i++) {
-        const x = (i * 350 - offset) % (this.width + 350);
-        const mx = x < -100 ? x + this.width + 350 : x;
-        const my = this.groundY;
+      for (let i = 0; i < 6; i++) {
+        let mx = (i * 350 - offset);
+        if (mx < -250) mx += loopWidth;
+        if (mx <= this.width + 250) {
+          const my = this.groundY;
 
-        if (lvl.theme === 'georgia') {
-          // GEORGIA: Bridge of Peace Glass Canopy Curve & Old Tbilisi Balconies
-          // River Mtkvari Water Band
-          this.ctx.fillStyle = '#1a1638';
-          this.ctx.fillRect(0, my - 20, this.width, 20);
+          if (lvl.theme === 'georgia') {
+            // GEORGIA: Bridge of Peace Glass Canopy Curve & Old Tbilisi Balconies
+            // River Mtkvari Water Band
+            this.ctx.fillStyle = '#1a1638';
+            this.ctx.fillRect(0, my - 20, this.width, 20);
 
-          // Bridge of Peace Glass Canopy Curve
-          this.ctx.strokeStyle = '#00f0ff';
-          this.ctx.lineWidth = 3;
-          this.ctx.beginPath();
-          this.ctx.arc(mx + 80, my - 10, 90, Math.PI * 1.1, Math.PI * 1.9);
-          this.ctx.stroke();
+            // Bridge of Peace Glass Canopy Curve
+            this.ctx.strokeStyle = '#00f0ff';
+            this.ctx.lineWidth = 3;
+            this.ctx.beginPath();
+            this.ctx.arc(mx + 80, my - 10, 90, Math.PI * 1.1, Math.PI * 1.9);
+            this.ctx.stroke();
 
-          // Old Tbilisi Carved Wooden Balconies
-          this.ctx.fillStyle = '#241d47';
-          this.ctx.fillRect(mx + 200, my - 90, 80, 90);
-          this.ctx.fillStyle = '#f59e0b';
-          this.ctx.fillRect(mx + 190, my - 70, 100, 14); // Carved wooden balcony
-        } else if (lvl.theme === 'paris') {
-          // PARIS: River Seine Water, Bridges & Streetlamps
-          this.ctx.fillStyle = '#101e38';
-          this.ctx.fillRect(0, my - 25, this.width, 25);
+            // Old Tbilisi Carved Wooden Balconies
+            this.ctx.fillStyle = '#241d47';
+            this.ctx.fillRect(mx + 200, my - 90, 80, 90);
+            this.ctx.fillStyle = '#f59e0b';
+            this.ctx.fillRect(mx + 190, my - 70, 100, 14); // Carved wooden balcony
+          } else if (lvl.theme === 'paris') {
+            // PARIS: River Seine Water, Bridges & Streetlamps
+            this.ctx.fillStyle = '#101e38';
+            this.ctx.fillRect(0, my - 25, this.width, 25);
 
-          // Seine Bridge Arch
-          this.ctx.fillStyle = '#17233c';
-          this.ctx.beginPath();
-          this.ctx.arc(mx + 100, my, 70, Math.PI, 0);
-          this.ctx.fill();
+            // Seine Bridge Arch
+            this.ctx.fillStyle = '#17233c';
+            this.ctx.beginPath();
+            this.ctx.arc(mx + 100, my, 70, Math.PI, 0);
+            this.ctx.fill();
 
-          // Haussmann Rooftops & Vintage Streetlamps
-          this.ctx.fillRect(mx + 200, my - 80, 90, 80);
-          this.ctx.fillRect(mx + 310, my - 95, 3, 95); // Streetlamp
-          this.ctx.fillStyle = '#f59e0b';
-          this.ctx.shadowColor = '#f59e0b';
-          this.ctx.shadowBlur = 10;
-          this.ctx.beginPath();
-          this.ctx.arc(mx + 311.5, my - 95, 7, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.shadowBlur = 0;
-        } else if (lvl.theme === 'india') {
-          // INDIA: Mughal Reflecting Pool & Cypress Trees
-          this.ctx.fillStyle = '#2b1033';
-          this.ctx.fillRect(0, my - 20, this.width, 20);
+            // Haussmann Rooftops & Vintage Streetlamps
+            this.ctx.fillRect(mx + 200, my - 80, 90, 80);
+            this.ctx.fillRect(mx + 310, my - 95, 3, 95); // Streetlamp
+            this.ctx.fillStyle = '#f59e0b';
+            this.ctx.shadowColor = '#f59e0b';
+            this.ctx.shadowBlur = 10;
+            this.ctx.beginPath();
+            this.ctx.arc(mx + 311.5, my - 95, 7, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.shadowBlur = 0;
+          } else if (lvl.theme === 'india') {
+            // INDIA: Mughal Reflecting Pool & Cypress Trees
+            this.ctx.fillStyle = '#2b1033';
+            this.ctx.fillRect(0, my - 20, this.width, 20);
 
-          // Columnar Cypress Trees
-          this.ctx.fillStyle = '#182d21';
-          this.ctx.beginPath();
-          this.ctx.ellipse(mx + 60, my - 80, 16, 60, 0, 0, Math.PI * 2);
-          this.ctx.ellipse(mx + 240, my - 80, 16, 60, 0, 0, Math.PI * 2);
-          this.ctx.fill();
-        } else if (lvl.theme === 'sydney') {
-          // SYDNEY: Harbour Water & Ferryboat
-          this.ctx.fillStyle = '#0b223d';
-          this.ctx.fillRect(0, my - 30, this.width, 30);
+            // Columnar Cypress Trees
+            this.ctx.fillStyle = '#182d21';
+            this.ctx.beginPath();
+            this.ctx.ellipse(mx + 60, my - 80, 16, 60, 0, 0, Math.PI * 2);
+            this.ctx.ellipse(mx + 240, my - 80, 16, 60, 0, 0, Math.PI * 2);
+            this.ctx.fill();
+          } else if (lvl.theme === 'sydney') {
+            // SYDNEY: Harbour Water & Ferryboat
+            this.ctx.fillStyle = '#0b223d';
+            this.ctx.fillRect(0, my - 30, this.width, 30);
 
-          // Ferryboat Silhouette
-          this.ctx.fillStyle = '#06b6d4';
-          this.ctx.fillRect(mx + 100, my - 35, 60, 15);
-          this.ctx.fillRect(mx + 115, my - 45, 30, 10);
-        } else if (lvl.theme === 'japan') {
-          // JAPAN: Red Torii Gate & Blooming Sakura Trees
-          this.ctx.fillStyle = '#f43f5e';
-          this.ctx.fillRect(mx, my - 120, 12, 120);
-          this.ctx.fillRect(mx + 80, my - 120, 12, 120);
-          this.ctx.fillRect(mx - 15, my - 120, 122, 16);
-          this.ctx.fillRect(mx - 5, my - 102, 102, 12);
+            // Ferryboat Silhouette
+            this.ctx.fillStyle = '#06b6d4';
+            this.ctx.fillRect(mx + 100, my - 35, 60, 15);
+            this.ctx.fillRect(mx + 115, my - 45, 30, 10);
+          } else if (lvl.theme === 'japan') {
+            // JAPAN: Red Torii Gate & Blooming Sakura Trees
+            this.ctx.fillStyle = '#f43f5e';
+            this.ctx.fillRect(mx, my - 120, 12, 120);
+            this.ctx.fillRect(mx + 80, my - 120, 12, 120);
+            this.ctx.fillRect(mx - 15, my - 120, 122, 16);
+            this.ctx.fillRect(mx - 5, my - 102, 102, 12);
 
-          // Cherry Blossom Canopy
-          this.ctx.fillStyle = 'rgba(244, 63, 94, 0.4)';
-          this.ctx.beginPath();
-          this.ctx.arc(mx + 220, my - 90, 45, 0, Math.PI * 2);
-          this.ctx.fill();
-        } else if (lvl.theme === 'london') {
-          // LONDON: River Thames & Red Bus Silhouette
-          this.ctx.fillStyle = '#101726';
-          this.ctx.fillRect(0, my - 25, this.width, 25);
+            // Cherry Blossom Canopy
+            this.ctx.fillStyle = 'rgba(244, 63, 94, 0.4)';
+            this.ctx.beginPath();
+            this.ctx.arc(mx + 220, my - 90, 45, 0, Math.PI * 2);
+            this.ctx.fill();
+          } else if (lvl.theme === 'london') {
+            // LONDON: River Thames & Red Bus Silhouette
+            this.ctx.fillStyle = '#101726';
+            this.ctx.fillRect(0, my - 25, this.width, 25);
 
-          // Red Double-Decker Bus
-          this.ctx.fillStyle = '#ef4444';
-          this.ctx.fillRect(mx + 140, my - 45, 55, 30);
-          this.ctx.fillStyle = '#fbbf24';
-          this.ctx.fillRect(mx + 145, my - 38, 45, 6); // Windows
-        } else if (lvl.theme === 'newyork') {
-          // NEW YORK: Hudson River Water & Yellow Taxi Silhouette
-          this.ctx.fillStyle = '#0e262a';
-          this.ctx.fillRect(0, my - 25, this.width, 25);
+            // Red Double-Decker Bus
+            this.ctx.fillStyle = '#ef4444';
+            this.ctx.fillRect(mx + 140, my - 45, 55, 30);
+            this.ctx.fillStyle = '#fbbf24';
+            this.ctx.fillRect(mx + 145, my - 38, 45, 6); // Windows
+          } else if (lvl.theme === 'newyork') {
+            // NEW YORK: Hudson River Water & Yellow Taxi Silhouette
+            this.ctx.fillStyle = '#0e262a';
+            this.ctx.fillRect(0, my - 25, this.width, 25);
 
-          // Yellow Taxi
-          this.ctx.fillStyle = '#f59e0b';
-          this.ctx.fillRect(mx + 160, my - 32, 45, 18);
-        } else {
-          // Standard Trees / Vegetation
-          this.ctx.fillStyle = lvl.treeColor;
-          this.ctx.beginPath();
-          this.ctx.arc(mx, my - 80, 32, 0, Math.PI * 2);
-          this.ctx.arc(mx + 25, my - 95, 26, 0, Math.PI * 2);
-          this.ctx.fill();
-          this.ctx.fillRect(mx + 8, my - 45, 12, 45);
+            // Yellow Taxi
+            this.ctx.fillStyle = '#f59e0b';
+            this.ctx.fillRect(mx + 160, my - 32, 45, 18);
+          } else {
+            // Standard Trees / Vegetation
+            this.ctx.fillStyle = lvl.treeColor;
+            this.ctx.beginPath();
+            this.ctx.arc(mx, my - 80, 32, 0, Math.PI * 2);
+            this.ctx.arc(mx + 25, my - 95, 26, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.fillRect(mx + 8, my - 45, 12, 45);
+          }
         }
       }
 
