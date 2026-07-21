@@ -2877,20 +2877,22 @@
     const ANOMALIES_SOLVED_KEY = "chronicle_anomalies_found";
     const USER_XP_KEY = "chronicle_user_xp";
 
-    // 11 Unique Anomalies for each landmark
+    // 11 Unique Photorealistic Anomalies for each landmark
     const ANOMALIES_DATA = {
       "big-ben": {
         name: "Modern Smartphone",
         icon: "📱",
+        svgGraphic: `<svg width="34" height="62" viewBox="0 0 42 78" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="phoneBody" x1="0" y1="0" x2="42" y2="78" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1f242d"/><stop offset="50%" stop-color="#0b0d11"/><stop offset="100%" stop-color="#15181e"/></linearGradient><linearGradient id="phoneScreen" x1="0" y1="0" x2="0" y2="70" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#080a0f"/><stop offset="100%" stop-color="#121620"/></linearGradient><linearGradient id="phoneGlassGlare" x1="0" y1="0" x2="38" y2="70" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="rgba(255,255,255,0.22)"/><stop offset="30%" stop-color="rgba(255,255,255,0.04)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></linearGradient></defs><ellipse cx="21" cy="74" rx="20" ry="4" fill="rgba(0,0,0,0.65)"/><rect x="2" y="2" width="38" height="72" rx="7" fill="url(#phoneBody)" stroke="#3a4150" stroke-width="0.8"/><rect x="4" y="5" width="34" height="66" rx="4" fill="url(#phoneScreen)"/><polygon points="4,5 28,5 4,50" fill="url(#phoneGlassGlare)"/><circle cx="21" cy="8" r="1.5" fill="#050505" stroke="#1c2028" stroke-width="0.5"/></svg>`,
         era: "1890",
         coords: { x: 26, y: 78 },
         hint1: "Look near the lower left cobblestones in 1890 London.",
         hint2Region: { left: "16%", top: "68%", width: "140px", height: "140px" },
-        desc: "A glowing futuristic smartphone lying on 19th-century Victorian cobblestone."
+        desc: "A sleek glass smartphone resting in Victorian cobblestone gaps."
       },
       "eiffel-tower": {
         name: "Drone Hexacopter",
         icon: "🚁",
+        svgGraphic: `<svg width="56" height="40" viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="droneBody" x1="0" y1="0" x2="68" y2="48" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2a2e37"/><stop offset="100%" stop-color="#111317"/></linearGradient></defs><ellipse cx="34" cy="44" rx="26" ry="3" fill="rgba(0,0,0,0.4)"/><line x1="10" y1="12" x2="58" y2="36" stroke="#1c1f26" stroke-width="3" stroke-linecap="round"/><line x1="58" y1="12" x2="10" y2="36" stroke="#1c1f26" stroke-width="3" stroke-linecap="round"/><rect x="24" y="16" width="20" height="16" rx="5" fill="url(#droneBody)" stroke="#424957" stroke-width="0.8"/><circle cx="34" cy="24" r="3.5" fill="#080a0d" stroke="#00f0ff" stroke-width="0.5"/><circle cx="10" cy="12" r="7" stroke="#333a46" stroke-width="1.2" fill="rgba(0,0,0,0.3)"/><circle cx="58" cy="12" r="7" stroke="#333a46" stroke-width="1.2" fill="rgba(0,0,0,0.3)"/><circle cx="10" cy="36" r="7" stroke="#333a46" stroke-width="1.2" fill="rgba(0,0,0,0.3)"/><circle cx="58" cy="36" r="7" stroke="#333a46" stroke-width="1.2" fill="rgba(0,0,0,0.3)"/></svg>`,
         era: "1890",
         coords: { x: 74, y: 22 },
         hint1: "Look high near the sky above the Seine river.",
@@ -2900,6 +2902,7 @@
       "colosseum": {
         name: "VR Headset",
         icon: "🥽",
+        svgGraphic: `<svg width="54" height="34" viewBox="0 0 68 42" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="vrBody" x1="0" y1="0" x2="68" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2d333f"/><stop offset="100%" stop-color="#14171d"/></linearGradient><linearGradient id="vrFrontVisor" x1="0" y1="0" x2="50" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0f131a"/><stop offset="50%" stop-color="#1d2430"/><stop offset="100%" stop-color="#0f131a"/></linearGradient></defs><ellipse cx="34" cy="38" rx="28" ry="4" fill="rgba(0,0,0,0.6)"/><path d="M 8 20 C 8 8, 60 8, 60 20" stroke="#1a1d24" stroke-width="4" fill="none"/><rect x="10" y="14" width="48" height="22" rx="7" fill="url(#vrBody)" stroke="#454f61" stroke-width="0.8"/><rect x="14" y="17" width="40" height="16" rx="5" fill="url(#vrFrontVisor)"/><polygon points="14,17 32,17 18,33" fill="rgba(255,255,255,0.12)"/><circle cx="18" cy="21" r="1.5" fill="#08090c"/><circle cx="50" cy="21" r="1.5" fill="#08090c"/></svg>`,
         era: "1890",
         coords: { x: 42, y: 68 },
         hint1: "Search near the arches on the ground level of the amphitheatre.",
@@ -2909,6 +2912,7 @@
       "statue-of-liberty": {
         name: "Electric Scooter",
         icon: "🛴",
+        svgGraphic: `<svg width="36" height="62" viewBox="0 0 44 74" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="22" cy="71" rx="18" ry="3.5" fill="rgba(0,0,0,0.6)"/><rect x="12" y="6" width="20" height="3" rx="1.5" fill="#20242c" stroke="#3d4554" stroke-width="0.5"/><rect x="20" y="8" width="4" height="52" rx="1" fill="#181c23" stroke="#323a48" stroke-width="0.5"/><rect x="10" y="58" width="24" height="6" rx="2" fill="#282d38" stroke="#444d5e" stroke-width="0.5"/><circle cx="22" cy="66" r="6" stroke="#111317" stroke-width="3" fill="#2e3440"/><circle cx="30" cy="65" r="5" stroke="#111317" stroke-width="2.5" fill="#2e3440"/></svg>`,
         era: "1890",
         coords: { x: 78, y: 76 },
         hint1: "Look near the harbor pier at the bottom right.",
@@ -2918,6 +2922,7 @@
       "pyramids-of-giza": {
         name: "Plastic Water Bottle",
         icon: "🍾",
+        svgGraphic: `<svg width="26" height="52" viewBox="0 0 32 64" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bottlePlastic" x1="0" y1="0" x2="32" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="rgba(200,235,255,0.45)"/><stop offset="50%" stop-color="rgba(150,210,245,0.2)"/><stop offset="100%" stop-color="rgba(220,245,255,0.4)"/></linearGradient></defs><ellipse cx="16" cy="60" rx="12" ry="3" fill="rgba(0,0,0,0.55)"/><rect x="7" y="18" width="18" height="40" rx="4" fill="url(#bottlePlastic)" stroke="rgba(255,255,255,0.6)" stroke-width="0.8"/><rect x="11" y="10" width="10" height="8" rx="1.5" fill="url(#bottlePlastic)" stroke="rgba(255,255,255,0.6)" stroke-width="0.6"/><rect x="10" y="5" width="12" height="6" rx="1" fill="#1d6bb8" stroke="#12477d" stroke-width="0.5"/><line x1="10" y1="20" x2="10" y2="54" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" stroke-linecap="round"/></svg>`,
         era: "1890",
         coords: { x: 22, y: 74 },
         hint1: "Look down near the desert sand dunes on the left.",
@@ -2927,6 +2932,7 @@
       "sydney-opera-house": {
         name: "Wireless Headphones",
         icon: "🎧",
+        svgGraphic: `<svg width="48" height="48" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="headphoneEar" x1="0" y1="0" x2="20" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#282d37"/><stop offset="100%" stop-color="#12151b"/></linearGradient></defs><ellipse cx="30" cy="54" rx="24" ry="4" fill="rgba(0,0,0,0.65)"/><path d="M 12 34 C 12 10, 48 10, 48 34" stroke="#191c24" stroke-width="5" stroke-linecap="round" fill="none"/><rect x="6" y="28" width="14" height="22" rx="7" fill="url(#headphoneEar)" stroke="#3e4757" stroke-width="0.8"/><rect x="40" y="28" width="14" height="22" rx="7" fill="url(#headphoneEar)" stroke="#3e4757" stroke-width="0.8"/></svg>`,
         era: "1890",
         coords: { x: 36, y: 80 },
         hint1: "Examine the wooden harbor dock planks at Bennelong Point.",
@@ -2936,6 +2942,7 @@
       "taj-mahal": {
         name: "Modern Laptop",
         icon: "💻",
+        svgGraphic: `<svg width="58" height="38" viewBox="0 0 76 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="laptopLid" x1="0" y1="0" x2="76" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#8a95a5"/><stop offset="50%" stop-color="#56606e"/><stop offset="100%" stop-color="#363d47"/></linearGradient></defs><ellipse cx="38" cy="44" rx="34" ry="3.5" fill="rgba(0,0,0,0.6)"/><rect x="6" y="8" width="64" height="34" rx="3" fill="url(#laptopLid)" stroke="#a3b0c2" stroke-width="0.8"/><rect x="14" y="40" width="48" height="3" rx="1" fill="#20242b"/><polygon points="6,8 40,8 16,42" fill="rgba(255,255,255,0.18)"/></svg>`,
         era: "1890",
         coords: { x: 62, y: 72 },
         hint1: "Check near the edge of the royal garden reflecting pool.",
@@ -2945,6 +2952,7 @@
       "great-wall": {
         name: "Digital SLR Camera",
         icon: "📷",
+        svgGraphic: `<svg width="52" height="40" viewBox="0 0 68 52" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cameraBody" x1="0" y1="0" x2="68" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2a2e38"/><stop offset="100%" stop-color="#121419"/></linearGradient></defs><ellipse cx="34" cy="48" rx="28" ry="4" fill="rgba(0,0,0,0.65)"/><rect x="8" y="14" width="52" height="32" rx="5" fill="url(#cameraBody)" stroke="#464f61" stroke-width="0.8"/><path d="M 26 14 L 32 6 L 42 6 L 48 14 Z" fill="url(#cameraBody)" stroke="#464f61" stroke-width="0.6"/><circle cx="34" cy="30" r="14" fill="#181b22" stroke="#485366" stroke-width="1.5"/><circle cx="34" cy="30" r="9" fill="#090b0e" stroke="#00f0ff" stroke-width="0.5"/><ellipse cx="32" cy="27" rx="4" ry="2" fill="rgba(255,255,255,0.3)"/></svg>`,
         era: "1890",
         coords: { x: 72, y: 48 },
         hint1: "Look along the stone watchtower ledge in the mountains.",
@@ -2954,6 +2962,7 @@
       "burj-khalifa": {
         name: "Traffic Light Signal",
         icon: "🚥",
+        svgGraphic: `<svg width="28" height="68" viewBox="0 0 34 84" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="17" cy="80" rx="14" ry="3.5" fill="rgba(0,0,0,0.55)"/><rect x="15" y="42" width="4" height="38" fill="#1c2028" stroke="#384152" stroke-width="0.5"/><rect x="8" y="6" width="18" height="38" rx="3" fill="#252a35" stroke="#454f63" stroke-width="0.8"/><circle cx="17" cy="13" r="4" fill="#8f1d1d" stroke="#5c1111" stroke-width="0.5"/><circle cx="17" cy="25" r="4" fill="#9e851a" stroke="#63530e" stroke-width="0.5"/><circle cx="17" cy="37" r="4" fill="#167a48" stroke="#0c472a" stroke-width="0.5"/></svg>`,
         era: "1890",
         coords: { x: 30, y: 65 },
         hint1: "Look near the desert settlement shore path.",
@@ -2963,6 +2972,7 @@
       "tokyo-tower": {
         name: "Smart Watch",
         icon: "⌚",
+        svgGraphic: `<svg width="34" height="54" viewBox="0 0 44 68" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="watchScreen" x1="0" y1="0" x2="0" y2="30" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0c0e14"/><stop offset="100%" stop-color="#181d29"/></linearGradient></defs><ellipse cx="22" cy="65" rx="16" ry="3" fill="rgba(0,0,0,0.6)"/><rect x="14" y="4" width="16" height="60" rx="3" fill="#1a1e27"/><rect x="7" y="19" width="30" height="30" rx="7" fill="#292f3d" stroke="#4a556e" stroke-width="0.8"/><rect x="10" y="22" width="24" height="24" rx="4" fill="url(#watchScreen)"/><polygon points="10,22 26,22 10,38" fill="rgba(255,255,255,0.15)"/></svg>`,
         era: "1890",
         coords: { x: 54, y: 72 },
         hint1: "Look near the wooden temple courtyard steps.",
@@ -2972,6 +2982,7 @@
       "tbilisi": {
         name: "Solar Charging Bank",
         icon: "🔋",
+        svgGraphic: `<svg width="54" height="38" viewBox="0 0 68 46" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="34" cy="42" rx="28" ry="3.5" fill="rgba(0,0,0,0.65)"/><rect x="6" y="8" width="56" height="32" rx="3" fill="#1b1f27" stroke="#3c4557" stroke-width="0.8"/><rect x="10" y="12" width="14" height="24" rx="1" fill="#0d1829" stroke="#1d304a" stroke-width="0.5"/><rect x="27" y="12" width="14" height="24" rx="1" fill="#0d1829" stroke="#1d304a" stroke-width="0.5"/><rect x="44" y="12" width="14" height="24" rx="1" fill="#0d1829" stroke="#1d304a" stroke-width="0.5"/><line x1="10" y1="14" x2="24" y2="34" stroke="rgba(0,240,255,0.25)" stroke-width="0.8"/><line x1="27" y1="14" x2="41" y2="34" stroke="rgba(0,240,255,0.25)" stroke-width="0.8"/><line x1="44" y1="14" x2="58" y2="34" stroke="rgba(0,240,255,0.25)" stroke-width="0.8"/></svg>`,
         era: "1890",
         coords: { x: 66, y: 58 },
         hint1: "Check near the Narikala fortress brick ruins.",
@@ -3319,7 +3330,7 @@
       node.className = `anomaly-target-node ${isSolved ? 'solved' : ''}`;
       node.style.left = `${anomalyInfo.coords.x}%`;
       node.style.top = `${anomalyInfo.coords.y}%`;
-      node.innerHTML = `<span class="text-3xl sm:text-4xl filter drop-shadow-[0_0_12px_rgba(0,240,255,0.9)] pointer-events-none select-none">${anomalyInfo.icon}</span>`;
+      node.innerHTML = anomalyInfo.svgGraphic || `<span class="text-3xl">${anomalyInfo.icon}</span>`;
       node.title = isSolved ? `Restored: ${anomalyInfo.name}` : `Click to Restore ${anomalyInfo.name}`;
 
       const triggerSolve = (e) => {
@@ -3499,7 +3510,7 @@
       node.className = `anomaly-target-node ${isSolved ? 'solved' : ''}`;
       node.style.left = `${anomalyInfo.coords.x}%`;
       node.style.top = `${anomalyInfo.coords.y}%`;
-      node.innerHTML = `<span class="text-3xl sm:text-4xl filter drop-shadow-[0_0_15px_rgba(0,240,255,0.95)] pointer-events-none select-none">${anomalyInfo.icon}</span>`;
+      node.innerHTML = anomalyInfo.svgGraphic || `<span class="text-3xl">${anomalyInfo.icon}</span>`;
       node.title = isSolved ? `Restored: ${anomalyInfo.name}` : `Click to Restore ${anomalyInfo.name}`;
 
       const triggerSolve = (e) => {

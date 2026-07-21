@@ -590,27 +590,24 @@ dialog[open] {
 .anomaly-target-node {
     position: absolute;
     z-index: 40 !important;
-    cursor: pointer !important;
+    cursor: crosshair !important;
     user-select: none;
     pointer-events: auto !important;
     touch-action: manipulation;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transform: translate(-50%, -50%);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+    transition: filter 0.4s ease, opacity 0.4s ease;
+    /* Photorealistic blend with historical photo lighting */
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.8)) sepia(0.55) contrast(1.1) brightness(0.85);
 }
 
-.anomaly-target-node:hover {
-    transform: translate(-50%, -50%) scale(1.35) rotate(6deg);
-    filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.9));
+/* Pre-discovery: NO hover scale, NO hover outline, NO tell-tale glow */
+.anomaly-target-node:not(.solved):hover {
+    filter: drop-shadow(2px 5px 8px rgba(0, 0, 0, 0.85)) sepia(0.55) contrast(1.15) brightness(0.88);
 }
 
+/* Post-Discovery (Solved State): Glowing outline & success animation */
 .anomaly-target-node.solved {
-    filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.9));
+    filter: drop-shadow(0 0 22px rgba(16, 185, 129, 1)) drop-shadow(0 0 10px rgba(212, 175, 85, 0.8));
     animation: anomaly-solved-glow 2s infinite ease-in-out;
 }
 
