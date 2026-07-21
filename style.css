@@ -441,7 +441,7 @@ dialog[open] {
 }
 
 /* Full Screen Portal Loader Overlay */
-#portal-warp-modal {
+#portal-loader {
     position: fixed;
     inset: 0;
     z-index: 9999;
@@ -456,7 +456,7 @@ dialog[open] {
     pointer-events: none;
 }
 
-#portal-warp-modal.active {
+#portal-loader.active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -521,13 +521,13 @@ dialog[open] {
 }
 
 /* Time Passport Modal Overlay */
-#passport-modal.open {
+#time-passport-modal.open {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
 }
 
-#passport-modal {
+#time-passport-modal {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -705,7 +705,7 @@ dialog[open] {
 
 /* ==================== TIME EXPLORER ADVENTURE ENDLESS RUNNER ==================== */
 
-#mini-game-overlay {
+#time-explorer-game-modal {
     overscroll-behavior: contain;
 }
 

@@ -67,10 +67,10 @@
         <a href="#how-it-works" class="text-white/60 hover:text-white transition">How It Works</a>
       </div>
       <div class="flex items-center gap-3" style="position:relative;z-index:100">
-        <button id="passport-btn" data-action="passport" class="font-label-tech text-xs px-3.5 py-2 border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 rounded flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,175,85,0.15)] transition duration-300 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
+        <button onclick="toggleTimePassport(true)" class="font-label-tech text-xs px-3.5 py-2 border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 rounded flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,175,85,0.15)] transition duration-300 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
           <span>📜</span> PASSPORT
         </button>
-        <button id="navWarpButton" data-action="portal" class="font-label-tech text-xs px-4 py-2 border border-primary/45 text-primary hover:bg-primary/10 hover:border-primary rounded shadow-[0_0_15px_rgba(0,240,255,0.15)] transition duration-300 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
+        <button onclick="triggerDefaultWarp()" class="font-label-tech text-xs px-4 py-2 border border-primary/45 text-primary hover:bg-primary/10 hover:border-primary rounded shadow-[0_0_15px_rgba(0,240,255,0.15)] transition duration-300 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
           INITIATE WARP
         </button>
       </div>
@@ -100,10 +100,10 @@
       </p>
 
       <div class="flex flex-col sm:flex-row items-center gap-4 justify-center" style="position:relative;z-index:100">
-        <button id="initiate-portal-jump-btn" data-action="portal" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_45px_rgba(0,240,255,0.55)] transform hover:-translate-y-0.5 transition duration-300 uppercase cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
+        <button id="initiate-portal-jump-btn" onclick="triggerDefaultWarp()" class="font-label-tech text-sm px-8 py-4 bg-primary hover:bg-primary/95 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.35)] hover:shadow-[0_0_45px_rgba(0,240,255,0.55)] transform hover:-translate-y-0.5 transition duration-300 uppercase cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
           Initiate Portal Jump
         </button>
-        <button id="hero-play-minigame-btn" data-action="mini-game" class="font-label-tech text-sm px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_45px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5 transition duration-300 uppercase flex items-center gap-2 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
+        <button id="hero-play-minigame-btn" onclick="openTimeExplorerModal()" class="font-label-tech text-sm px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-black font-bold tracking-widest rounded-lg shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_45px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5 transition duration-300 uppercase flex items-center gap-2 cursor-pointer" style="position:relative;z-index:100;pointer-events:auto">
           <span>🎮</span>
           <span>Play Mini Game</span>
         </button>
@@ -617,7 +617,7 @@
     </div>
 
     <!-- ==================== TIME EXPLORER ADVENTURE MINI-GAME MODAL ==================== -->
-    <div id="mini-game-overlay" class="fixed inset-0 z-[120] bg-black/95 backdrop-blur-xl flex flex-col justify-between hidden transition-opacity duration-300 select-none">
+    <div id="time-explorer-game-modal" class="fixed inset-0 z-[120] bg-black/95 backdrop-blur-xl flex flex-col justify-between hidden transition-opacity duration-300 select-none">
       <!-- Modal Top Navigation Header -->
       <header class="px-6 py-4 border-b border-white/10 bg-black/80 flex items-center justify-between z-10 shrink-0">
         <div class="flex items-center gap-3">
@@ -1219,7 +1219,7 @@
   </div>
 
   <!-- TIME PASSPORT & ACHIEVEMENTS MODAL -->
-  <div id="passport-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-md">
+  <div id="time-passport-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-md">
     <div class="passport-modal-content w-full max-w-4xl max-h-[90vh] rounded-2xl flex flex-col overflow-hidden relative border border-amber-500/40">
       
       <!-- Modal Header -->
@@ -1290,7 +1290,7 @@
   </div>
 
   <!-- 7. PORTAL TIME WORMHOLE LOADER -->
-  <div id="portal-warp-modal" data-alias="portal-modal" class="fixed inset-0 z-[9999] bg-black flex flex-col align-items-center justify-content-center transition opacity-0 invisible pointer-events-none" style="opacity:0;visibility:hidden;pointer-events:none;">
+  <div id="portal-loader" class="fixed inset-0 z-[9999] bg-black flex flex-col align-items-center justify-content-center transition opacity-0 invisible pointer-events-none" style="opacity:0;visibility:hidden;pointer-events:none;">
     <canvas id="portal-canvas" class="absolute inset-0 w-full h-full"></canvas>
     <div class="relative z-10 text-center space-y-5">
       <!-- Rotating Time Portal Ring -->
@@ -2848,7 +2848,7 @@
 
       // If canvas still unavailable, skip animation and go straight to callback
       if (!portalCanvas || !portalCtx) {
-        const loaderEl = document.getElementById('portal-warp-modal');
+        const loaderEl = document.getElementById('portal-loader');
         if (loaderEl) loaderEl.classList.add('active');
         setTimeout(() => {
           if (loaderEl) loaderEl.classList.remove('active');
@@ -2872,7 +2872,7 @@
         });
       }
 
-      const loaderEl = document.getElementById('portal-warp-modal');
+      const loaderEl = document.getElementById('portal-loader');
       if (loaderEl) loaderEl.classList.add('active');
       playPortalWarpSound();
       animatePortalWarp(onComplete);
@@ -2911,14 +2911,14 @@
       if (portalProgress > 100) {
         portalProgress = 100;
         portalActive = false;
-        document.getElementById('portal-warp-modal').classList.remove('active');
+        document.getElementById('portal-loader').classList.remove('active');
         if (onComplete) onComplete();
         return;
       }
 
       // Update Loader telemetry texts
       document.getElementById('portal-progress').style.width = `${portalProgress}%`;
-      const telemetryEl = document.querySelector('#portal-warp-modal .font-mono');
+      const telemetryEl = document.querySelector('#portal-loader .font-mono');
       if (telemetryEl) telemetryEl.innerText = `CALIBRATING TACHYON FLUX: ${Math.floor(portalProgress)}%`;
 
       const states = [
@@ -3038,6 +3038,9 @@
             window.dispatchEvent(new Event('resize'));
           }
 
+          // Boot Three.js particle system + TemporalEngine (first visit only)
+          if (typeof window.bootChronicleView === 'function') window.bootChronicleView();
+
           if (typeof url === 'string' && url) {
             window.location.href = url;
           }
@@ -3054,6 +3057,8 @@
         if (mainContainer && mainContainer.classList.contains('hidden')) {
           mainContainer.classList.remove('hidden');
           window.dispatchEvent(new Event('resize'));
+          // Boot Three.js + TemporalEngine in fallback path too
+          if (typeof window.bootChronicleView === 'function') window.bootChronicleView();
         }
         if (typeof url === 'string' && url) {
           window.location.href = url;
@@ -4069,7 +4074,7 @@
     }
 
     function toggleTimePassport(open) {
-      const modal = document.getElementById('passport-modal');
+      const modal = document.getElementById('time-passport-modal');
       if (!modal) return;
 
       if (open) {
@@ -4995,7 +5000,7 @@
     // ==================== MINI-GAME UI & MODAL CONTROLLERS ====================
 
     function openTimeExplorerModal() {
-      const modal = document.getElementById('mini-game-overlay');
+      const modal = document.getElementById('time-explorer-game-modal');
       const selectScreen = document.getElementById('runner-level-select-screen');
       const gameplayScreen = document.getElementById('runner-gameplay-screen');
       const summaryModal = document.getElementById('runner-summary-modal');
@@ -5015,7 +5020,7 @@
         runnerEngineInstance.stop();
         runnerEngineInstance = null;
       }
-      const modal = document.getElementById('mini-game-overlay');
+      const modal = document.getElementById('time-explorer-game-modal');
       if (modal) modal.classList.add('hidden');
     }
 
