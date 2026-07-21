@@ -3160,7 +3160,7 @@
           hudTitle.innerText = "TIMELINE STABLE";
           hudTitle.className = "font-label-tech text-[10px] text-emerald-400 tracking-wider uppercase font-bold";
         }
-        if (hudName) hudName.innerText = `Anomaly Restored (+50 XP)`;
+        if (hudName) hudName.innerText = `${anomalyInfo.name} Restored (+50 XP)`;
         if (hudHint) hudHint.innerText = `You successfully restored the ${anomalyInfo.name}! Timeline balance is optimal.`;
         if (hintBtn) hintBtn.style.display = 'none';
       } else {
@@ -3175,15 +3175,17 @@
         if (hintLvlText) hintLvlText.innerText = "LVL 1";
       }
 
-      // Attach overlay target to 1890 era image layer (or active layer)
-      const targetContainer = document.getElementById('past-img-layer');
-      if (!targetContainer) return;
+      // Target active era column (#era-1890 as primary historical view)
+      const eraSection = document.getElementById('era-1890');
+      if (!eraSection) return;
 
-      // Remove existing nodes
-      const oldNode = document.getElementById('anomaly-target-node');
-      if (oldNode) oldNode.remove();
-      const oldRadar = document.getElementById('anomaly-radar-region');
-      if (oldRadar) oldRadar.remove();
+      // Clean up previous overlays across all era sections
+      document.querySelectorAll('.anomaly-search-overlay').forEach(el => el.remove());
+
+      // Create dedicated search overlay at higher z-index (z-25) inside era section
+      const overlay = document.createElement('div');
+      overlay.className = 'anomaly-search-overlay absolute inset-0 z-25 pointer-events-auto cursor-crosshair overflow-hidden rounded-lg';
+      eraSection.appendChild(overlay);
 
       // Create Target Node
       const node = document.createElement('div');
@@ -3191,32 +3193,46 @@
       node.className = `anomaly-target-node ${isSolved ? 'solved' : ''}`;
       node.style.left = `${anomalyInfo.coords.x}%`;
       node.style.top = `${anomalyInfo.coords.y}%`;
-      node.innerHTML = `<span class="text-3xl filter drop-shadow-[0_0_10px_rgba(0,240,255,0.7)]">${anomalyInfo.icon}</span>`;
-      node.title = isSolved ? `Restored: ${anomalyInfo.name}` : `Inspect Anomaly`;
+      node.innerHTML = `<span class="text-3xl sm:text-4xl filter drop-shadow-[0_0_12px_rgba(0,240,255,0.9)] pointer-events-none select-none">${anomalyInfo.icon}</span>`;
+      node.title = isSolved ? `Restored: ${anomalyInfo.name}` : `Click to Restore ${anomalyInfo.name}`;
 
-      node.onclick = (e) => {
-        e.stopPropagation();
+      const triggerSolve = (e) => {
+        if (e) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+        const clientX = (e && e.touches && e.touches[0]) ? e.touches[0].clientX : (e ? e.clientX : window.innerWidth / 2);
+        const clientY = (e && e.touches && e.touches[0]) ? e.touches[0].clientY : (e ? e.clientY : window.innerHeight / 2);
+
         if (!isSolved) {
-          solveAnomaly(place.id, e.clientX, e.clientY);
+          solveAnomaly(place.id, clientX, clientY);
         } else {
           showToast("Timeline Stable", `You have already restored the ${anomalyInfo.name} (+50 XP)!`, "info");
         }
       };
 
-      targetContainer.appendChild(node);
+      node.addEventListener('click', triggerSolve);
+      node.addEventListener('touchstart', triggerSolve, { passive: false });
 
-      // Attach miss-click handler to container
-      targetContainer.onclick = (e) => {
-        if (!isSolved && e.target !== node && !node.contains(e.target)) {
-          spawnMissClickX(e, targetContainer);
+      overlay.appendChild(node);
+
+      // Attach miss-click handler to overlay background
+      const handleMissClick = (e) => {
+        const target = e.target;
+        if (target !== node && !node.contains(target)) {
+          const clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+          const clientY = (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY;
+          spawnMissClickX(clientX, clientY, overlay);
         }
       };
+
+      overlay.addEventListener('click', handleMissClick);
     }
 
-    function spawnMissClickX(e, container) {
+    function spawnMissClickX(clientX, clientY, container) {
       const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
 
       const missEl = document.createElement('div');
       missEl.className = 'miss-click-x';
@@ -3252,8 +3268,8 @@
         if (hudHint) hudHint.innerText = `💡 Hint 2: Soft radar scanner highlighted around general sector.`;
         if (hintLvlText) hintLvlText.innerText = "LVL 3";
 
-        const targetContainer = document.getElementById('past-img-layer');
-        if (targetContainer) {
+        const overlay = document.querySelector('.anomaly-search-overlay');
+        if (overlay) {
           let oldRadar = document.getElementById('anomaly-radar-region');
           if (!oldRadar) {
             oldRadar = document.createElement('div');
@@ -3263,7 +3279,7 @@
             oldRadar.style.top = anomalyInfo.hint2Region.top;
             oldRadar.style.width = anomalyInfo.hint2Region.width;
             oldRadar.style.height = anomalyInfo.hint2Region.height;
-            targetContainer.appendChild(oldRadar);
+            overlay.appendChild(oldRadar);
           }
         }
       } else if (currentHintLevel >= 3) {
