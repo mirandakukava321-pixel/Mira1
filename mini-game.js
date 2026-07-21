@@ -569,6 +569,7 @@
       this.state = 'LEVELSELECT';
       if (this.animId) cancelAnimationFrame(this.animId);
 
+      this.clearLevelBackground();
       this.updateBagBadgesUI();
       this.renderLevelGrid();
 
@@ -622,6 +623,25 @@
       });
     }
 
+    // Deterministic Background Load Guard & Logging
+    loadLevelBackground(levelId) {
+      if (this.backgroundLoadedForLevel === levelId) return;
+
+      if (this.backgroundLoadedForLevel !== null) {
+        console.log("Background removed:", this.backgroundLoadedForLevel);
+      }
+
+      console.log("Background created:", levelId);
+      this.backgroundLoadedForLevel = levelId;
+    }
+
+    clearLevelBackground() {
+      if (this.backgroundLoadedForLevel !== null) {
+        console.log("Background removed:", this.backgroundLoadedForLevel);
+        this.backgroundLoadedForLevel = null;
+      }
+    }
+
     selectLevel(index) {
       this.currentLevelIndex = index;
       this.currentLevel = LEVELS[index];
@@ -640,6 +660,8 @@
       if (this.startScreen) this.startScreen.classList.remove('hidden');
 
       this.state = 'START';
+      this.clearLevelBackground();
+      this.loadLevelBackground(this.currentLevel.id);
       this.resetEntities();
       this.render();
     }
