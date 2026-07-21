@@ -705,7 +705,7 @@ dialog[open] {
 
 /* ==================== TIME EXPLORER ADVENTURE ENDLESS RUNNER ==================== */
 
-#mini-game-modal {
+#mini-game-overlay {
     overscroll-behavior: contain;
 }
 

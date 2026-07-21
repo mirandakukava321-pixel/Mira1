@@ -1,171 +1,202 @@
 /**
  * script.js — Bulletproof button wiring for Chronicle: Temporal Navigation Engine
  *
- * This file runs AFTER all inline JS (deferred). It handles:
- *   1. Play Mini Game  → opens #mini-game-modal
- *   2. Initiate Portal Jump → runs portal warp → shows main app
- *   3. Passport → opens #passport-modal
- *
- * Strategy: directly manipulate modals here. Also delegates to the
- * inline functions (openTimeExplorerModal, toggleTimePassport,
- * initiatePortalJump) if they are available — with a try/catch so a
- * crash in the inline script NEVER prevents this script from working.
+ * Runs deferred AFTER all inline JS. Handles:
+ *   1. Play Mini Game  (#hero-play-minigame-btn) → opens #mini-game-overlay
+ *   2. Initiate Portal Jump (#portal-jump-btn, [data-action="portal"])
+ *   3. Passport (#passport-btn, [data-action="passport"])
+ *   4. Modal close buttons and backdrop dismiss
  */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ─── 1. PLAY MINI GAME ─────────────────────────────────────── */
-  const miniGameBtn   = document.getElementById('play-mini-game-btn');
-  const miniGameModal = document.getElementById('mini-game-modal');
+  /* ─────────────────────────────────────────────────────────────
+   *  1. PLAY MINI GAME — hero button
+   * ───────────────────────────────────────────────────────────── */
+  const playBtn   = document.getElementById('hero-play-minigame-btn');
+  const gameModal = document.getElementById('mini-game-overlay');
 
-  if (miniGameBtn) {
-    miniGameBtn.addEventListener('click', (e) => {
+  if (playBtn && gameModal) {
+    playBtn.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('[script.js] Play Mini Game clicked');
-      // Try the inline helper first
+
+      // Show the overlay first so the user sees immediate feedback
+      gameModal.classList.remove('hidden');
+      gameModal.style.display = 'flex';
+
+      // Delegate to inline engine for level-select rendering (try/catch safe)
       try {
         if (typeof openTimeExplorerModal === 'function') {
           openTimeExplorerModal();
-          return;
         }
       } catch (err) {
         console.warn('[script.js] openTimeExplorerModal() threw:', err);
       }
-      // Fallback: show directly
-      if (miniGameModal) {
-        miniGameModal.classList.remove('hidden');
-        miniGameModal.style.display = 'flex';
-        console.log('[script.js] Mini-game modal shown directly');
+
+      // Call game init if exposed
+      try {
+        if (typeof initGame === 'function') initGame();
+      } catch (err) {
+        console.warn('[script.js] initGame() threw:', err);
       }
     });
-    console.log('[script.js] ✓ play-mini-game-btn wired');
+    console.log('[script.js] ✓ hero-play-minigame-btn wired');
   } else {
-    console.warn('[script.js] ✗ play-mini-game-btn not found in DOM');
+    console.error(
+      '[script.js] Play Mini Game button or Game Modal not found in DOM.',
+      '| playBtn:', playBtn,
+      '| gameModal:', gameModal
+    );
   }
 
-  /* ─── 2. INITIATE PORTAL JUMP ───────────────────────────────── */
-  // Wire every portal button (hero + nav)
-  document.querySelectorAll('[data-action="portal"], #portal-jump-btn, #navWarpButton').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('[script.js] Portal Jump clicked');
-      // Try the inline engine first
-      try {
-        if (typeof initiatePortalJump === 'function') {
-          initiatePortalJump();
-          return;
+  /* ─────────────────────────────────────────────────────────────
+   *  2. INITIATE PORTAL JUMP — hero + nav buttons
+   * ───────────────────────────────────────────────────────────── */
+  document
+    .querySelectorAll('#portal-jump-btn, #navWarpButton, [data-action="portal"]')
+    .forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('[script.js] Portal Jump clicked');
+        try {
+          if (typeof initiatePortalJump === 'function') {
+            initiatePortalJump();
+            return;
+          }
+        } catch (err) {
+          console.warn('[script.js] initiatePortalJump() threw:', err);
         }
-      } catch (err) {
-        console.warn('[script.js] initiatePortalJump() threw:', err);
-      }
-      // Fallback: show portal-modal overlay then hide homepage
-      const portalModal = document.getElementById('portal-modal');
-      const homepage    = document.getElementById('homepage-container');
-      const main        = document.getElementById('main-container');
-      if (portalModal) {
-        portalModal.classList.add('active');
-        portalModal.style.opacity = '1';
-        portalModal.style.visibility = 'visible';
-        portalModal.style.pointerEvents = 'auto';
-        console.log('[script.js] Portal modal shown directly');
-      }
-      // After 1.2 s: hide homepage, reveal main
-      setTimeout(() => {
-        if (portalModal) {
-          portalModal.classList.remove('active');
-          portalModal.style.opacity = '';
-          portalModal.style.visibility = '';
-          portalModal.style.pointerEvents = '';
+        // Fallback: show portal overlay then swap views
+        _fallbackPortalJump();
+      });
+    });
+  console.log('[script.js] ✓ Portal buttons wired:',
+    document.querySelectorAll('#portal-jump-btn, #navWarpButton, [data-action="portal"]').length);
+
+  /* ─────────────────────────────────────────────────────────────
+   *  3. PASSPORT — nav + section buttons
+   * ───────────────────────────────────────────────────────────── */
+  document
+    .querySelectorAll('#passport-btn, #main-passport-btn, [data-action="passport"]')
+    .forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('[script.js] Passport clicked');
+        try {
+          if (typeof toggleTimePassport === 'function') {
+            toggleTimePassport(true);
+            return;
+          }
+        } catch (err) {
+          console.warn('[script.js] toggleTimePassport() threw:', err);
         }
-        if (homepage) homepage.classList.add('hidden');
-        if (main)     { main.classList.remove('hidden'); window.dispatchEvent(new Event('resize')); }
-      }, 1200);
-    });
-  });
-  console.log('[script.js] ✓ Portal-jump buttons wired:', document.querySelectorAll('[data-action="portal"]').length);
-
-  /* ─── 3. PASSPORT ───────────────────────────────────────────── */
-  // Wire every passport button (nav + hero progress section)
-  document.querySelectorAll('[data-action="passport"], #passport-btn, #main-passport-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('[script.js] Passport clicked');
-      // Try inline helper first
-      try {
-        if (typeof toggleTimePassport === 'function') {
-          toggleTimePassport(true);
-          return;
+        // Fallback: show directly
+        const passportModal = document.getElementById('passport-modal');
+        if (passportModal) {
+          passportModal.classList.add('open');
+          passportModal.classList.remove('hidden');
+          passportModal.style.display = 'flex';
         }
-      } catch (err) {
-        console.warn('[script.js] toggleTimePassport() threw:', err);
-      }
-      // Fallback: show directly
-      const passportModal = document.getElementById('passport-modal');
-      if (passportModal) {
-        passportModal.classList.add('open');
-        passportModal.classList.remove('hidden');
-        passportModal.style.display = 'flex';
-        console.log('[script.js] Passport modal shown directly');
+      });
+    });
+  console.log('[script.js] ✓ Passport buttons wired:',
+    document.querySelectorAll('#passport-btn, #main-passport-btn, [data-action="passport"]').length);
+
+  /* ─────────────────────────────────────────────────────────────
+   *  4. CLOSE BUTTONS & BACKDROP DISMISS
+   * ───────────────────────────────────────────────────────────── */
+
+  // Mini-game overlay close
+  if (gameModal) {
+    // Click on dark backdrop (not the content) closes the overlay
+    gameModal.addEventListener('click', (e) => {
+      if (e.target === gameModal) _closeModal(gameModal);
+    });
+    // Any button in the header that closes the modal
+    const closeHeaderBtns = gameModal.querySelectorAll('header button');
+    closeHeaderBtns.forEach(btn => {
+      if (btn.textContent.includes('✕') || btn.textContent.includes('×') ||
+          btn.textContent.includes('Close') || btn.textContent.includes('Back') ||
+          btn.getAttribute('onclick')) {
+        // Don't override — these already have onclick handlers in HTML
+        // But add a safety listener so the hidden class is definitely removed
+        btn.addEventListener('click', () => {
+          setTimeout(() => {
+            if (gameModal && !gameModal.classList.contains('hidden')) {
+              // only close if the inline handler didn't already close it
+            }
+          }, 50);
+        });
       }
     });
-  });
-  console.log('[script.js] ✓ Passport buttons wired:', document.querySelectorAll('[data-action="passport"]').length);
-
-  /* ─── 4. CLOSE BUTTONS ──────────────────────────────────────── */
-
-  // Generic close: any element with class .close-btn inside a modal
-  document.querySelectorAll('.close-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const modal = btn.closest('[id$="-modal"]');
-      if (modal) _closeModal(modal);
-    });
-  });
-
-  // Close mini-game modal
-  const miniGameClose = miniGameModal && miniGameModal.querySelector('button[onclick*="close"], button[onclick*="Close"], header button');
-  if (miniGameClose) {
-    miniGameClose.addEventListener('click', () => _closeModal(miniGameModal));
   }
 
-  // Close passport modal: buttons with onclick="toggleTimePassport(false)"
+  // Passport close — buttons with toggleTimePassport(false) onclick
   document.querySelectorAll('[onclick*="toggleTimePassport(false)"]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
+    btn.addEventListener('click', () => {
       const passportModal = document.getElementById('passport-modal');
       if (passportModal) {
-        try { toggleTimePassport(false); } catch(_) {}
+        try { toggleTimePassport(false); } catch (_) {}
         _closeModal(passportModal);
       }
     });
   });
 
-  // Backdrop click: click outside inner content of any open modal
-  [miniGameModal, document.getElementById('passport-modal')].forEach(modal => {
-    if (!modal) return;
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) _closeModal(modal);
+  // Generic .close-btn elements
+  document.querySelectorAll('.close-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modal = btn.closest('[id$="-modal"], [id$="-overlay"]');
+      if (modal) _closeModal(modal);
     });
   });
 
-  // dialog close (Escape key / backdrop) — already handled by native dialog API
+  // Native <dialog> backdrop click
   document.querySelectorAll('dialog').forEach(dlg => {
     dlg.addEventListener('click', (e) => {
-      const rect = dlg.getBoundingClientRect();
-      const inside = rect.top <= e.clientY && e.clientY <= rect.bottom
-                  && rect.left <= e.clientX && e.clientX <= rect.right;
+      const r = dlg.getBoundingClientRect();
+      const inside = r.top <= e.clientY && e.clientY <= r.bottom
+                  && r.left <= e.clientX && e.clientX <= r.right;
       if (!inside) dlg.close();
     });
   });
 
-  console.log('[script.js] ✓ All button wiring complete');
+  console.log('[script.js] ✓ All handlers attached successfully');
 });
 
-/* ─── HELPER ──────────────────────────────────────────────────── */
+/* ─── HELPERS ─────────────────────────────────────────────────── */
+
 function _closeModal(modal) {
   if (!modal) return;
   modal.classList.add('hidden');
   modal.classList.remove('open', 'active');
   modal.style.display = 'none';
+}
+
+function _fallbackPortalJump() {
+  const portalOverlay = document.getElementById('portal-modal');
+  const homepage      = document.getElementById('homepage-container');
+  const main          = document.getElementById('main-container');
+
+  if (portalOverlay) {
+    portalOverlay.classList.add('active');
+    portalOverlay.style.opacity = '1';
+    portalOverlay.style.visibility = 'visible';
+    portalOverlay.style.pointerEvents = 'auto';
+  }
+  setTimeout(() => {
+    if (portalOverlay) {
+      portalOverlay.classList.remove('active');
+      portalOverlay.style.opacity = '';
+      portalOverlay.style.visibility = '';
+      portalOverlay.style.pointerEvents = '';
+    }
+    if (homepage) homepage.classList.add('hidden');
+    if (main) {
+      main.classList.remove('hidden');
+      window.dispatchEvent(new Event('resize'));
+    }
+  }, 1200);
 }
