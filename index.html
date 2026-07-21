@@ -50,6 +50,158 @@
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-20 right-6 z-[100] flex flex-col gap-3 pointer-events-none max-w-sm w-full"></div>
 
+  <!-- ==================== TIME EXPLORER ADVENTURE MINI-GAME MODAL ==================== -->
+  <div id="time-explorer-game-modal" class="fixed inset-0 z-[150] bg-black/95 backdrop-blur-xl flex flex-col justify-between hidden transition-opacity duration-300 select-none">
+    <!-- Modal Top Navigation Header -->
+    <header class="px-6 py-4 border-b border-white/10 bg-black/80 flex items-center justify-between z-10 shrink-0">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl animate-bounce">🏃</span>
+        <div>
+          <h3 class="font-display-present text-lg sm:text-xl font-bold text-white tracking-wider">TIME EXPLORER ADVENTURE</h3>
+          <p class="font-label-tech text-[10px] text-cyan-400 tracking-widest uppercase">ENDLESS RUNNER MINI-GAME // HISTORICAL RECOVERY</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <button id="runner-audio-btn" onclick="toggleRunnerAudio()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white font-mono text-xs font-bold transition flex items-center gap-1.5">
+          🔊 <span id="runner-audio-status">AUDIO ON</span>
+        </button>
+        <button onclick="closeTimeExplorerModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-red-500/20 hover:border-red-500/40 border border-white/20 text-white hover:text-red-400 flex items-center justify-center text-lg font-bold transition">
+          ✕
+        </button>
+      </div>
+    </header>
+
+    <!-- Level Selector Screen (Shown before playing) -->
+    <div id="runner-level-select-screen" class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full flex flex-col gap-6">
+      <div class="glassmorphic p-6 border border-white/10 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-purple-950/30 to-amber-950/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="font-display-present text-2xl font-bold text-white mb-1">SELECT TIME ERA RUNNER LEVEL</h2>
+          <p class="text-white/60 text-xs font-mono">Visit landmarks on the main website to unlock new historical runner levels!</p>
+        </div>
+        <div class="flex items-center gap-4 font-mono text-xs">
+          <span class="px-3 py-1.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold" id="runner-total-coins-badge">🪙 0 Coins</span>
+          <span class="px-3 py-1.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold" id="runner-highscore-badge">🏆 Best: 0m</span>
+        </div>
+      </div>
+
+      <!-- Grid of Landmark Runner Levels -->
+      <div id="runner-levels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Dynamically generated level cards -->
+      </div>
+    </div>
+
+    <!-- Game Canvas & HUD View (Shown during gameplay) -->
+    <div id="runner-gameplay-screen" class="flex-1 relative w-full h-full flex flex-col items-center justify-center hidden overflow-hidden bg-slate-950">
+      <!-- Real-time HUD Header Bar -->
+      <div id="runner-hud" class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none font-mono text-xs">
+        <!-- Left Stats: Distance, Coins, Crystals -->
+        <div class="flex items-center gap-3 bg-black/70 backdrop-blur-md border border-white/10 px-4 py-2 rounded-xl pointer-events-auto shadow-lg">
+          <span id="hud-distance" class="text-amber-300 font-bold tracking-wider text-sm sm:text-base">0m</span>
+          <span class="text-white/30">|</span>
+          <span id="hud-coins" class="text-yellow-400 font-bold">🪙 0</span>
+          <span class="text-white/30">|</span>
+          <span id="hud-crystals" class="text-cyan-400 font-bold">⏳ 0</span>
+          <span class="text-white/30">|</span>
+          <span id="hud-xp" class="text-emerald-400 font-bold">⚡ 0 XP</span>
+        </div>
+
+        <!-- Center Power-Up Active Status -->
+        <div id="hud-powerup-bar" class="hidden sm:flex items-center gap-2">
+          <!-- Active power-ups rendered here -->
+        </div>
+
+        <!-- Right Controls: Pause -->
+        <div class="flex items-center gap-2 pointer-events-auto">
+          <button id="runner-pause-btn" onclick="toggleRunnerPause()" class="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold tracking-wider transition">
+            ⏸️ PAUSE
+          </button>
+        </div>
+      </div>
+
+      <!-- Canvas Container -->
+      <div class="relative w-full h-full flex items-center justify-center">
+        <canvas id="runner-canvas" class="w-full h-full max-w-[1200px] max-h-[675px] object-contain rounded-xl shadow-2xl border border-white/10 bg-black"></canvas>
+      </div>
+
+      <!-- On-Screen Mobile Touch Controls -->
+      <div id="runner-mobile-controls" class="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between pointer-events-auto select-none sm:hidden">
+        <button id="touch-slide-btn" class="w-20 h-20 rounded-2xl bg-cyan-500/30 active:bg-cyan-500/60 border border-cyan-400/50 text-cyan-200 text-xs font-bold font-mono shadow-lg backdrop-blur-md flex flex-col items-center justify-center gap-1 active:scale-95 transition">
+          <span class="text-2xl">⏬</span>
+          <span>SLIDE</span>
+        </button>
+        <button id="touch-jump-btn" class="w-24 h-24 rounded-2xl bg-amber-500/40 active:bg-amber-500/70 border border-amber-400/60 text-amber-100 text-xs font-bold font-mono shadow-xl backdrop-blur-md flex flex-col items-center justify-center gap-1 active:scale-95 transition">
+          <span class="text-3xl">⏫</span>
+          <span>JUMP</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- End-of-Run Summary Modal -->
+    <div id="runner-summary-modal" class="fixed inset-0 z-[130] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+      <div class="glassmorphic max-w-md w-full p-6 sm:p-8 border border-white/20 rounded-3xl bg-slate-900/90 shadow-2xl flex flex-col gap-6 text-center transform transition-all duration-300">
+        <div>
+          <div class="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-3xl flex items-center justify-center mx-auto mb-3 shadow-[0_0_20px_rgba(245,158,11,0.3)]">
+            🏆
+          </div>
+          <h3 class="font-display-present text-2xl font-bold text-white mb-1">EXPEDITION COMPLETE!</h3>
+          <p id="summary-landmark-name" class="font-label-tech text-xs text-cyan-400 tracking-widest uppercase">ANCIENT EGYPT RUN</p>
+        </div>
+
+        <!-- Stats Breakdown Grid -->
+        <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+          <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
+            <span class="text-white/50 block mb-1">DISTANCE</span>
+            <span id="summary-distance" class="text-amber-300 font-bold text-lg">0m</span>
+          </div>
+          <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
+            <span class="text-white/50 block mb-1">COINS EARNED</span>
+            <span id="summary-coins" class="text-yellow-400 font-bold text-lg">🪙 +0</span>
+          </div>
+          <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
+            <span class="text-white/50 block mb-1">TIME CRYSTALS</span>
+            <span id="summary-crystals" class="text-cyan-400 font-bold text-lg">⏳ +0</span>
+          </div>
+          <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
+            <span class="text-white/50 block mb-1">TOTAL XP GAINED</span>
+            <span id="summary-xp" class="text-emerald-400 font-bold text-lg">⚡ +0 XP</span>
+          </div>
+        </div>
+
+        <!-- Recovered Artifact Banner -->
+        <div id="summary-artifact-banner" class="hidden p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-left flex items-center gap-3">
+          <span class="text-3xl" id="summary-artifact-icon">🏺</span>
+          <div>
+            <span class="font-label-tech text-[10px] text-amber-300 font-bold block">NEW ARTIFACT RECOVERED!</span>
+            <span id="summary-artifact-name" class="font-mono text-xs text-white font-bold">Pharaoh Gold Mask</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-3">
+          <button onclick="restartRunnerLevel()" class="flex-1 py-3 bg-primary hover:bg-primary/90 text-black font-label-tech font-bold text-xs tracking-wider rounded-xl transition shadow-lg">
+            🔄 RUN AGAIN
+          </button>
+          <button onclick="exitRunnerToLevels()" class="flex-1 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-label-tech font-bold text-xs tracking-wider rounded-xl transition">
+            🗺️ SELECT ERA
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Instruction Footer -->
+    <footer class="px-6 py-3 border-t border-white/10 bg-black/90 flex items-center justify-between text-[11px] font-mono text-white/50 shrink-0 select-none">
+      <div class="flex items-center gap-4">
+        <span>⌨️ Arrow Up / Space = Jump (Double Jump in Mid-Air)</span>
+        <span>⌨️ Arrow Down = Slide</span>
+        <span>📱 Touch Buttons for Mobile</span>
+      </div>
+      <div class="text-cyan-400 font-bold hidden md:block font-mono">
+        ⚡ Time Explorer Adventure v1.0
+      </div>
+    </footer>
+  </div>
+
   <!-- Cinematic Homepage Container -->
   <div id="homepage-container" class="absolute inset-0 w-full h-full overflow-y-auto scroll-smooth z-40 bg-[#090b0e]/95 text-white flex flex-col">
     
@@ -67,6 +219,9 @@
         <a href="#how-it-works" class="text-white/60 hover:text-white transition">How It Works</a>
       </div>
       <div class="flex items-center gap-3">
+        <button onclick="openTimeExplorerModal()" class="font-label-tech text-xs px-3.5 py-2 border border-amber-500/50 text-amber-300 hover:bg-amber-500/20 rounded flex items-center gap-1.5 shadow-[0_0_15px_rgba(245,158,11,0.25)] transition duration-300 font-bold">
+          <span>🎮</span> MINI GAME
+        </button>
         <button onclick="toggleTimePassport(true)" class="font-label-tech text-xs px-3.5 py-2 border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 rounded flex items-center gap-1.5 shadow-[0_0_12px_rgba(212,175,85,0.15)] transition duration-300">
           <span>📜</span> PASSPORT
         </button>
@@ -617,159 +772,8 @@
           <span>🖱️ Drag to Pan</span>
           <span>🔍 Mouse Wheel / Pinch to Zoom</span>
           <span>👆 Click Anomaly to Restore</span>
-        </div>
         <div id="inspection-hint-banner" class="text-amber-300 font-bold hidden md:block">
           💡 Click directly on the anomaly object to restore the timeline!
-    </div>
-
-    <!-- ==================== TIME EXPLORER ADVENTURE MINI-GAME MODAL ==================== -->
-    <div id="time-explorer-game-modal" class="fixed inset-0 z-[120] bg-black/95 backdrop-blur-xl flex flex-col justify-between hidden transition-opacity duration-300 select-none">
-      <!-- Modal Top Navigation Header -->
-      <header class="px-6 py-4 border-b border-white/10 bg-black/80 flex items-center justify-between z-10 shrink-0">
-        <div class="flex items-center gap-3">
-          <span class="text-2xl animate-bounce">🏃</span>
-          <div>
-            <h3 class="font-display-present text-lg sm:text-xl font-bold text-white tracking-wider">TIME EXPLORER ADVENTURE</h3>
-            <p class="font-label-tech text-[10px] text-cyan-400 tracking-widest uppercase">ENDLESS RUNNER MINI-GAME // HISTORICAL RECOVERY</p>
-          </div>
-        </div>
-        
-        <div class="flex items-center gap-3">
-          <button id="runner-audio-btn" onclick="toggleRunnerAudio()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white font-mono text-xs font-bold transition flex items-center gap-1.5">
-            🔊 <span id="runner-audio-status">AUDIO ON</span>
-          </button>
-          <button onclick="closeTimeExplorerModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-red-500/20 hover:border-red-500/40 border border-white/20 text-white hover:text-red-400 flex items-center justify-center text-lg font-bold transition">
-            ✕
-          </button>
-        </div>
-      </header>
-
-      <!-- Level Selector Screen (Shown before playing) -->
-      <div id="runner-level-select-screen" class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full flex flex-col gap-6">
-        <div class="glassmorphic p-6 border border-white/10 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-purple-950/30 to-amber-950/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <h2 class="font-display-present text-2xl font-bold text-white mb-1">SELECT TIME ERA RUNNER LEVEL</h2>
-            <p class="text-white/60 text-xs font-mono">Visit landmarks on the main website to unlock new historical runner levels!</p>
-          </div>
-          <div class="flex items-center gap-4 font-mono text-xs">
-            <span class="px-3 py-1.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold" id="runner-total-coins-badge">🪙 0 Coins</span>
-            <span class="px-3 py-1.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold" id="runner-highscore-badge">🏆 Best: 0m</span>
-          </div>
-        </div>
-
-        <!-- Grid of Landmark Runner Levels -->
-        <div id="runner-levels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Dynamically generated level cards -->
-        </div>
-      </div>
-
-      <!-- Game Canvas & HUD View (Shown during gameplay) -->
-      <div id="runner-gameplay-screen" class="flex-1 relative w-full h-full flex flex-col items-center justify-center hidden overflow-hidden bg-slate-950">
-        <!-- Real-time HUD Header Bar -->
-        <div id="runner-hud" class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none font-mono text-xs">
-          <!-- Left Stats: Distance, Coins, Crystals -->
-          <div class="flex items-center gap-3 bg-black/70 backdrop-blur-md border border-white/10 px-4 py-2 rounded-xl pointer-events-auto shadow-lg">
-            <span id="hud-distance" class="text-amber-300 font-bold tracking-wider text-sm sm:text-base">0m</span>
-            <span class="text-white/30">|</span>
-            <span id="hud-coins" class="text-yellow-400 font-bold">🪙 0</span>
-            <span class="text-white/30">|</span>
-            <span id="hud-crystals" class="text-cyan-400 font-bold">⏳ 0</span>
-            <span class="text-white/30">|</span>
-            <span id="hud-xp" class="text-emerald-400 font-bold">⚡ 0 XP</span>
-          </div>
-
-          <!-- Center Power-Up Active Status -->
-          <div id="hud-powerup-bar" class="hidden sm:flex items-center gap-2">
-            <!-- Active power-ups rendered here -->
-          </div>
-
-          <!-- Right Controls: Pause -->
-          <div class="flex items-center gap-2 pointer-events-auto">
-            <button id="runner-pause-btn" onclick="toggleRunnerPause()" class="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold tracking-wider transition">
-              ⏸️ PAUSE
-            </button>
-          </div>
-        </div>
-
-        <!-- Canvas Container -->
-        <div class="relative w-full h-full flex items-center justify-center">
-          <canvas id="runner-canvas" class="w-full h-full max-w-[1200px] max-h-[675px] object-contain rounded-xl shadow-2xl border border-white/10 bg-black"></canvas>
-        </div>
-
-        <!-- On-Screen Mobile Touch Controls -->
-        <div id="runner-mobile-controls" class="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between pointer-events-auto select-none sm:hidden">
-          <button id="touch-slide-btn" class="w-20 h-20 rounded-2xl bg-cyan-500/30 active:bg-cyan-500/60 border border-cyan-400/50 text-cyan-200 text-xs font-bold font-mono shadow-lg backdrop-blur-md flex flex-col items-center justify-center gap-1 active:scale-95 transition">
-            <span class="text-2xl">⏬</span>
-            <span>SLIDE</span>
-          </button>
-          <button id="touch-jump-btn" class="w-24 h-24 rounded-2xl bg-amber-500/40 active:bg-amber-500/70 border border-amber-400/60 text-amber-100 text-xs font-bold font-mono shadow-xl backdrop-blur-md flex flex-col items-center justify-center gap-1 active:scale-95 transition">
-            <span class="text-3xl">⏫</span>
-            <span>JUMP</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- End-of-Run Summary Modal -->
-      <div id="runner-summary-modal" class="fixed inset-0 z-[130] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="glassmorphic max-w-md w-full p-6 sm:p-8 border border-white/20 rounded-3xl bg-slate-900/90 shadow-2xl flex flex-col gap-6 text-center transform transition-all duration-300">
-          <div>
-            <div class="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-3xl flex items-center justify-center mx-auto mb-3 shadow-[0_0_20px_rgba(245,158,11,0.3)]">
-              🏆
-            </div>
-            <h3 class="font-display-present text-2xl font-bold text-white mb-1">EXPEDITION COMPLETE!</h3>
-            <p id="summary-landmark-name" class="font-label-tech text-xs text-cyan-400 tracking-widest uppercase">ANCIENT EGYPT RUN</p>
-          </div>
-
-          <!-- Stats Breakdown Grid -->
-          <div class="grid grid-cols-2 gap-3 font-mono text-xs">
-            <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
-              <span class="text-white/50 block mb-1">DISTANCE</span>
-              <span id="summary-distance" class="text-amber-300 font-bold text-lg">0m</span>
-            </div>
-            <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
-              <span class="text-white/50 block mb-1">COINS EARNED</span>
-              <span id="summary-coins" class="text-yellow-400 font-bold text-lg">🪙 +0</span>
-            </div>
-            <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
-              <span class="text-white/50 block mb-1">TIME CRYSTALS</span>
-              <span id="summary-crystals" class="text-cyan-400 font-bold text-lg">⏳ +0</span>
-            </div>
-            <div class="p-3 bg-white/5 border border-white/10 rounded-xl">
-              <span class="text-white/50 block mb-1">TOTAL XP GAINED</span>
-              <span id="summary-xp" class="text-emerald-400 font-bold text-lg">⚡ +0 XP</span>
-            </div>
-          </div>
-
-          <!-- Recovered Artifact Banner -->
-          <div id="summary-artifact-banner" class="hidden p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-left flex items-center gap-3">
-            <span class="text-3xl" id="summary-artifact-icon">🏺</span>
-            <div>
-              <span class="font-label-tech text-[10px] text-amber-300 font-bold block">NEW ARTIFACT RECOVERED!</span>
-              <span id="summary-artifact-name" class="font-mono text-xs text-white font-bold">Pharaoh Gold Mask</span>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex items-center gap-3">
-            <button onclick="restartRunnerLevel()" class="flex-1 py-3 bg-primary hover:bg-primary/90 text-black font-label-tech font-bold text-xs tracking-wider rounded-xl transition shadow-lg">
-              🔄 RUN AGAIN
-            </button>
-            <button onclick="exitRunnerToLevels()" class="flex-1 py-3 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-label-tech font-bold text-xs tracking-wider rounded-xl transition">
-              🗺️ SELECT ERA
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom Instruction Footer -->
-      <footer class="px-6 py-3 border-t border-white/10 bg-black/90 flex items-center justify-between text-[11px] font-mono text-white/50 shrink-0 select-none">
-        <div class="flex items-center gap-4">
-          <span>⌨️ Arrow Up / Space = Jump (Double Jump in Mid-Air)</span>
-          <span>⌨️ Arrow Down = Slide</span>
-          <span>📱 Touch Buttons for Mobile</span>
-        </div>
-        <div class="text-cyan-400 font-bold hidden md:block font-mono">
-          ⚡ Time Explorer Adventure v1.0
         </div>
       </footer>
     </div>
@@ -4930,19 +4934,35 @@
     // ==================== MINI-GAME UI & MODAL CONTROLLERS ====================
 
     function openTimeExplorerModal() {
-      const modal = document.getElementById('time-explorer-game-modal');
-      const selectScreen = document.getElementById('runner-level-select-screen');
-      const gameplayScreen = document.getElementById('runner-gameplay-screen');
-      const summaryModal = document.getElementById('runner-summary-modal');
+      try {
+        const modal = document.getElementById('time-explorer-game-modal');
+        const selectScreen = document.getElementById('runner-level-select-screen');
+        const gameplayScreen = document.getElementById('runner-gameplay-screen');
+        const summaryModal = document.getElementById('runner-summary-modal');
 
-      if (!modal) return;
+        if (!modal) {
+          console.error("Mini-game modal container element #time-explorer-game-modal not found!");
+          return;
+        }
 
-      modal.classList.remove('hidden');
-      if (selectScreen) selectScreen.classList.remove('hidden');
-      if (gameplayScreen) gameplayScreen.classList.add('hidden');
-      if (summaryModal) summaryModal.classList.add('hidden');
+        // Push URL hash route
+        if (window.location.hash !== '#mini-game') {
+          history.pushState(null, '', '#mini-game');
+        }
 
-      renderRunnerLevelsGrid();
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+        if (selectScreen) selectScreen.classList.remove('hidden');
+        if (gameplayScreen) gameplayScreen.classList.add('hidden');
+        if (summaryModal) summaryModal.classList.add('hidden');
+
+        renderRunnerLevelsGrid();
+      } catch (err) {
+        console.error("Time Explorer Adventure launch error:", err);
+        if (typeof showToast === 'function') {
+          showToast("Mini Game Launch Error", "Could not initialize mini-game assets.", "info");
+        }
+      }
     }
 
     function closeTimeExplorerModal() {
@@ -4951,8 +4971,21 @@
         runnerEngineInstance = null;
       }
       const modal = document.getElementById('time-explorer-game-modal');
-      if (modal) modal.classList.add('hidden');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
+      if (window.location.hash === '#mini-game' || window.location.hash === '#game') {
+        history.pushState(null, '', window.location.pathname + window.location.search);
+      }
     }
+
+    // Auto-launch mini-game if direct URL contains #mini-game or #game
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash === '#mini-game' || window.location.hash === '#game') {
+        openTimeExplorerModal();
+      }
+    });
 
     function renderRunnerLevelsGrid() {
       const grid = document.getElementById('runner-levels-grid');
@@ -5064,6 +5097,13 @@
       }
       openTimeExplorerModal();
     }
+
+    // Auto-launch mini-game on page load if URL contains #mini-game
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.location.hash === '#mini-game' || window.location.hash === '#game') {
+        setTimeout(openTimeExplorerModal, 150);
+      }
+    });
   </script>
 </body>
 </html>
